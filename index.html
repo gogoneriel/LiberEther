@@ -39,6 +39,30 @@
             color: #c0392b;
             background: #fdedec;
         }
+        .ranking-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .ranking-table th,
+        .ranking-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .ranking-table th {
+            background-color: #f8f9fa;
+        }
+        .holder-image {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .rank-number {
+            font-weight: bold;
+            color: #2c3e50;
+        }
     </style>
 </head>
 <body>
@@ -59,7 +83,51 @@
         <div id="performance" class="performance"></div>
     </div>
 
+    <div class="container">
+        <h2>Top AKM Holders</h2>
+        <table class="ranking-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Holder</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody id="rankingTableBody"></tbody>
+        </table>
+    </div>
+
     <script>
+        async function loadHolders() {
+            try {
+                const response = await fetch('holders.json');
+                const holders = await response.json();
+                const tableBody = document.getElementById('rankingTableBody');
+                tableBody.innerHTML = '';
+
+                holders.forEach((holder, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="rank-number">${index + 1}${getOrdinal(index + 1)}</td>
+                        <td>
+                            <img src="${holder.image}" alt="${holder.name}" class="holder-image">
+                            ${holder.name}
+                        </td>
+                        <td>${holder.amount.toLocaleString()} AKM</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error loading holders:', error);
+            }
+        }
+
+        function getOrdinal(n) {
+            const s = ["th", "st", "nd", "rd"];
+            const v = n % 100;
+            return s[(v - 20) % 10] || s[v] || s[0];
+        }
+
         async function updateData() {
             try {
                 const priceResponse = await fetch('https://api.dexscreener.com/latest/dex/pairs/arbitrum/0xd9ecf7fb6c8356f1c42ef44b15b61c88625401be');
@@ -86,6 +154,7 @@
         }
 
         updateData();
+        loadHolders();
         setInterval(updateData, 30000);
     </script>
 </body>

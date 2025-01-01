@@ -1,0 +1,17 @@
+[
+    {
+        "name": "Holder 1",
+        "image": "/api/placeholder/50/50",
+        "amount": 100000
+    },
+    {
+        "name": "Holder 2",
+        "image": "/api/placeholder/50/50",
+        "amount": 75000
+    },
+    {
+        "name": "Holder 3",
+        "image": "/api/placeholder/50/50",
+        "amount": 50000
+    }
+]
