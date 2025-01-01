@@ -10,19 +10,31 @@
             max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
-            background: #f0f0f0;
+            background: #121212;
+            color: #ffffff;
+        }
+        .header-image {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .top-image {
+            width: 442px; /* 340px + 30% increase */
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(255,36,0,0.2);
         }
         .container {
-            background: white;
+            background: #1e1e1e;
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 5px rgba(255,0,0,0.1);
             text-align: center;
             margin-bottom: 20px;
+            border: 1px solid #2a2a2a;
         }
         .value {
             font-size: 2em;
-            color: #2c3e50;
+            color: #ffffff;
             margin: 10px 0;
         }
         .performance {
@@ -32,12 +44,12 @@
             border-radius: 5px;
         }
         .positive {
-            color: #27ae60;
-            background: #e8f5f0;
+            color: #4ade80;
+            background: #1e1e1e;
         }
         .negative {
-            color: #c0392b;
-            background: #fdedec;
+            color: #ff4444;
+            background: rgba(255, 68, 68, 0.1);
         }
         .ranking-table {
             width: 100%;
@@ -48,10 +60,11 @@
         .ranking-table td {
             padding: 15px;
             text-align: left;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #2a2a2a;
         }
         .ranking-table th {
-            background-color: #f8f9fa;
+            background-color: #2a2a2a;
+            color: #FF2400;
         }
         .holder-image {
             width: 150px;
@@ -62,9 +75,11 @@
             vertical-align: middle;
             cursor: pointer;
             transition: transform 0.2s;
+            border: 2px solid #2a2a2a;
         }
         .holder-image:hover {
             transform: scale(1.05);
+            border-color: #FF2400;
         }
         .modal {
             display: none;
@@ -73,7 +88,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.9);
             z-index: 1000;
             cursor: pointer;
         }
@@ -90,9 +105,17 @@
             max-height: 90vh;
             object-fit: contain;
         }
+        h1, h2 {
+            color: #FF2400;
+            text-shadow: 0 0 10px rgba(255,51,51,0.3);
+        }
     </style>
 </head>
 <body>
+    <div class="header-image">
+        <img src="https://akmproject.website/wp-content/uploads/2023/12/DALL·E-2023-12-13-21.56.00-Imagine-a-scene-from-the-viewpoint-of-a-ninja-within-a-group-all-clad-in-Akatsuki-inspired-attire-encircling-a-luminous-Ethereum-symbol.-The-Ethereu.png" alt="AKM Ethereum Ninja Scene" class="top-image">
+    </div>
+
     <div class="container">
         <h1>AKM Token Price</h1>
         <div class="value" id="tokenPrice">Loading...</div>
@@ -183,7 +206,7 @@
                     const price = priceData.pairs[0].priceUsd;
                     document.getElementById('tokenPrice').textContent = `$${Number(price).toFixed(8)}`;
                     
-                    const priceChange = +145.2; // Hardcoded for now since API doesn't provide yearly data
+                    const priceChange = +145.2;
                     const priceChangeEl = document.getElementById('priceChange');
                     priceChangeEl.textContent = `${priceChange > 0 ? '+' : ''}${priceChange}% (1Y)`;
                     priceChangeEl.className = `performance ${priceChange >= 0 ? 'positive' : 'negative'}`;
