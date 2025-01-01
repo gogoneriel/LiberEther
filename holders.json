@@ -1,17 +1,67 @@
 [
     {
-        "name": "Holder 1",
-        "image": "/api/placeholder/50/50",
-        "amount": 100000
+        "name": "Neriel",
+        "image": "images/holder1.jpg",
+        "amount": 111266
     },
     {
-        "name": "Holder 2",
-        "image": "/api/placeholder/50/50",
-        "amount": 75000
+        "name": "The German",
+        "image": "images/holder2.jpg",
+        "amount": 94410
     },
     {
-        "name": "Holder 3",
-        "image": "/api/placeholder/50/50",
-        "amount": 50000
+        "name": "Midget",
+        "image": "images/holder3.jpg",
+        "amount": 81836
+    },
+    {
+        "name": "Queen",
+        "image": "images/holder4.jpg",
+        "amount": 39559
+    },
+    {
+        "name": "King",
+        "image": "images/holder5.jpg",
+        "amount": 25720
+    },
+    {
+        "name": "Satan",
+        "image": "images/holder6.jpg",
+        "amount": 10916
+    },
+    {
+        "name": "Princess",
+        "image": "images/holder7.jpg",
+        "amount": 8020
+    },
+    {
+        "name": "Bouillbou",
+        "image": "images/holder8.jpg",
+        "amount": 8000
+    },
+    {
+        "name": "Cypher",
+        "image": "images/holder9.jpg",
+        "amount": 7224
+    },
+    {
+        "name": "Mi",
+        "image": "images/holder10.jpg",
+        "amount": 5565
+    },
+    {
+        "name": "Fausto",
+        "image": "images/holder11.jpg",
+        "amount": 5525
+    },
+    {
+        "name": "Tyler",
+        "image": "images/holder12.jpg",
+        "amount": 4494
+    },
+    {
+        "name": "Lala",
+        "image": "images/holder13.jpg",
+        "amount": 3230
     }
 ]
