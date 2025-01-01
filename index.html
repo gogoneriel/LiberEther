@@ -39,6 +39,57 @@
             color: #c0392b;
             background: #fdedec;
         }
+        .ranking-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .ranking-table th,
+        .ranking-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        .ranking-table th {
+            background-color: #f8f9fa;
+        }
+        .holder-image {
+            width: 150px;
+            height: 150px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-right: 15px;
+            vertical-align: middle;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .holder-image:hover {
+            transform: scale(1.05);
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            cursor: pointer;
+        }
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 90%;
+            max-height: 90vh;
+        }
+        .modal-img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+        }
     </style>
 </head>
 <body>
@@ -59,7 +110,69 @@
         <div id="performance" class="performance"></div>
     </div>
 
+    <div class="container">
+        <h2>Top AKM Holders</h2>
+        <table class="ranking-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Holder</th>
+                    <th>Amount</th>
+                </tr>
+            </thead>
+            <tbody id="rankingTableBody"></tbody>
+        </table>
+    </div>
+
+    <div id="imageModal" class="modal">
+        <img class="modal-content modal-img" id="modalImg">
+    </div>
+
     <script>
+        async function loadHolders() {
+            try {
+                const response = await fetch('holders.json');
+                const holders = await response.json();
+                const tableBody = document.getElementById('rankingTableBody');
+                tableBody.innerHTML = '';
+
+                holders.forEach((holder, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="rank-number">${index + 1}${getOrdinal(index + 1)}</td>
+                        <td>
+                            <img src="${holder.image}" alt="${holder.name}" class="holder-image" onclick="openModal(this.src)">
+                            ${holder.name}
+                        </td>
+                        <td>${holder.amount.toLocaleString()} AKM</td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error loading holders:', error);
+            }
+        }
+
+        function openModal(src) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImg');
+            modal.style.display = "block";
+            modalImg.src = src;
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal || event.target.classList.contains('modal-img')) {
+                modal.style.display = "none";
+            }
+        }
+
+        function getOrdinal(n) {
+            const s = ["th", "st", "nd", "rd"];
+            const v = n % 100;
+            return s[(v - 20) % 10] || s[v] || s[0];
+        }
+
         async function updateData() {
             try {
                 const priceResponse = await fetch('https://api.dexscreener.com/latest/dex/pairs/arbitrum/0xd9ecf7fb6c8356f1c42ef44b15b61c88625401be');
@@ -86,6 +199,7 @@
         }
 
         updateData();
+        loadHolders();
         setInterval(updateData, 30000);
     </script>
 </body>
