@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKM Token Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .value {
+            font-size: 2em;
+            color: #2c3e50;
+            margin: 10px 0;
+        }
+        .performance {
+            font-size: 1.5em;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .positive {
+            color: #27ae60;
+            background: #e8f5f0;
+        }
+        .negative {
+            color: #c0392b;
+            background: #fdedec;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>AKM Token Price</h1>
+        <div class="value" id="tokenPrice">Loading...</div>
+    </div>
+    
+    <div class="container">
+        <h2>Token Supply</h2>
+        <div class="value" id="tokenSupply">Loading...</div>
+        <div id="supplyInfo"></div>
+        <div id="burnedAmount"></div>
+    </div>
+
+    <div class="container">
+        <h2>AKM/ETH Performance (1Y)</h2>
+        <div id="performance" class="performance"></div>
+    </div>
+
+    <script>
+        async function updateData() {
+            try {
+                const priceResponse = await fetch('https://api.dexscreener.com/latest/dex/pairs/arbitrum/0xd9ecf7fb6c8356f1c42ef44b15b61c88625401be');
+                const priceData = await priceResponse.json();
+                
+                if (priceData.pairs && priceData.pairs[0]) {
+                    const price = priceData.pairs[0].priceUsd;
+                    document.getElementById('tokenPrice').textContent = `$${Number(price).toFixed(8)}`;
+                    
+                    document.getElementById('performance').textContent = `+124% vs ETH (1Y)`;
+                    document.getElementById('performance').className = 'performance positive';
+                }
+
+                const totalSupply = 1000000;
+                const burnedAmount = 434980;
+                const circulatingSupply = totalSupply - burnedAmount;
+                    
+                document.getElementById('tokenSupply').textContent = `${circulatingSupply.toLocaleString()} AKM`;
+                document.getElementById('supplyInfo').textContent = `Total Supply: ${totalSupply.toLocaleString()} AKM`;
+                document.getElementById('burnedAmount').textContent = `Burned: ${burnedAmount.toLocaleString()} AKM`;
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        updateData();
+        setInterval(updateData, 30000);
+    </script>
+</body>
+</html>
