@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AKM Token Tracker</title>
     <style>
-        /* Existing styles */
         body {
             font-family: Arial, sans-serif;
             max-width: min(1000px, 100%);
@@ -160,7 +159,6 @@
         <img id="rsiGif" class="rsi-gif" alt="RSI Status">
     </div>
 
-    <!-- Rest of your existing HTML content -->
     <div class="container">
         <h1>AKM Token Price</h1>
         <div class="value" id="tokenPrice">Loading...</div>
@@ -176,7 +174,7 @@
 
     <div class="container">
         <h2>AKM/ETH Performance (1Y)</h2>
-        <div id="performance" class="performance"></div>
+        <div id="performance" class="performance">Loading...</div>
     </div>
 
     <div class="container">
@@ -238,7 +236,6 @@
             }
         }
 
-        // Your existing functions
         async function loadHolders() {
             try {
                 const response = await fetch('holders.json');
@@ -283,6 +280,28 @@
             return s[(v - 20) % 10] || s[v] || s[0];
         }
 
+        async function getETHPerformance() {
+            try {
+                // Get current ETH price
+                const ethCurrentResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd');
+                const ethCurrentData = await ethCurrentResponse.json();
+                const currentETHPrice = ethCurrentData.ethereum.usd;
+
+                // Get historical ETH price (1 year ago)
+                const oneYearAgo = Math.floor(Date.now() / 1000) - (365 * 24 * 60 * 60);
+                const ethHistoricalResponse = await fetch(`https://api.coingecko.com/api/v3/coins/ethereum/market_chart/range?vs_currency=usd&from=${oneYearAgo}&to=${oneYearAgo + 86400}`);
+                const ethHistoricalData = await ethHistoricalResponse.json();
+                const historicalETHPrice = ethHistoricalData.prices[0][1];
+
+                // Calculate ETH performance
+                const ethPerformance = ((currentETHPrice - historicalETHPrice) / historicalETHPrice) * 100;
+                return ethPerformance;
+            } catch (error) {
+                console.error('Error fetching ETH performance:', error);
+                return null;
+            }
+        }
+
         async function updateData() {
             try {
                 const priceResponse = await fetch('https://api.dexscreener.com/latest/dex/pairs/arbitrum/0xd9ecf7fb6c8356f1c42ef44b15b61c88625401be');
@@ -297,8 +316,14 @@
                     priceChangeEl.textContent = `${priceChange > 0 ? '+' : ''}${priceChange}% (1Y)`;
                     priceChangeEl.className = `performance ${priceChange >= 0 ? 'positive' : 'negative'}`;
 
-                    document.getElementById('performance').textContent = `+124% vs ETH (1Y)`;
-                    document.getElementById('performance').className = 'performance positive';
+                    // Calculate relative performance vs ETH
+                    const ethPerformance = await getETHPerformance();
+                    if (ethPerformance !== null) {
+                        const relativePerformance = priceChange - ethPerformance;
+                        const performanceEl = document.getElementById('performance');
+                        performanceEl.textContent = `${relativePerformance >= 0 ? '+' : ''}${relativePerformance.toFixed(2)}% vs ETH (1Y)`;
+                        performanceEl.className = `performance ${relativePerformance >= 0 ? 'positive' : 'negative'}`;
+                    }
                 }
 
                 const totalSupply = 1000000;
@@ -320,7 +345,7 @@
 
         // Set intervals for updates
         setInterval(updateData, 30000);
-        setInterval(updateRSIGif, 60000); // Update RSI gif every minute
+        setInterval(updateRSIGif, 60000);
     </script>
 </body>
 </html>
