@@ -300,24 +300,16 @@
             return s[(v - 20) % 10] || s[v] || s[0];
         }
 
-        async function getETHPerformance() {
-            try {
-                const ethCurrentResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd');
-                const ethCurrentData = await ethCurrentResponse.json();
-                const currentETHPrice = ethCurrentData.ethereum.usd;
-
-                const oneYearAgo = Math.floor(Date.now() / 1000) - (365 * 24 * 60 * 60);
-                const ethHistoricalResponse = await fetch(`https://api.coingecko.com/api/v3/coins/ethereum/market_chart/range?vs_currency=usd&from=${oneYearAgo}&to=${oneYearAgo + 86400}`);
-                const ethHistoricalData = await ethHistoricalResponse.json();
-                const historicalETHPrice = ethHistoricalData.prices[0][1];
-
-                const ethPerformance = ((currentETHPrice - historicalETHPrice) / historicalETHPrice) * 100;
-                return ethPerformance;
-            } catch (error) {
-                console.error('Error fetching ETH performance:', error);
-                return null;
-            }
-        }
+        async function getPerformanceData() {
+    try {
+        const response = await fetch('performance.json');
+        const data = await response.json();
+        return data.yearlyPerformance.ethComparison.percentageDifference;
+    } catch (error) {
+        console.error('Error fetching performance data:', error);
+        return null;
+    }
+}
 
         async function updateData() {
             try {
@@ -334,13 +326,12 @@
                     priceChangeEl.textContent = `${priceChange > 0 ? '+' : ''}${priceChange}% (1Y)`;
                     priceChangeEl.className = `performance ${priceChange >= 0 ? 'positive' : 'negative'}`;
 
-                    const ethPerformance = await getETHPerformance();
-                    if (ethPerformance !== null) {
-                        const relativePerformance = priceChange - ethPerformance;
-                        const performanceEl = document.getElementById('performance');
-                        performanceEl.textContent = `${relativePerformance >= 0 ? '+' : ''}${relativePerformance.toFixed(2)}% vs ETH (1Y)`;
-                        performanceEl.className = `performance ${relativePerformance >= 0 ? 'positive' : 'negative'}`;
-                    }
+                    const performanceValue = await getPerformanceData();
+if (performanceValue !== null) {
+    const performanceEl = document.getElementById('performance');
+    performanceEl.textContent = `${performanceValue >= 0 ? '+' : ''}${performanceValue.toFixed(2)}% vs ETH (1Y)`;
+    performanceEl.className = `performance ${performanceValue >= 0 ? 'positive' : 'negative'}`;
+}
                     
                     loadHolders();
                 }
