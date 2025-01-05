@@ -236,6 +236,13 @@
             }
         }
 
+        function calculateUSDValue(akmAmount) {
+            const priceElement = document.getElementById('tokenPrice');
+            const currentPrice = parseFloat(priceElement.textContent.replace('$', ''));
+            const usdValue = akmAmount * currentPrice;
+            return usdValue.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
         async function loadHolders() {
             try {
                 const response = await fetch('holders.json');
@@ -251,7 +258,7 @@
                             <img src="${holder.image}" alt="${holder.name}" class="holder-image" onclick="openModal(this.src)">
                             ${holder.name}
                         </td>
-                        <td>${holder.amount.toLocaleString()} AKM</td>
+                        <td>${holder.amount.toLocaleString()} AKM ($${calculateUSDValue(holder.amount)})</td>
                     `;
                     tableBody.appendChild(row);
                 });
