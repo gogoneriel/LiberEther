@@ -1,181 +1,175 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AKM Token Tracker</title>
-    <style>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        max-width: min(1000px, 100%);
+        margin: 0 auto;
+        padding: 10px;
+        background: #121212;
+        color: #ffffff;
+        overflow-x: hidden;
+    }
+    @media (max-width: 768px) {
         body {
-            font-family: Arial, sans-serif;
-            max-width: min(1000px, 100%);
-            margin: 0 auto;
-            padding: 10px;
-            background: #121212;
-            color: #ffffff;
-            overflow-x: hidden;
-        }
-        @media (max-width: 768px) {
-            body {
-                padding: 10px 5px;
-            }
-            .top-image {
-                width: 100%;
-                max-width: 442px;
-            }
-            .rsi-gif {
-                width: 125px;
-                height: 180px;
-            }
-            .holder-image {
-                width: 100px;
-                height: 100px;
-            }
-            .ranking-table th,
-            .ranking-table td {
-                padding: 8px;
-            }
-        }
-        .header-container {
-            position: relative;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: flex-end;
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-        .header-image {
-            text-align: center;
+            padding: 10px 5px;
         }
         .top-image {
-            width: 442px;
-            height: auto;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(255,36,0,0.2);
+            width: 100%;
+            max-width: 575px; /* Updated: Increased by 30% from 442px */
         }
         .rsi-gif {
-            width: 167px;
-            height: 240px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(255,36,0,0.2);
+            width: 125px;
+            height: 180px;
         }
-        .container {
-            background: #1e1e1e;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(255,0,0,0.1);
-            text-align: center;
-            margin-bottom: 20px;
-            border: 1px solid #2a2a2a;
-        }
-        .value {
-            font-size: 2em;
-            color: #ffffff;
-            margin: 10px 0;
-        }
-        .performance {
-            font-size: 1.5em;
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        .positive { color: #4ade80; background: #1e1e1e; }
-        .negative { color: #ff4444; background: rgba(255, 68, 68, 0.1); }
-        .ranking-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
+        .holder-image {
+            width: 100px;
+            height: 100px;
         }
         .ranking-table th,
         .ranking-table td {
-            padding: 15px;
-            text-align: left;
-            border-bottom: 1px solid #2a2a2a;
+            padding: 8px;
         }
-        .ranking-table th {
-            background-color: #2a2a2a;
-            color: #FF2400;
+    }
+    .header-container {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: flex-end;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    .header-image {
+        text-align: center;
+    }
+    .top-image {
+        width: 575px; /* Updated: Increased by 30% from 442px */
+        height: auto;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(255,36,0,0.2);
+    }
+    .rsi-gif {
+        width: 167px;
+        height: 240px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(255,36,0,0.2);
+    }
+    .container {
+        background: #1e1e1e;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(255,0,0,0.1);
+        text-align: center;
+        margin-bottom: 20px;
+        border: 1px solid #2a2a2a;
+    }
+    .value {
+        font-size: 2em;
+        color: #ffffff;
+        margin: 10px 0;
+    }
+    .performance {
+        font-size: 1.5em;
+        margin: 10px 0;
+        padding: 10px;
+        border-radius: 5px;
+    }
+    .positive { color: #4ade80; background: #1e1e1e; }
+    .negative { color: #ff4444; background: rgba(255, 68, 68, 0.1); }
+    .ranking-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    .ranking-table th,
+    .ranking-table td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #2a2a2a;
+    }
+    .ranking-table th {
+        background-color: #2a2a2a;
+        color: #FF2400;
+    }
+    .holder-image {
+        width: 150px;
+        height: 150px;
+        border-radius: 10px;
+        object-fit: cover;
+        margin-right: 15px;
+        vertical-align: middle;
+        cursor: pointer;
+        transition: transform 0.2s;
+        border: 2px solid #2a2a2a;
+    }
+    .holder-image:hover {
+        transform: scale(1.05);
+        border-color: #FF2400;
+    }
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.9);
+        z-index: 1000;
+        cursor: pointer;
+    }
+    .modal-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        max-width: 90%;
+        max-height: 90vh;
+    }
+    .modal-img {
+        max-width: 100%;
+        max-height: 90vh;
+        object-fit: contain;
+    }
+    h1, h2 {
+        color: #FF2400;
+        text-shadow: 0 0 10px rgba(255,51,51,0.3);
+    }
+    
+    @media (max-width: 768px) {
+        .header-container {
+            flex-direction: column;
+            align-items: center;
         }
-        .holder-image {
-            width: 150px;
-            height: 150px;
-            border-radius: 10px;
-            object-fit: cover;
-            margin-right: 15px;
-            vertical-align: middle;
-            cursor: pointer;
-            transition: transform 0.2s;
-            border: 2px solid #2a2a2a;
-        }
-        .holder-image:hover {
-            transform: scale(1.05);
-            border-color: #FF2400;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.9);
-            z-index: 1000;
-            cursor: pointer;
-        }
-        .modal-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            max-width: 90%;
-            max-height: 90vh;
-        }
-        .modal-img {
-            max-width: 100%;
-            max-height: 90vh;
-            object-fit: contain;
-        }
-        h1, h2 {
-            color: #FF2400;
-            text-shadow: 0 0 10px rgba(255,51,51,0.3);
-        }
-        
-        @media (max-width: 768px) {
-            .header-container {
-                flex-direction: column;
-                align-items: center;
-            }
-            .rsi-gif {
-                margin-top: 20px;
-            }
-        }
-        .milie-button {
-            display: inline-block;
-            background: #FF2400;
-            color: #ffffff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: bold;
-            margin: 20px auto;
-            transition: background-color 0.3s, transform 0.2s;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(255,36,0,0.2);
-        }
-
-        .milie-button:hover {
-            background: #ff4d33;
-            transform: translateY(-2px);
-        }
-
-        /* New styles for the holders list */
-        #holdersList {
-            display: none;
+        .rsi-gif {
             margin-top: 20px;
-            transition: all 0.3s ease;
         }
-    </style>
+    }
+    .milie-button {
+        display: inline-block;
+        background: #FF2400;
+        color: #ffffff;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        margin: 20px auto;
+        transition: background-color 0.3s, transform 0.2s;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(255,36,0,0.2);
+    }
+
+    .milie-button:hover {
+        background: #ff4d33;
+        transform: translateY(-2px);
+    }
+
+    /* New styles for the holders list */
+    #holdersList {
+        display: none;
+        margin-top: 20px;
+        transition: all 0.3s ease;
+    }
+</style>
 </head>
 <body>
     <div class="header-container">
