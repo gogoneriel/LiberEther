@@ -150,27 +150,33 @@
             }
         }
         .milie-button {
-    display: inline-block;
-    background: #FF2400;
-    color: #ffffff;
-    padding: 10px 20px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    margin: 20px auto;
-    transition: background-color 0.3s, transform 0.2s;
-    border: none;
-    cursor: pointer;
-    box-shadow: 0 2px 5px rgba(255,36,0,0.2);
-}
+            display: inline-block;
+            background: #FF2400;
+            color: #ffffff;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 20px auto;
+            transition: background-color 0.3s, transform 0.2s;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(255,36,0,0.2);
+        }
 
-.milie-button:hover {
-    background: #ff4d33;
-    transform: translateY(-2px);
-}
- </style>
+        .milie-button:hover {
+            background: #ff4d33;
+            transform: translateY(-2px);
+        }
+
+        /* New styles for the holders list */
+        #holdersList {
+            display: none;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+    </style>
 </head>
-<!-- Rest of the HTML remains the same -->
 <body>
     <div class="header-container">
         <div class="header-image">
@@ -202,18 +208,22 @@
         <div id="performance" class="performance">Loading...</div>
     </div>
 
+    <!-- Updated holders section with toggle button -->
     <div class="container">
         <h2>Top AKM Holders</h2>
-        <table class="ranking-table">
-            <thead>
-                <tr>
-                    <th>Rank</th>
-                    <th>Holder</th>
-                    <th>Amount</th>
-                </tr>
-            </thead>
-            <tbody id="rankingTableBody"></tbody>
-        </table>
+        <button class="milie-button" onclick="toggleHoldersList()">Click to view list</button>
+        <div id="holdersList">
+            <table class="ranking-table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Holder</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody id="rankingTableBody"></tbody>
+            </table>
+        </div>
     </div>
 
     <div id="imageModal" class="modal">
@@ -225,6 +235,21 @@
         const RSI_GIF_HIGH = "https://s13.gifyu.com/images/SXnzE.gif";
         const RSI_GIF_VERY_HIGH = "https://s13.gifyu.com/images/SXnzh.gif";
         const RSI_GIF_LOW = "https://s13.gifyu.com/images/SXnz9.gif";
+        
+        // New function to toggle holders list
+        function toggleHoldersList() {
+            const holdersList = document.getElementById('holdersList');
+            const button = document.querySelector('.container button');
+            
+            if (holdersList.style.display === 'none' || holdersList.style.display === '') {
+                holdersList.style.display = 'block';
+                button.textContent = 'Hide list';
+                loadHolders(); // Load the data when showing
+            } else {
+                holdersList.style.display = 'none';
+                button.textContent = 'Click to view list';
+            }
+        }
         
         async function getRSI() {
             try {
@@ -364,17 +389,15 @@
                         performanceEl.textContent = `${performanceValue >= 0 ? '+' : ''}${performanceValue.toFixed(2)}% vs ETH (1Y)`;
                         performanceEl.className = `performance ${performanceValue >= 0 ? 'positive' : 'negative'}`;
                     }
-                    
-                    loadHolders();
-                }
 
-                const totalSupply = 1000000;
-                const burnedAmount = 434980;
-                const circulatingSupply = totalSupply - burnedAmount;
-                    
-                document.getElementById('tokenSupply').textContent = `${circulatingSupply.toLocaleString()} AKM`;
-                document.getElementById('supplyInfo').textContent = `Total Supply: ${totalSupply.toLocaleString()} AKM`;
-                document.getElementById('burnedAmount').textContent = `Burned: ${burnedAmount.toLocaleString()} AKM`;
+                    const totalSupply = 1000000;
+                    const burnedAmount = 434980;
+                    const circulatingSupply = totalSupply - burnedAmount;
+                        
+                    document.getElementById('tokenSupply').textContent = `${circulatingSupply.toLocaleString()} AKM`;
+                    document.getElementById('supplyInfo').textContent = `Total Supply: ${totalSupply.toLocaleString()} AKM`;
+                    document.getElementById('burnedAmount').textContent = `Burned: ${burnedAmount.toLocaleString()} AKM`;
+                }
             } catch (error) {
                 console.error('Error:', error);
             }
