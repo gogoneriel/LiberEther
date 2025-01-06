@@ -372,10 +372,11 @@
                     currentPrice = Number(price);
                     document.getElementById('tokenPrice').textContent = `$${Number(price).toFixed(8)}`;
                     
-                    const priceChange = +145.2;
-                    const priceChangeEl = document.getElementById('priceChange');
-                    priceChangeEl.textContent = `${priceChange > 0 ? '+' : ''}${priceChange}% (1Y)`;
-                    priceChangeEl.className = `performance ${priceChange >= 0 ? 'positive' : 'negative'}`;
+                    const initialPrice = 0.10;
+const priceChange = ((currentPrice - initialPrice) / initialPrice) * 100;
+const priceChangeEl = document.getElementById('priceChange');
+priceChangeEl.textContent = `${priceChange > 0 ? '+' : ''}${priceChange.toFixed(1)}% (Since Launch)`;
+priceChangeEl.className = `performance ${priceChange >= 0 ? 'positive' : 'negative'}`;
 
                     const performanceValue = await getPerformanceData();
                     if (performanceValue !== null) {
