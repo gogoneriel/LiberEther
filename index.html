@@ -149,7 +149,26 @@
                 margin-top: 20px;
             }
         }
-    </style>
+        .milie-button {
+    display: inline-block;
+    background: #FF2400;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 20px auto;
+    transition: background-color 0.3s, transform 0.2s;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(255,36,0,0.2);
+}
+
+.milie-button:hover {
+    background: #ff4d33;
+    transform: translateY(-2px);
+}
+ </style>
 </head>
 <!-- Rest of the HTML remains the same -->
 <body>
@@ -157,7 +176,12 @@
         <div class="header-image">
             <img src="https://akmproject.website/wp-content/uploads/2023/12/DALL·E-2023-12-13-21.56.00-Imagine-a-scene-from-the-viewpoint-of-a-ninja-within-a-group-all-clad-in-Akatsuki-inspired-attire-encircling-a-luminous-Ethereum-symbol.-The-Ethereu.png" alt="AKM Ethereum Ninja Scene" class="top-image">
         </div>
-        <img id="rsiGif" class="rsi-gif" alt="RSI Status">
+        <div style="text-align: center;">
+            <img id="rsiGif" class="rsi-gif" alt="RSI Status">
+            <div style="margin-top: 10px;">
+                <a href="test" class="milie-button">Talk to Milie</a>
+            </div>
+        </div>
     </div>
 
     <div class="container">
