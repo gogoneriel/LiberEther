@@ -197,8 +197,9 @@
 
     <script>
         let currentPrice = 0;
-        const RSI_GIF_HIGH = "https://media1.giphy.com/media/nIoUgc3KW2BF5rxVj2/200w.gif?cid=6c09b9524b4rirm8ponpnvpgsl8ji9hmiy8be3yvxiqpjsvh&ep=v1_gifs_search&rid=200w.gif&ct=g";
-        const RSI_GIF_LOW = "https://media3.giphy.com/media/Qz5ITuBg5uvLy0yiRY/200w.gif?cid=6c09b9525cpmp2dhu4c6cwuas6oou35mrq5sq58qnbjl8691&ep=v1_gifs_search&rid=200w.gif&ct=g";
+        const RSI_GIF_HIGH = "https://s13.gifyu.com/images/SXnzE.gif";
+        const RSI_GIF_VERY_HIGH = "https://s13.gifyu.com/images/SXnzh.gif";
+        const RSI_GIF_LOW = "https://s13.gifyu.com/images/SXnz9.gif";
         
         async function getRSI() {
             try {
@@ -233,7 +234,13 @@
             const gifElement = document.getElementById('rsiGif');
             
             if (rsi !== null) {
-                gifElement.src = rsi <= 30 ? RSI_GIF_LOW : RSI_GIF_HIGH;
+                if (rsi <= 30) {
+                    gifElement.src = RSI_GIF_LOW;
+                } else if (rsi > 60) {
+                    gifElement.src = RSI_GIF_VERY_HIGH;
+                } else {
+                    gifElement.src = RSI_GIF_HIGH;
+                }
             }
         }
 
@@ -301,15 +308,15 @@
         }
 
         async function getPerformanceData() {
-    try {
-        const response = await fetch('performance.json');
-        const data = await response.json();
-        return data.yearlyPerformance.ethComparison.percentageDifference;
-    } catch (error) {
-        console.error('Error fetching performance data:', error);
-        return null;
-    }
-}
+            try {
+                const response = await fetch('performance.json');
+                const data = await response.json();
+                return data.yearlyPerformance.ethComparison.percentageDifference;
+            } catch (error) {
+                console.error('Error fetching performance data:', error);
+                return null;
+            }
+        }
 
         async function updateData() {
             try {
@@ -327,11 +334,11 @@
                     priceChangeEl.className = `performance ${priceChange >= 0 ? 'positive' : 'negative'}`;
 
                     const performanceValue = await getPerformanceData();
-if (performanceValue !== null) {
-    const performanceEl = document.getElementById('performance');
-    performanceEl.textContent = `${performanceValue >= 0 ? '+' : ''}${performanceValue.toFixed(2)}% vs ETH (1Y)`;
-    performanceEl.className = `performance ${performanceValue >= 0 ? 'positive' : 'negative'}`;
-}
+                    if (performanceValue !== null) {
+                        const performanceEl = document.getElementById('performance');
+                        performanceEl.textContent = `${performanceValue >= 0 ? '+' : ''}${performanceValue.toFixed(2)}% vs ETH (1Y)`;
+                        performanceEl.className = `performance ${performanceValue >= 0 ? 'positive' : 'negative'}`;
+                    }
                     
                     loadHolders();
                 }
@@ -341,7 +348,8 @@ if (performanceValue !== null) {
                 const circulatingSupply = totalSupply - burnedAmount;
                     
                 document.getElementById('tokenSupply').textContent = `${circulatingSupply.toLocaleString()} AKM`;
-                document.getElementById('supplyInfo').textContent = `Total Supply: ${totalSupply.toLocaleString()} AKM`;document.getElementById('burnedAmount').textContent = `Burned: ${burnedAmount.toLocaleString()} AKM`;
+                document.getElementById('supplyInfo').textContent = `Total Supply: ${totalSupply.toLocaleString()} AKM`;
+                document.getElementById('burnedAmount').textContent = `Burned: ${burnedAmount.toLocaleString()} AKM`;
             } catch (error) {
                 console.error('Error:', error);
             }
