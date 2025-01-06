@@ -179,7 +179,7 @@
         <div style="text-align: center;">
             <img id="rsiGif" class="rsi-gif" alt="RSI Status">
             <div style="margin-top: 10px;">
-                <a href="test" class="milie-button">Ask Milie</a>
+                <button onclick="Tawk_API.toggle()" class="milie-button" type="button">Ask Milie</button>
             </div>
         </div>
     </div>
@@ -406,5 +406,27 @@ priceChangeEl.className = `performance ${priceChange >= 0 ? 'positive' : 'negati
         setInterval(updateData, 30000);
         setInterval(updateRSIGif, 60000);
     </script>
+</script>
+    
+<!--Start of Tawk.to Script-->
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/677c0230af5bfec1dbe765cb/1igu6h3pr';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    
+    // Add this part to hide default widget
+    Tawk_API.onLoad = function(){
+        Tawk_API.hideWidget();
+    };
+    </script>
+    <!--End of Tawk.to Script-->
+<!--End of Tawk.to Script-->
 </body>
 </html>
