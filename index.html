@@ -1,4 +1,10 @@
-<style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKM Dashboard</title>
+    <style>
     body {
         font-family: Arial, sans-serif;
         max-width: min(1000px, 100%);
@@ -171,6 +177,7 @@
     }
 </style>
 </head>
+
 <body>
     <div class="header-container">
         <div class="header-image">
@@ -373,7 +380,7 @@
                     document.getElementById('tokenPrice').textContent = `$${Number(price).toFixed(2)}`;
                     
                     const initialPrice = 0.10;
-const priceChange = ((currentPrice - initialPrice) / initialPrice) * 100;
+                    const priceChange = ((currentPrice - initialPrice) / initialPrice) * 100;
 const priceChangeEl = document.getElementById('priceChange');
 priceChangeEl.textContent = `${priceChange > 0 ? '+' : ''}${priceChange.toFixed(1)}% (Since Launch)`;
 priceChangeEl.className = `performance ${priceChange >= 0 ? 'positive' : 'negative'}`;
@@ -405,10 +412,10 @@ priceChangeEl.className = `performance ${priceChange >= 0 ? 'positive' : 'negati
         // Set intervals for updates
         setInterval(updateData, 30000);
         setInterval(updateRSIGif, 60000);
-    </script>
+    
 </script>
     
-<!--Start of Tawk.to Script-->
+
 <!--Start of Tawk.to Script-->
 <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
@@ -426,7 +433,7 @@ priceChangeEl.className = `performance ${priceChange >= 0 ? 'positive' : 'negati
         Tawk_API.hideWidget();
     };
     </script>
-    <!--End of Tawk.to Script-->
+    
 <!--End of Tawk.to Script-->
 </body>
 </html>
