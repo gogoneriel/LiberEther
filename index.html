@@ -168,7 +168,8 @@
     display: inline-block;
     width: 16px;
     height: 16px;
-    background: #444;
+    background: #ffffff;
+    color: #1e1e1e;
     border-radius: 50%;
     text-align: center;
     line-height: 16px;
@@ -177,7 +178,7 @@
 }
 
 .info-icon:hover::after {
-    content: "Percentage of your USD deposit compared to the total deposited in this pool.";
+    content: attr(title);
     position: absolute;
     bottom: 100%;
     left: 50%;
@@ -402,7 +403,7 @@ body {
 
 <body>
     <h1 style="font-size: 3rem; text-align: center; margin: 2rem 0; color: #FF2400; font-weight: bold; text-shadow: 0 0 10px rgba(255,36,0,0.3);">
-        AKM ENDGAME DAPP
+        AKM EndGame Dapp
     </h1>
     <div class="flex justify-center gap-4 mb-24">
         <div class="balance-box">
@@ -433,7 +434,7 @@ body {
         <div class="flex flex-col md:flex-row gap-4 w-full max-w-4xl">
             <!-- Deposit Box -->
             <div class="flex-1 bg-[#1e1e1e] p-5 rounded-lg border border-[#2a2a2a]">
-                <div class="deposit-label">USD Yield+Rewards</div>
+                <div class="text-white text-xl font-bold mb-4">USD Yield+Rewards (Coming Soon)</div>
                 <div class="deposit-header">
                     <h3 class="deposit-title" id="actionTitle">Deposit</h3>
                     <div class="toggle-buttons">
@@ -451,7 +452,7 @@ body {
     
             <!-- Swap Box -->
             <div class="flex-1 bg-[#1e1e1e] p-5 rounded-lg border border-[#2a2a2a]">
-                <div class="text-white text-xl font-bold mb-4">Swap</div>
+                <div class="text-white text-xl font-bold mb-4">Swap (Coming Soon)</div>
                 
                 <!-- From Token Input -->
                 <div class="bg-[#2a2a2a] rounded-lg p-4 mb-2">
@@ -506,26 +507,37 @@ body {
     <!-- UNTIL HERE -->
 
     <div class="container">
-        <h1>AKM Price Today</h1>
+        <h1 style="display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.25rem; color: white;">
+            AKM Price Today
+            <span class="info-icon" style="margin-top: 5px;" title="Current live USD price per AKM token in the market">i</span>
+        </h1>
         <div class="value" id="tokenPrice">Loading...</div>
         <div class="performance" id="priceChange"></div>
     </div>
     
     <div class="container">
-        <h2>Token Supply</h2>
+        <h2 style="display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.25rem; color: white;">
+            Token Supply
+            <span class="info-icon" style="margin-top: 5px;" title="Total existing AKM tokens. This number continuously decreases as tokens are burned, and no new tokens can be created">i</span>
+        </h2>
         <div class="value" id="tokenSupply">Loading...</div>
         <div id="supplyInfo"></div>
         <div id="burnedAmount"></div>
     </div>
-
+    
     <div class="container">
-        <h2>AKM/ETH Performance (1Y)</h2>
+        <h2 style="display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.25rem; color: white;">
+            AKM/ETH Performance (1Y)
+            <span class="info-icon" style="margin-top: 5px;" title="Additional return percentage if you had invested in AKM instead of ETH one year ago">i</span>
+        </h2>
         <div id="performance" class="performance">Loading...</div>
     </div>
-
-    <!-- Updated holders section with toggle button -->
+    
     <div class="container">
-        <h2>Top AKM Holders</h2>
+        <h2 style="display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.25rem; color: white;">
+            Top 13 AKM Holders
+            <span class="info-icon" style="margin-top: 5px;" title="The 13 largest AKM holders, aka Gotei 13 who have special privileges as project co-runners">i</span>
+        </h2>
         <button class="milie-button" onclick="toggleHoldersList()">Click to view list</button>
         <div id="holdersList">
             <table class="ranking-table">
