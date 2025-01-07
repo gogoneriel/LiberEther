@@ -6,6 +6,38 @@
     <title>AKM Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        .balance-box {
+    background: #1e1e1e;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: 1px solid #2a2a2a;
+    min-width: 150px;
+    text-align: center;
+}
+
+.balance-label {
+    color: #FF2400;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+.balance-value {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .balance-box {
+        min-width: 100px;
+        padding: 8px 16px;
+    }
+    
+    .balance-value {
+        font-size: 1rem;
+    }
+}
         .toggle-buttons {
     display: flex;
     gap: 10px;
@@ -198,10 +230,12 @@ body {
     justify-content: center;
     align-items: center;
     gap: 30px;
+    margin-top: 4rem;  /* Added this line */
     margin-bottom: 30px;
     width: 100%;
     max-width: 1000px;
 }
+
     .header-image {
         text-align: center;
     }
@@ -313,8 +347,9 @@ body {
     }
     
     .flex.flex-col.md\:flex-row.gap-4 {
-        gap: 1rem !important;
-    }
+    gap: 1rem !important;
+    margin-bottom: 3rem !important;
+}
     
     .container {
         margin-left: 10px;
@@ -366,6 +401,23 @@ body {
 </head>
 
 <body>
+    <h1 style="font-size: 3rem; text-align: center; margin: 2rem 0; color: #FF2400; font-weight: bold; text-shadow: 0 0 10px rgba(255,36,0,0.3);">
+        AKM ENDGAME DAPP
+    </h1>
+    <div class="flex justify-center gap-4 mb-24">
+        <div class="balance-box">
+            <div class="balance-label">AKM Balance</div>
+            <div class="balance-value">0.00</div>
+        </div>
+        <div class="balance-box">
+            <div class="balance-label">RETH Balance</div>
+            <div class="balance-value">0.00</div>
+        </div>
+        <div class="balance-box">
+            <div class="balance-label">USD Balance</div>
+            <div class="balance-value">$0.00</div>
+        </div>
+    </div>
     <div class="header-container">
         <div class="header-image">
             <img src="https://akmproject.website/wp-content/uploads/2023/12/DALL·E-2023-12-13-21.56.00-Imagine-a-scene-from-the-viewpoint-of-a-ninja-within-a-group-all-clad-in-Akatsuki-inspired-attire-encircling-a-luminous-Ethereum-symbol.-The-Ethereu.png" alt="AKM Ethereum Ninja Scene" class="top-image">
