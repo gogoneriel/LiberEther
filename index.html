@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AKM Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
         .toggle-buttons {
     display: flex;
@@ -343,22 +344,81 @@
             </div>
         </div>
     </div>
-    <div class="deposit-container">
-        <div class="deposit-label">USD Yield+Rewards</div>
-        <div class="deposit-header">
-            <h3 class="deposit-title" id="actionTitle">Deposit</h3>
-            <div class="toggle-buttons">
-                <button class="toggle-button active" onclick="toggleAction('deposit')">Deposit</button>
-                <button class="toggle-button" onclick="toggleAction('withdraw')">Withdraw</button>
-                <button class="toggle-button" onclick="claimRewards()">Claim Rewards</button>
+    <div class="flex justify-center">
+        <div class="flex flex-col md:flex-row gap-4 w-full max-w-4xl">
+            <!-- Deposit Box -->
+            <div class="flex-1 bg-[#1e1e1e] p-5 rounded-lg border border-[#2a2a2a]">
+                <div class="deposit-label">USD Yield+Rewards</div>
+                <div class="deposit-header">
+                    <h3 class="deposit-title" id="actionTitle">Deposit</h3>
+                    <div class="toggle-buttons">
+                        <button class="toggle-button active" onclick="toggleAction('deposit')">Deposit</button>
+                        <button class="toggle-button" onclick="toggleAction('withdraw')">Withdraw</button>
+                        <button class="toggle-button" onclick="claimRewards()">Claim Rewards</button>
+                    </div>
+                </div>
+                <input type="number" class="amount-input" value="0.00" min="0" step="0.01">
+                <div class="pool-share">
+                    Pool share: 0% 
+                    <span class="info-icon" title="Percentage of your USD deposit compared to the total deposited in this pool.">i</span>
+                </div>
+            </div>
+    
+            <!-- Swap Box -->
+            <div class="flex-1 bg-[#1e1e1e] p-5 rounded-lg border border-[#2a2a2a]">
+                <div class="text-white text-xl font-bold mb-4">Swap</div>
+                
+                <!-- From Token Input -->
+                <div class="bg-[#2a2a2a] rounded-lg p-4 mb-2">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-400 text-sm">From</span>
+                        <span class="text-gray-400 text-sm">Balance: 0</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input 
+                            type="text" 
+                            placeholder="0.0"
+                            class="bg-transparent text-white text-xl w-full outline-none"
+                        >
+                        <button class="bg-[#3a3a3a] text-white px-3 py-1 rounded-full text-sm">
+                            USD
+                        </button>
+                    </div>
+                </div>
+    
+                <!-- Swap Direction Arrow -->
+                <div class="flex justify-center -my-2 relative z-10">
+                    <button class="bg-[#2a2a2a] p-2 rounded-lg hover:bg-[#3a3a3a] transition-colors">
+                        ↓
+                    </button>
+                </div>
+    
+                <!-- To Token Input -->
+                <div class="bg-[#2a2a2a] rounded-lg p-4 mt-2">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-gray-400 text-sm">To</span>
+                        <span class="text-gray-400 text-sm">Balance: 0</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input 
+                            type="text" 
+                            placeholder="0.0"
+                            class="bg-transparent text-white text-xl w-full outline-none"
+                        >
+                        <button class="bg-[#3a3a3a] text-white px-3 py-1 rounded-full text-sm">
+                            AKM
+                        </button>
+                    </div>
+                </div>
+    
+                <!-- Swap Button -->
+                <button class="w-full bg-[#FF2400] hover:bg-[#ff4d33] text-white font-bold py-3 rounded-lg mt-4 transition-colors">
+                    Swap
+                </button>
             </div>
         </div>
-        <input type="number" class="amount-input" value="0.00" min="0" step="0.01">
-        <div class="pool-share">
-            Pool share: 0% 
-            <span class="info-icon" title="Percentage of your USD deposit compared to the total deposited in this pool.">i</span>
-        </div>
     </div>
+    <!-- UNTIL HERE -->
 
     <div class="container">
         <h1>AKM Price Today</h1>
