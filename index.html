@@ -159,15 +159,17 @@
     z-index: 1000;
     margin-bottom: 5px;
 }
-    body {
-        font-family: Arial, sans-serif;
-        max-width: min(1000px, 100%);
-        margin: 0 auto;
-        padding: 10px;
-        background: #121212;
-        color: #ffffff;
-        overflow-x: hidden;
-    }
+body {
+    font-family: Arial, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #121212;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
     @media (max-width: 768px) {
         body {
             padding: 10px 5px;
@@ -190,14 +192,16 @@
         }
     }
     .header-container {
-        position: relative;
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: flex-end;
-        gap: 20px;
-        margin-bottom: 30px;
-    }
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 1000px;
+}
     .header-image {
         text-align: center;
     }
@@ -295,14 +299,28 @@
     }
     
     @media (max-width: 768px) {
-        .header-container {
-            flex-direction: column;
-            align-items: center;
-        }
-        .rsi-gif {
-            margin-top: 20px;
-        }
+    body {
+        padding: 10px;
     }
+    
+    .top-image {
+        max-width: 90vw;
+        margin: 0 auto;
+    }
+    
+    .header-container {
+        gap: 20px;
+    }
+    
+    .flex.flex-col.md\:flex-row.gap-4 {
+        gap: 1rem !important;
+    }
+    
+    .container {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
     .milie-button {
         display: inline-block;
         background: #FF2400;
@@ -329,6 +347,21 @@
         margin-top: 20px;
         transition: all 0.3s ease;
     }
+    .flex.justify-center {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.flex.flex-col.md\:flex-row.gap-4 {
+    gap: 2rem !important;
+}
+
+.container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 20px auto;
+}
 </style>
 </head>
 
