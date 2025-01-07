@@ -370,7 +370,7 @@
                 if (priceData.pairs && priceData.pairs[0]) {
                     const price = priceData.pairs[0].priceUsd;
                     currentPrice = Number(price);
-                    document.getElementById('tokenPrice').textContent = `$${Number(price).toFixed(8)}`;
+                    document.getElementById('tokenPrice').textContent = `$${Number(price).toFixed(2)}`;
                     
                     const initialPrice = 0.10;
 const priceChange = ((currentPrice - initialPrice) / initialPrice) * 100;
