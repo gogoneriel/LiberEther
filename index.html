@@ -7,6 +7,64 @@
     <title>AKM Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        .zoom-container {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.zoom-controls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+    z-index: 1000;
+}
+
+.zoom-button {
+    background: #FF2400;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.zoom-button:hover {
+    background: #ff4d33;
+}
+
+#image-container {
+    overflow: hidden;
+    border: 2px solid #2a2a2a;
+    border-radius: 8px;
+    background: #1e1e1e;
+    height: 500px;
+    position: relative;
+    cursor: grab;
+    touch-action: none;
+}
+
+.roadmap-image {
+    transform-origin: center;
+    transition: transform 0.1s ease-out;
+    max-width: none;
+    width: 100%;
+    height: auto;
+    position: relative;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.zoom-instructions {
+    text-align: center;
+    color: #666;
+    margin-top: 10px;
+    font-size: 0.9em;
+}
         .balance-box {
     background: #1e1e1e;
     padding: 12px 24px;
@@ -648,7 +706,17 @@ body {
         </h2>
         <button class="milie-button" onclick="toggleRoadmap()">Click to view roadmap</button>
         <div id="roadmapContent" style="display: none;">
-            <img id="roadmapImage" class="roadmap-image" alt="AKM Roadmap">
+            <div class="zoom-container">
+                <div class="zoom-controls">
+                    <button onclick="zoomIn()" class="zoom-button">+</button>
+                    <button onclick="zoomOut()" class="zoom-button">-</button>
+                    <button onclick="resetZoom()" class="zoom-button">Reset</button>
+                </div>
+                <div id="image-container">
+                    <img id="roadmapImage" class="roadmap-image" alt="AKM Roadmap" draggable="false">
+                </div>
+                <div class="zoom-instructions">Drag to pan • Use buttons to zoom • Click Reset to restore</div>
+            </div>
         </div>
     </div>
 
@@ -879,6 +947,111 @@ function toggleRoadmap() {
         roadmapContent.style.display = 'block';
         button.textContent = 'Hide roadmap';
         document.getElementById('roadmapImage').src = './images/roadmap.png';  // Added ./ to specify current directory
+    } else {
+        roadmapContent.style.display = 'none';
+        button.textContent = 'Click to view roadmap';
+    }
+}
+let scale = 1;
+let panning = false;
+let pointX = 0;
+let pointY = 0;
+let start = { x: 0, y: 0 };
+
+function setTransform(element) {
+    element.style.transition = panning ? 'none' : 'transform 0.1s';
+    element.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
+}
+
+function zoomIn() {
+    scale = Math.min(scale + 0.2, 3);
+    const element = document.getElementById('roadmapImage');
+    if (element) setTransform(element);
+}
+
+function zoomOut() {
+    scale = Math.max(scale - 0.2, 0.5);
+    const element = document.getElementById('roadmapImage');
+    if (element) setTransform(element);
+}
+
+function resetZoom() {
+    scale = 1;
+    pointX = 0;
+    pointY = 0;
+    const element = document.getElementById('roadmapImage');
+    if (element) setTransform(element);
+}
+
+function initPanZoom() {
+    const container = document.getElementById('image-container');
+    const element = document.getElementById('roadmapImage');
+    
+    if (!container || !element) return;
+
+    // Add touch events for mobile
+    container.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        const touch = e.touches[0];
+        start = { x: touch.clientX - pointX, y: touch.clientY - pointY };
+        panning = true;
+    });
+
+    container.addEventListener('touchmove', (e) => {
+        if (!panning) return;
+        const touch = e.touches[0];
+        pointX = (touch.clientX - start.x);
+        pointY = (touch.clientY - start.y);
+        setTransform(element);
+    });
+
+    container.addEventListener('touchend', () => {
+        panning = false;
+    });
+
+    // Mouse events
+    container.addEventListener('mousedown', (e) => {
+        e.preventDefault();
+        start = { x: e.clientX - pointX, y: e.clientY - pointY };
+        panning = true;
+    });
+
+    container.addEventListener('mousemove', (e) => {
+        if (!panning) return;
+        pointX = (e.clientX - start.x);
+        pointY = (e.clientY - start.y);
+        setTransform(element);
+    });
+
+    container.addEventListener('mouseup', () => {
+        panning = false;
+    });
+
+    container.addEventListener('mouseleave', () => {
+        panning = false;
+    });
+
+    // Add wheel zoom support
+    container.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        if (e.deltaY < 0) {
+            zoomIn();
+        } else {
+            zoomOut();
+        }
+    });
+}
+
+// Update your toggleRoadmap function
+function toggleRoadmap() {
+    const roadmapContent = document.getElementById('roadmapContent');
+    const button = document.querySelector('.roadmap-container button');
+    
+    if (roadmapContent.style.display === 'none' || roadmapContent.style.display === '') {
+        roadmapContent.style.display = 'block';
+        button.textContent = 'Hide roadmap';
+        document.getElementById('roadmapImage').src = './images/roadmap.png';
+        initPanZoom(); // Initialize pan and zoom functionality
     } else {
         roadmapContent.style.display = 'none';
         button.textContent = 'Click to view roadmap';
