@@ -31,14 +31,63 @@
 
 @media (max-width: 768px) {
     .balance-box {
+        padding: 8px 12px;
         min-width: 100px;
-        padding: 8px 16px;
+        font-size: 0.9rem;
     }
+
+    .balance-label {
+        font-size: 0.8rem;
+    }
+
+    .balance-value {
+        font-size: 0.9rem;
+    }
+
+    .flex.justify-center.gap-4.mb-24 {
+        padding: 0 10px;
+        gap: 0.5rem !important;
+    }
+}
+    
+    .holder-info {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        flex: 1;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    
+    .holder-name {
+        font-weight: bold;
+        font-size: 0.9em;
+        margin-right: auto;
+    }
+    
+    .holder-amount {
+        color: #ffffff;
+        font-size: 0.9em;
+        text-align: right;
+        white-space: nowrap;
+    }
+    
+    .rank-number {
+        min-width: 40px;
+        text-align: center;
+        margin-right: 10px;
+    }
+    
+    .ranking-table th:not(:first-child) {
+        display: none;
+    }
+}
     
     .balance-value {
         font-size: 1rem;
     }
-}
+
         .toggle-buttons {
     display: flex;
     gap: 10px;
@@ -654,29 +703,31 @@ body {
         }
 
         async function loadHolders() {
-            try {
-                currentPrice = await fetchAKMPrice();
-                const response = await fetch('holders.json');
-                const holders = await response.json();
-                const tableBody = document.getElementById('rankingTableBody');
-                tableBody.innerHTML = '';
+    try {
+        currentPrice = await fetchAKMPrice();
+        const response = await fetch('holders.json');
+        const holders = await response.json();
+        const tableBody = document.getElementById('rankingTableBody');
+        tableBody.innerHTML = '';
 
-                holders.forEach((holder, index) => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td class="rank-number">${index + 1}${getOrdinal(index + 1)}</td>
-                        <td>
-                            <img src="${holder.image}" alt="${holder.name}" class="holder-image" onclick="openModal(this.src)">
-                            ${holder.name}
-                        </td>
-                        <td>${holder.amount.toLocaleString()} AKM ($${calculateUSDValue(holder.amount)})</td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            } catch (error) {
-                console.error('Error loading holders:', error);
-            }
-        }
+        holders.forEach((holder, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="rank-number">${index + 1}${getOrdinal(index + 1)}</td>
+                <td>
+                    <img src="${holder.image}" alt="${holder.name}" class="holder-image" onclick="openModal(this.src)">
+                    <div class="holder-info">
+                        <div class="holder-name">${holder.name}</div>
+                        <div class="holder-amount">${holder.amount.toLocaleString()} AKM ($${calculateUSDValue(holder.amount)})</div>
+                    </div>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error loading holders:', error);
+    }
+}
 
         function openModal(src) {
             const modal = document.getElementById('imageModal');
