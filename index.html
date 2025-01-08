@@ -451,6 +451,28 @@ body {
     max-width: 1000px;
     margin: 20px auto;
 }
+.roadmap-container {
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(255,0,0,0.1);
+    text-align: center;
+    margin-bottom: 20px;
+    border: 1px solid #2a2a2a;
+}
+
+.roadmap-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-top: 20px;
+    border: 2px solid #2a2a2a;
+    transition: border-color 0.3s;
+}
+
+.roadmap-image:hover {
+    border-color: #FF2400;
+}
 </style>
 </head>
 
@@ -618,6 +640,16 @@ body {
 
     <div id="imageModal" class="modal">
         <img class="modal-content modal-img" id="modalImg">
+    </div>
+    <div class="container roadmap-container">
+        <h2 style="display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.25rem; color: white;">
+            AKM Roadmap
+            <span class="info-icon" style="margin-top: 5px;" title="Expected timeline for the project's goals and milestones">i</span>
+        </h2>
+        <button class="milie-button" onclick="toggleRoadmap()">Click to view roadmap</button>
+        <div id="roadmapContent" style="display: none;">
+            <img id="roadmapImage" class="roadmap-image" alt="AKM Roadmap">
+        </div>
     </div>
 
     <script>
@@ -838,6 +870,19 @@ priceChangeEl.className = `performance ${priceChange >= 0 ? 'positive' : 'negati
     function claimRewards() {
     // Functionality for claiming rewards will be added here
     console.log('Claim rewards clicked');
+}
+function toggleRoadmap() {
+    const roadmapContent = document.getElementById('roadmapContent');
+    const button = document.querySelector('.roadmap-container button');
+    
+    if (roadmapContent.style.display === 'none' || roadmapContent.style.display === '') {
+        roadmapContent.style.display = 'block';
+        button.textContent = 'Hide roadmap';
+        document.getElementById('roadmapImage').src = './images/roadmap.png';  // Added ./ to specify current directory
+    } else {
+        roadmapContent.style.display = 'none';
+        button.textContent = 'Click to view roadmap';
+    }
 }
     </script>
     
