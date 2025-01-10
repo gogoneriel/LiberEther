@@ -1,0 +1,547 @@
+.holder-image, .ranking-table img {
+    width: 180px !important;
+    height: 180px !important;
+    border-radius: 10px;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.2s;
+    border: 2px solid #2a2a2a;
+    display: block;
+}
+
+.ranking-table img {
+    width: 120px !important;
+    height: 120px !important;
+    max-width: 120px !important;
+}
+.ranking-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 1rem;
+    table-layout: fixed; /* Add this to control column widths */
+}
+
+.ranking-table td {
+    padding: 10px;
+    vertical-align: middle;
+    word-wrap: break-word; /* Allow text to wrap */
+}
+
+
+/* Tablet breakpoint */
+@media (max-width: 1024px) {
+    .holder-image, .ranking-table img {
+        width: 150px !important;
+        height: 150px !important;
+        max-width: 150px !important;
+    }
+    
+    .ranking-table img {
+        width: 110px !important;
+        height: 110px !important;
+        max-width: 110px !important;
+    }
+}
+
+/* Mobile breakpoint */
+@media (max-width: 768px) {
+    .holder-image, .ranking-table img {
+        width: 80px !important;
+        height: 80px !important;
+        max-width: 80px !important;
+    }
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.9);
+    z-index: 1000;
+    cursor: pointer;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 90%;
+    max-height: 90vh;
+}
+
+.modal-img {
+    max-width: 100%;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 10px;
+}
+```
+```
+```
+```
+
+.zoom-container {
+    position: relative;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.zoom-controls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+    z-index: 1000;
+}
+
+.zoom-button {
+    background: #FF2400;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.zoom-button:hover {
+    background: #ff4d33;
+}
+
+#image-container {
+    overflow: hidden;
+    border: 2px solid #2a2a2a;
+    border-radius: 8px;
+    background: #1e1e1e;
+    height: 500px;
+    position: relative;
+    cursor: grab;
+    touch-action: none;
+}
+
+.roadmap-image {
+    transform-origin: center;
+    transition: transform 0.1s ease-out;
+    max-width: none;
+    width: 100%;
+    height: auto;
+    position: relative;
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.zoom-instructions {
+    text-align: center;
+    color: #666;
+    margin-top: 10px;
+    font-size: 0.9em;
+}
+
+.balance-box {
+    background: #1e1e1e;
+    padding: 12px 24px;
+    border-radius: 8px;
+    border: 1px solid #2a2a2a;
+    min-width: 150px;
+    text-align: center;
+}
+
+.balance-label {
+    color: #FF2400;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+    font-weight: bold;
+}
+
+.balance-value {
+    color: white;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.holder-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px; /* Reduced from 8px */
+    width: 100%; /* Make sure it takes full width */
+}
+
+.holder-name {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: white;
+    margin: 0; /* Remove margin */
+}
+
+.holder-amount {
+    color: #ffffff;
+    font-size: 0.9em;
+    word-break: break-word; /* Allow numbers to break if needed */
+}
+
+.rank-number {
+    min-width: 40px;
+    text-align: center;
+    font-weight: bold;
+    color: white;
+}
+.holder-cell {
+    display: flex;
+    align-items: center;
+}
+
+.holder-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.amount-cell {
+    text-align: right;
+}
+
+/* Add this inside your existing @media (max-width: 768px) block */
+@media (max-width: 768px) {
+    .holder-container {
+        flex-direction: column;  /* This will stack the image and name vertically */
+        align-items: center;     /* Center items */
+        text-align: center;      /* Center the text */
+        gap: 5px;               /* Reduced gap between image and text */
+    }
+
+    .holder-info {
+        width: 100%;            /* Take full width */
+    }
+}
+
+    .holder-name {
+        font-size: 0.9em;
+        white-space: normal;
+        word-break: break-word;
+    }
+
+    .amount-cell {
+        white-space: nowrap;
+        font-size: 1em;
+    }
+
+    .ranking-table td {
+        padding: 8px 4px;
+    }
+
+    .rank-number {
+        min-width: 30px;
+        font-size: 0.9em;
+    }
+}
+.toggle-buttons {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.toggle-button {
+    flex: 1;
+    background: #2a2a2a;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    min-width: 80px;
+    font-size: 0.9em;
+}
+
+.toggle-button.active {
+    background: #FF2400;
+}
+
+.toggle-button:hover:not(.active) {
+    background: #3a3a3a;
+}
+
+.deposit-label {
+    color: #ffffff;
+    font-size: 1.4em;
+    text-align: left;
+    margin-bottom: 15px;
+    font-weight: bold;
+}
+
+.deposit-header {
+    margin-top: 10px;
+}
+
+.deposit-container {
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(255,0,0,0.1);
+    margin: 20px auto;
+    border: 1px solid #2a2a2a;
+    max-width: 400px;
+    box-sizing: border-box;
+}
+
+.amount-input {
+    width: calc(100% - 20px);
+    background: #2a2a2a;
+    border: 1px solid #3a3a3a;
+    padding: 12px;
+    border-radius: 5px;
+    color: #ffffff;
+    font-size: 1.2em;
+    text-align: center;
+    margin: 10px;
+    box-sizing: border-box;
+}
+
+.info-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: #ffffff;
+    color: #1e1e1e;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 16px;
+    cursor: help;
+    position: relative;
+}
+
+.info-icon:hover::after {
+    content: attr(title);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #333;
+    padding: 8px;
+    border-radius: 4px;
+    width: 200px;
+    font-size: 12px;
+    color: #fff;
+    z-index: 1000;
+    margin-bottom: 5px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #121212;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.header-container {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin-top: 4rem;
+    margin-bottom: 30px;
+    width: 100%;
+    max-width: 1000px;
+}
+
+.top-image {
+    width: 575px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(255,36,0,0.2);
+}
+
+.rsi-gif {
+    width: 167px;
+    height: 240px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(255,36,0,0.2);
+}
+
+.container {
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(255,0,0,0.1);
+    text-align: center;
+    margin-bottom: 20px;
+    border: 1px solid #2a2a2a;
+}
+
+.value {
+    font-size: 2em;
+    color: #ffffff;
+    margin: 10px 0;
+}
+
+.performance {
+    font-size: 1.5em;
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.positive { 
+    color: #4ade80; 
+    background: #1e1e1e; 
+}
+
+.negative { 
+    color: #ff4444; 
+    background: rgba(255, 68, 68, 0.1); 
+}
+
+.milie-button {
+    display: inline-block;
+    background: #FF2400;
+    color: #ffffff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 20px auto;
+    transition: background-color 0.3s, transform 0.2s;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(255,36,0,0.2);
+}
+
+.milie-button:hover {
+    background: #ff4d33;
+    transform: translateY(-2px);
+}
+
+.roadmap-container {
+    background: #1e1e1e;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(255,0,0,0.1);
+    text-align: center;
+    margin-bottom: 20px;
+    border: 1px solid #2a2a2a;
+}
+
+/* Media Queries */
+/* Media Queries */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    .balance-box {
+        padding: 8px 12px;
+        min-width: 100px;
+        font-size: 0.9rem;
+    }
+
+    .balance-label {
+        font-size: 0.8rem;
+    }
+
+    .balance-value {
+        font-size: 0.9rem;
+    }
+
+    .flex.justify-center.gap-4.mb-24 {
+        padding: 0 10px;
+        gap: 0.5rem !important;
+    }
+
+    .top-image {
+        max-width: 90vw;
+        margin: 0 auto;
+    }
+
+    .rsi-gif {
+        width: 125px;
+        height: 180px;
+    }
+
+    .holder-image {
+        width: 100px;
+        height: 100px;
+    }
+
+    .ranking-table th,
+    .ranking-table td {
+        padding: 8px;
+    }
+
+    .deposit-label {
+        font-size: 1.3em;
+        text-align: center;
+    }
+
+    .deposit-container {
+        max-width: 95%;
+        padding: 15px;
+        margin: 15px auto;
+    }
+
+    .toggle-buttons {
+        justify-content: center;
+    }
+
+    .toggle-button {
+        padding: 8px 12px;
+        font-size: 0.85em;
+    }
+
+    .amount-input {
+        font-size: 1.1em;
+        padding: 10px;
+        margin: 8px;
+    }
+
+    .header-container {
+        gap: 20px;
+    }
+
+    .container {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    /* Add these new styles here */
+    .ranking-table td[style] {
+        display: flex !important;
+        gap: 8px !important;
+        padding: 5px !important;
+    }
+
+    .holder-info {
+        min-width: 0;
+    }
+
+    .holder-name {
+        font-size: 0.9em;
+    }
+
+    .holder-amount {
+        font-size: 1em;     /* Increased from 0.8em to 1em */
+        font-weight: 500;
+    }
+
+    .container {
+        padding: 10px;
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+}
