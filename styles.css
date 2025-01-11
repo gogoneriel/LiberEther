@@ -1,3 +1,60 @@
+/* Zoom controls */
+.zoom-container {
+    position: relative;
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+.zoom-controls {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 100;
+    display: flex;
+    gap: 5px;
+}
+
+.zoom-button, .arrow-button {
+    background: #FF2400;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.zoom-button:hover, .arrow-button:hover {
+    background: #ff4d33;
+}
+
+#image-container {
+    overflow: hidden;
+    border: 2px solid #2a2a2a;
+    border-radius: 8px;
+    background: #1e1e1e;
+    height: 500px;
+    position: relative;
+}
+
+.roadmap-image {
+    width: 100%;
+    height: auto;
+    transform-origin: center;
+    transition: transform 0.1s ease-out;
+}
+
+.arrow-controls {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.arrow-middle {
+    display: flex;
+    gap: 5px;
+}
 .holder-image, .ranking-table img {
     width: 180px !important;
     height: 180px !important;

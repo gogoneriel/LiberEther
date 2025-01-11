@@ -190,9 +190,16 @@
                     <button onclick="resetZoom()" class="zoom-button">Reset</button>
                 </div>
                 <div id="image-container">
-                    <img id="roadmapImage" class="roadmap-image" alt="AKM Roadmap" draggable="false">
+                    <img id="roadmapImage" src="./images/roadmap.png" class="roadmap-image" alt="AKM Roadmap" draggable="false">
                 </div>
-                <div class="zoom-instructions">Drag to pan • Use buttons to zoom • Click Reset to restore</div>
+                <div class="arrow-controls">
+                    <button onclick="panUp()" class="arrow-button">↑</button>
+                    <div class="arrow-middle">
+                        <button onclick="panLeft()" class="arrow-button">←</button>
+                        <button onclick="panRight()" class="arrow-button">→</button>
+                    </div>
+                    <button onclick="panDown()" class="arrow-button">↓</button>
+                </div>
             </div>
         </div>
     </div>
@@ -443,55 +450,78 @@ priceChangeEl.className = `performance ${priceChange >= 0 ? 'positive' : 'negati
     // Functionality for claiming rewards will be added here
     console.log('Claim rewards clicked');
 }
-function toggleRoadmap() {
-    const roadmapContent = document.getElementById('roadmapContent');
-    const button = document.querySelector('.roadmap-container button');
-    
-    if (roadmapContent.style.display === 'none' || roadmapContent.style.display === '') {
-        roadmapContent.style.display = 'block';
-        button.textContent = 'Hide roadmap';
-        document.getElementById('roadmapImage').src = './images/roadmap.png';  // Added ./ to specify current directory
-    } else {
-        roadmapContent.style.display = 'none';
-        button.textContent = 'Click to view roadmap';
-    }
-}
-let scale = 1;
-let panning = false;
-let pointX = 0;
-let pointY = 0;
-let start = { x: 0, y: 0 };
 
-function setTransform(element) {
-    element.style.transition = panning ? 'none' : 'transform 0.1s';
-    element.style.transform = `translate(${pointX}px, ${pointY}px) scale(${scale})`;
-}
+let scale = 1;
+let posX = 0;
+let posY = 0;
+let isDragging = false;
+let startX, startY;
+
+
 
 function zoomIn() {
-    scale = Math.min(scale + 0.2, 3);
-    const element = document.getElementById('roadmapImage');
-    if (element) setTransform(element);
+    scale = Math.min(scale * 1.2, 4);
+    updateTransform();
 }
 
 function zoomOut() {
-    scale = Math.max(scale - 0.2, 0.5);
-    const element = document.getElementById('roadmapImage');
-    if (element) setTransform(element);
+    scale = Math.max(scale / 1.2, 0.5);
+    updateTransform();
 }
 
 function resetZoom() {
     scale = 1;
-    pointX = 0;
-    pointY = 0;
-    const element = document.getElementById('roadmapImage');
-    if (element) setTransform(element);
+    posX = 0;
+    posY = 0;
+    updateTransform();
 }
 
-function initPanZoom() {
+function panUp() { posY += 50; updateTransform(); }
+function panDown() { posY -= 50; updateTransform(); }
+function panLeft() { posX += 50; updateTransform(); }
+function panRight() { posX -= 50; updateTransform(); }
+
+function updateTransform() {
+    const img = document.getElementById('roadmapImage');
+    img.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+}
+
+function setupDragAndZoom() {
     const container = document.getElementById('image-container');
-    const element = document.getElementById('roadmapImage');
-    
-    if (!container || !element) return;
+    const img = document.getElementById('roadmapImage');
+
+    container.onmousedown = startDragging;
+    container.onmousemove = drag;
+    container.onmouseup = stopDragging;
+    container.onmouseleave = stopDragging;
+    container.onwheel = handleZoom;
+}
+
+function startDragging(e) {
+    isDragging = true;
+    startX = e.clientX - posX;
+    startY = e.clientY - posY;
+}
+
+function drag(e) {
+    if (!isDragging) return;
+    posX = e.clientX - startX;
+    posY = e.clientY - startY;
+    updateTransform();
+}
+
+function stopDragging() {
+    isDragging = false;
+}
+
+function handleZoom(e) {
+    e.preventDefault();
+    if (e.deltaY < 0) {
+        zoomIn();
+    } else {
+        zoomOut();
+    }
+}
 
     // Add touch events for mobile
     container.addEventListener('touchstart', (e) => {
@@ -545,8 +575,86 @@ function initPanZoom() {
         }
     });
 }
+<script>
 
-// Update your toggleRoadmap function
+
+function updateTransform() {
+    const img = document.getElementById('roadmapImage');
+    if (img) {
+        img.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+    }
+}
+
+function setupDragAndZoom() {
+    const container = document.getElementById('image-container');
+    if (!container) return;
+
+    // Mouse events
+    container.onmousedown = function(e) {
+        isDragging = true;
+        startX = e.clientX - posX;
+        startY = e.clientY - posY;
+        e.preventDefault();
+    };
+
+    container.onmousemove = function(e) {
+        if (!isDragging) return;
+        posX = e.clientX - startX;
+        posY = e.clientY - startY;
+        updateTransform();
+    };
+
+    container.onmouseup = function() {
+        isDragging = false;
+    };
+
+    container.onmouseleave = function() {
+        isDragging = false;
+    };
+
+    // Touch events for mobile
+    container.ontouchstart = function(e) {
+        const touch = e.touches[0];
+        isDragging = true;
+        startX = touch.clientX - posX;
+        startY = touch.clientY - posY;
+        e.preventDefault();
+    };
+
+    container.ontouchmove = function(e) {
+        if (!isDragging) return;
+        const touch = e.touches[0];
+        posX = touch.clientX - startX;
+        posY = touch.clientY - startY;
+        updateTransform();
+    };
+
+    container.ontouchend = function() {
+        isDragging = false;
+    };
+
+    // Mouse wheel zoom
+    container.onwheel = function(e) {
+        e.preventDefault();
+        if (e.deltaY < 0) {
+            zoomIn();
+        } else {
+            zoomOut();
+        }
+    };
+}
+</script>
+
+
+<script>
+// Zoom and pan variables
+let scale = 1;
+let posX = 0;
+let posY = 0;
+let isDragging = false;
+let startX, startY;
+
+// The main toggle function
 function toggleRoadmap() {
     const roadmapContent = document.getElementById('roadmapContent');
     const button = document.querySelector('.roadmap-container button');
@@ -555,13 +663,103 @@ function toggleRoadmap() {
         roadmapContent.style.display = 'block';
         button.textContent = 'Hide roadmap';
         document.getElementById('roadmapImage').src = './images/roadmap.png';
-        initPanZoom(); // Initialize pan and zoom functionality
+        setupDragAndZoom();
     } else {
         roadmapContent.style.display = 'none';
         button.textContent = 'Click to view roadmap';
     }
 }
-    </script>
+
+// Zoom functions
+function zoomIn() {
+    scale = Math.min(scale * 1.2, 4);
+    updateTransform();
+}
+
+function zoomOut() {
+    scale = Math.max(scale / 1.2, 0.5);
+    updateTransform();
+}
+
+function resetZoom() {
+    scale = 1;
+    posX = 0;
+    posY = 0;
+    updateTransform();
+}
+
+// Pan functions
+function panUp() { posY += 50; updateTransform(); }
+function panDown() { posY -= 50; updateTransform(); }
+function panLeft() { posX += 50; updateTransform(); }
+function panRight() { posX -= 50; updateTransform(); }
+
+function updateTransform() {
+    const img = document.getElementById('roadmapImage');
+    if (img) {
+        img.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+    }
+}
+
+function setupDragAndZoom() {
+    const container = document.getElementById('image-container');
+    if (!container) return;
+
+    // Mouse events
+    container.onmousedown = function(e) {
+        isDragging = true;
+        startX = e.clientX - posX;
+        startY = e.clientY - posY;
+        e.preventDefault();
+    };
+
+    container.onmousemove = function(e) {
+        if (!isDragging) return;
+        posX = e.clientX - startX;
+        posY = e.clientY - startY;
+        updateTransform();
+    };
+
+    container.onmouseup = function() {
+        isDragging = false;
+    };
+
+    container.onmouseleave = function() {
+        isDragging = false;
+    };
+
+    // Touch events for mobile
+    container.ontouchstart = function(e) {
+        const touch = e.touches[0];
+        isDragging = true;
+        startX = touch.clientX - posX;
+        startY = touch.clientY - posY;
+        e.preventDefault();
+    };
+
+    container.ontouchmove = function(e) {
+        if (!isDragging) return;
+        const touch = e.touches[0];
+        posX = touch.clientX - startX;
+        posY = touch.clientY - startY;
+        updateTransform();
+    };
+
+    container.ontouchend = function() {
+        isDragging = false;
+    };
+
+    // Mouse wheel zoom
+    container.onwheel = function(e) {
+        e.preventDefault();
+        if (e.deltaY < 0) {
+            zoomIn();
+        } else {
+            zoomOut();
+        }
+    };
+}
+</script>
     
     
 <!--End of Tawk.to Script-->
