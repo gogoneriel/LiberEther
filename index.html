@@ -16,15 +16,15 @@
         AKM EndGame Dapp
     </h1>
     <div class="flex justify-center gap-4 mb-24">
-        <div class="balance-box">
+        <div class="balance-box bg-[#1e1e1e] p-4 rounded-lg border border-[#2a2a2a]">
             <div class="balance-label" style="color: white;">AKM Balance</div>
             <div class="balance-value">0.00</div>
         </div>
-        <div class="balance-box">
+        <div class="balance-box bg-[#1e1e1e] p-4 rounded-lg border border-[#2a2a2a]">
             <div class="balance-label" style="color: white;">RETH Balance</div>
             <div class="balance-value">0.00</div>
         </div>
-        <div class="balance-box">
+        <div class="balance-box bg-[#1e1e1e] p-4 rounded-lg border border-[#2a2a2a]">
             <div class="balance-label" style="color: white;">USD Balance</div>
             <div class="balance-value">$0.00</div>
         </div>
@@ -47,26 +47,57 @@
     <div class="flex justify-center">
         <div class="flex flex-col md:flex-row gap-4 w-full max-w-4xl">
             <!-- Deposit Box -->
-            <div class="flex-1 bg-[#1e1e1e] p-5 rounded-lg border border-[#2a2a2a]">
-                <div class="text-white text-xl font-bold mb-4" style="display: flex; align-items: center; gap: 10px;">
-                    USD Yield+Rewards (Coming Soon)
-                    <span class="info-icon" title="Deposit USD to earn yield and RETH token rewards from liquidations. No lockup period required">i</span>
-                </div>
-                <div class="deposit-header">
-                    <h3 class="deposit-title" id="actionTitle">Deposit</h3>
-                    <div class="toggle-buttons">
-                        <button class="toggle-button active" onclick="toggleAction('deposit')">Deposit</button>
-                        <button class="toggle-button" onclick="toggleAction('withdraw')">Withdraw</button>
-                        <button class="toggle-button" onclick="claimRewards()">Claim Rewards</button>
-                    </div>
-                </div>
-                <input type="number" class="amount-input" value="0.00" min="0" step="0.01">
-                <div class="pool-share">
-                    Pool share: 0% 
-                    <span class="info-icon" title="Percentage of your USD deposit compared to the total deposited in this pool.">i</span>
-                </div>
-            </div>
+            <!-- Deposit Box -->
+<div class="flex-1 bg-[#1e1e1e] p-5 rounded-lg border border-[#2a2a2a]">
+    <div class="text-white text-xl font-bold mb-4" style="display: flex; align-items: center; gap: 10px;">
+        USD Yield+Rewards (Coming Soon)
+        <span class="info-icon" title="Deposit USD to earn yield and RETH token rewards from liquidations. No lockup period required">i</span>
+    </div>
     
+    <!-- Auto Invest Toggle -->
+    <div style="text-align: right; margin-bottom: 10px;">
+        <button id="autoInvestToggle" class="auto-invest-toggle" onclick="toggleAutoInvest()">
+            Auto Invest Reward OFF
+        </button>
+    </div>
+
+    <div class="deposit-header">
+        <div class="toggle-buttons">
+            <button class="toggle-button active" onclick="toggleAction('deposit')">Deposit</button>
+            <button class="toggle-button" onclick="toggleAction('withdraw')">Withdraw</button>
+            <button class="toggle-button" onclick="claimRewards()">Claim Rewards</button>
+        </div>
+    </div>
+
+    <input type="number" class="amount-input" value="0.00" min="0" step="0.01">
+    
+    <!-- Auto invest Slider -->
+    
+    <div class="apy-display">
+        <span>Amount: <span id="apyValue">0</span>%</span>
+        <span>Max: 100%</span>
+    </div>
+    <input 
+    type="range" 
+    id="apySlider" 
+    class="apy-slider" 
+    min="0" 
+    max="100" 
+    value="0"
+    oninput="updateAPY(this.value)"
+>
+
+    <button class="w-full bg-[#FF2400] hover:bg-[#ff4d33] text-white font-bold py-3 rounded-lg mt-4 transition-colors">
+        Deposit
+    </button>
+
+    <div class="pool-share">
+        Pool share: 0% 
+        <span class="info-icon" title="Percentage of your USD deposit compared to the total deposited in this pool.">i</span>
+    </div>
+</div>
+    
+            <!-- Swap Box -->
             <!-- Swap Box -->
             <div class="flex-1 bg-[#1e1e1e] p-5 rounded-lg border border-[#2a2a2a]">
                 <div class="text-white text-xl font-bold mb-4" style="display: flex; align-items: center; gap: 10px;">
@@ -116,9 +147,12 @@
                         </button>
                     </div>
                 </div>
+
+                <!-- Add extra space to align with Deposit button -->
+                <div class="flex-grow" style="min-height: 62px;"></div>
     
                 <!-- Swap Button -->
-                <button class="w-full bg-[#FF2400] hover:bg-[#ff4d33] text-white font-bold py-3 rounded-lg mt-4 transition-colors">
+                <button class="w-full bg-[#FF2400] hover:bg-[#ff4d33] text-white font-bold py-3 rounded-lg transition-colors">
                     Swap
                 </button>
             </div>
@@ -541,6 +575,25 @@
         // Set intervals for updates
         setInterval(updateData, 30000);
         setInterval(updateRSIGif, 60000);
-    </script>
+    // Add these new functions for the APY slider and Auto Invest toggle
+function updateAPY(value) {
+    document.getElementById('apyValue').textContent = value;
+    const slider = document.getElementById('apySlider');
+    const percentage = (value / slider.max) * 100;
+    slider.style.background = `linear-gradient(to right, #FF2400 0%, #FF2400 ${percentage}%, #2a2a2a ${percentage}%, #2a2a2a 100%)`;
+}
+
+function toggleAutoInvest() {
+    const button = document.getElementById('autoInvestToggle');
+    const isActive = button.classList.contains('active');
+    if (isActive) {
+        button.classList.remove('active');
+        button.textContent = 'Auto Invest Reward OFF';
+    } else {
+        button.classList.add('active');
+        button.textContent = 'Auto Invest Reward ON';
+    }
+}
+</script>
 </body>
 </html>
