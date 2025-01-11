@@ -29,7 +29,7 @@
             <div class="balance-value">$0.00</div>
         </div>
     </div>
-    </div>
+    
     <div class="header-container">
         <div class="header-image">
             <img src="./images/level2.gif" alt="AKM Ethereum Ninja Scene" class="top-image">
@@ -204,13 +204,53 @@
         </div>
     </div>
 
+
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {};
+        var Tawk_LoadStart = new Date();
+        
+        (function(){
+            var s1 = document.createElement("script");
+            var s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/677c0230af5bfec1dbe765cb/1igu6h3pr';
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin','*');
+            s0.parentNode.insertBefore(s1,s0);
+        })();
+        
+        // Hide default widget
+        Tawk_API.onLoad = function(){
+            Tawk_API.hideWidget();
+        };
+    </script>
+    <!--End of Tawk.to Script-->
     <script>
+        // Global variables
         let currentPrice = 0;
+        let scale = 1;
+        let posX = 0;
+        let posY = 0;
+        let isDragging = false;
+        let startX, startY;
+        
         const RSI_GIF_HIGH = "https://s7.gifyu.com/images/SXr0D.gif";
         const RSI_GIF_VERY_HIGH = "https://s13.gifyu.com/images/SXnzh.gif";
         const RSI_GIF_LOW = "https://s7.gifyu.com/images/SXr0o.gif";
-        
-        // New function to toggle holders list
+    
+        // UI Interaction Functions
+        function toggleAction(action) {
+            const buttons = document.querySelectorAll('.toggle-button');
+            buttons.forEach(button => {
+                button.classList.remove('active');
+                if(button.textContent.toLowerCase() === action) {
+                    button.classList.add('active');
+                }
+            });
+            document.getElementById('actionTitle').textContent = 
+                action.charAt(0).toUpperCase() + action.slice(1);
+        }
+    
         function toggleHoldersList() {
             const holdersList = document.getElementById('holdersList');
             const button = document.querySelector('.container button');
@@ -218,182 +258,250 @@
             if (holdersList.style.display === 'none' || holdersList.style.display === '') {
                 holdersList.style.display = 'block';
                 button.textContent = 'Hide list';
-                loadHolders(); // Load the data when showing
+                loadHolders();
             } else {
                 holdersList.style.display = 'none';
                 button.textContent = 'Click to view list';
             }
         }
-        
+    
+        function toggleRoadmap() {
+            const roadmapContent = document.getElementById('roadmapContent');
+            const button = document.querySelector('.roadmap-container button');
+            
+            if (roadmapContent.style.display === 'none' || roadmapContent.style.display === '') {
+                roadmapContent.style.display = 'block';
+                button.textContent = 'Hide roadmap';
+                document.getElementById('roadmapImage').src = './images/roadmap.png';
+                setupDragAndZoom();
+            } else {
+                roadmapContent.style.display = 'none';
+                button.textContent = 'Click to view roadmap';
+            }
+        }
+    
+        function claimRewards() {
+            console.log('Claim rewards clicked');
+        }
+    
+        // Roadmap Controls
+        function updateTransform() {
+            const img = document.getElementById('roadmapImage');
+            if (img) {
+                img.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
+            }
+        }
+    
+        function zoomIn() {
+            scale = Math.min(scale * 1.2, 4);
+            updateTransform();
+        }
+    
+        function zoomOut() {
+            scale = Math.max(scale / 1.2, 0.5);
+            updateTransform();
+        }
+    
+        function resetZoom() {
+            scale = 1;
+            posX = 0;
+            posY = 0;
+            updateTransform();
+        }
+    
+        function panUp() { posY += 50; updateTransform(); }
+        function panDown() { posY -= 50; updateTransform(); }
+        function panLeft() { posX += 50; updateTransform(); }
+        function panRight() { posX -= 50; updateTransform(); }
+    
+        function setupDragAndZoom() {
+            const container = document.getElementById('image-container');
+            if (!container) return;
+    
+            // Mouse events
+            container.onmousedown = function(e) {
+                isDragging = true;
+                startX = e.clientX - posX;
+                startY = e.clientY - posY;
+                e.preventDefault();
+            };
+    
+            container.onmousemove = function(e) {
+                if (!isDragging) return;
+                posX = e.clientX - startX;
+                posY = e.clientY - startY;
+                updateTransform();
+            };
+    
+            container.onmouseup = container.onmouseleave = function() {
+                isDragging = false;
+            };
+    
+            // Touch events
+            container.ontouchstart = function(e) {
+                const touch = e.touches[0];
+                isDragging = true;
+                startX = touch.clientX - posX;
+                startY = touch.clientY - posY;
+                e.preventDefault();
+            };
+    
+            container.ontouchmove = function(e) {
+                if (!isDragging) return;
+                const touch = e.touches[0];
+                posX = touch.clientX - startX;
+                posY = touch.clientY - startY;
+                updateTransform();
+            };
+    
+            container.ontouchend = function() {
+                isDragging = false;
+            };
+    
+            // Wheel zoom
+            container.onwheel = function(e) {
+                e.preventDefault();
+                if (e.deltaY < 0) zoomIn();
+                else zoomOut();
+            };
+        }
+    
+        // API and Data Functions
         async function getRSI() {
-    try {
-        // Using CryptoCompare API instead of Binance (more CORS friendly)
-        const response = await fetch('https://min-api.cryptocompare.com/data/v2/histohour?fsym=ETH&tsym=USDT&limit=14');
-        const data = await response.json();
-        
-        if (!data.Data || !data.Data.Data) {
-            throw new Error('Invalid data format');
+            try {
+                const response = await fetch('https://min-api.cryptocompare.com/data/v2/histohour?fsym=ETH&tsym=USDT&limit=14');
+                const data = await response.json();
+                
+                if (!data.Data?.Data) throw new Error('Invalid data format');
+    
+                const closes = data.Data.Data.map(candle => candle.close);
+                const gains = [];
+                const losses = [];
+                
+                for (let i = 1; i < closes.length; i++) {
+                    const difference = closes[i] - closes[i-1];
+                    gains.push(difference > 0 ? difference : 0);
+                    losses.push(difference < 0 ? Math.abs(difference) : 0);
+                }
+                
+                const avgGain = gains.reduce((a, b) => a + b) / gains.length;
+                const avgLoss = losses.reduce((a, b) => a + b) / losses.length;
+                
+                return 100 - (100 / (1 + avgGain / avgLoss));
+            } catch (error) {
+                console.error('Error calculating RSI:', error);
+                return 50;
+            }
         }
-
-        const closes = data.Data.Data.map(candle => candle.close);
-        const gains = [];
-        const losses = [];
-        
-        for (let i = 1; i < closes.length; i++) {
-            const difference = closes[i] - closes[i-1];
-            gains.push(difference > 0 ? difference : 0);
-            losses.push(difference < 0 ? Math.abs(difference) : 0);
+    
+        async function updateRSIGif() {
+            try {
+                const rsi = await getRSI();
+                const gifElement = document.getElementById('rsiGif');
+                
+                if (!gifElement) return;
+    
+                let selectedGif = RSI_GIF_LOW;
+    
+                if (rsi >= 60) {
+                    selectedGif = RSI_GIF_VERY_HIGH;
+                } else if (rsi >= 45) {
+                    selectedGif = RSI_GIF_HIGH;
+                }
+    
+                gifElement.src = selectedGif;
+            } catch (error) {
+                console.error('Error updating RSI GIF:', error);
+            }
         }
-        
-        const avgGain = gains.reduce((a, b) => a + b) / gains.length;
-        const avgLoss = losses.reduce((a, b) => a + b) / losses.length;
-        
-        const RS = avgGain / avgLoss;
-        const RSI = 100 - (100 / (1 + RS));
-        
-        console.log('Current RSI:', RSI); // Debug log
-        return RSI;
-    } catch (error) {
-        console.error('Error calculating RSI:', error);
-        return 50; // Default value if calculation fails
-    }
-}
-
-async function updateRSIGif() {
-    try {
-        const rsi = await getRSI();
-        const gifElement = document.getElementById('rsiGif');
-        
-        if (!gifElement) {
-            console.error('RSI GIF element not found');
-            return;
-        }
-
-        console.log('RSI Value:', rsi); // Debug log
-        
-        // Initialize with RSI_GIF_LOW since RSI is below neutral
-        let selectedGif = RSI_GIF_LOW;
-        let message = 'Setting LOW RSI GIF (RSI <= 45)';
-
-        if (rsi >= 60) {
-            selectedGif = RSI_GIF_VERY_HIGH;
-            message = 'Setting VERY HIGH RSI GIF (RSI >= 60)';
-        } else if (rsi >= 45) {
-            selectedGif = RSI_GIF_HIGH;
-            message = 'Setting HIGH RSI GIF (45 <= RSI < 60)';
-        }
-
-        console.log(message);
-        gifElement.src = selectedGif;
-    } catch (error) {
-        console.error('Error updating RSI GIF:', error);
-    }
-}
-
+    
         async function fetchAKMPrice() {
             try {
                 const response = await fetch('https://api.dexscreener.com/latest/dex/pairs/arbitrum/0xd9ecf7fb6c8356f1c42ef44b15b61c88625401be');
                 const data = await response.json();
-                if (data.pairs && data.pairs[0]) {
-                    return Number(data.pairs[0].priceUsd);
-                }
-                return 0;
+                return data.pairs?.[0]?.priceUsd ? Number(data.pairs[0].priceUsd) : 0;
             } catch (error) {
                 console.error('Error fetching AKM price:', error);
                 return 0;
             }
         }
-
+    
         function calculateUSDValue(akmAmount) {
-            return (akmAmount * currentPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            return (akmAmount * currentPrice).toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
         }
-
+    
+        function getOrdinal(n) {
+            const s = ["th", "st", "nd", "rd"];
+            const v = n % 100;
+            return s[(v - 20) % 10] || s[v] || s[0];
+        }
+    
         async function loadHolders() {
-    try {
-        currentPrice = await fetchAKMPrice();
-        const response = await fetch('holders.json');
-        const holders = await response.json();
-        const tableBody = document.getElementById('rankingTableBody');
-        tableBody.innerHTML = '';
-
-        holders.forEach((holder, index) => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td class="rank-number">${index + 1}${getOrdinal(index + 1)}</td>
-                <td class="holder-cell">
-                    <div class="holder-container">
-                        <img src="${holder.image}" alt="${holder.name}" class="holder-image" onclick="openModal(this.src)">
-                        <div class="holder-info">
-                            <div class="holder-name">${holder.name}</div>
-                        </div>
-                    </div>
-                </td>
-                <td class="amount-cell">
-                    <div class="holder-amount">${holder.amount.toLocaleString()} AKM</div>
-                    <div class="holder-amount">($${calculateUSDValue(holder.amount)})</div>
-                </td>
-            `;
-            tableBody.appendChild(row);
-        });
-    } catch (error) {
-        console.error('Error loading holders:', error);
-    }
-}
-
+            try {
+                currentPrice = await fetchAKMPrice();
+                const response = await fetch('holders.json');
+                const holders = await response.json();
+                const tableBody = document.getElementById('rankingTableBody');
+                tableBody.innerHTML = '';
+    
+                holders.forEach((holder, index) => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td class="rank-number">${index + 1}${getOrdinal(index + 1)}</td>
+                        <td class="holder-cell">
+                            <div class="holder-container">
+                                <img src="${holder.image}" alt="${holder.name}" class="holder-image" onclick="openModal(this.src)">
+                                <div class="holder-info">
+                                    <div class="holder-name">${holder.name}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="amount-cell">
+                            <div class="holder-amount">${holder.amount.toLocaleString()} AKM</div>
+                            <div class="holder-amount">($${calculateUSDValue(holder.amount)})</div>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error('Error loading holders:', error);
+            }
+        }
+    
         function openModal(src) {
             const modal = document.getElementById('imageModal');
             const modalImg = document.getElementById('modalImg');
             modal.style.display = "block";
             modalImg.src = src;
         }
-
-        window.onclick = function(event) {
-            const modal = document.getElementById('imageModal');
-            if (event.target === modal || event.target.classList.contains('modal-img')) {
-                modal.style.display = "none";
-            }
-        }
-
-        function getOrdinal(n) {
-            const s = ["th", "st", "nd", "rd"];
-            const v = n % 100;
-            return s[(v - 20) % 10] || s[v] || s[0];
-        }
-
-        async function getPerformanceData() {
-            try {
-                const response = await fetch('performance.json');
-                const data = await response.json();
-                return data.yearlyPerformance.ethComparison.percentageDifference;
-            } catch (error) {
-                console.error('Error fetching performance data:', error);
-                return null;
-            }
-        }
-
+    
         async function updateData() {
             try {
                 const priceResponse = await fetch('https://api.dexscreener.com/latest/dex/pairs/arbitrum/0xd9ecf7fb6c8356f1c42ef44b15b61c88625401be');
                 const priceData = await priceResponse.json();
                 
-                if (priceData.pairs && priceData.pairs[0]) {
+                if (priceData.pairs?.[0]) {
                     const price = priceData.pairs[0].priceUsd;
                     currentPrice = Number(price);
+                    
                     document.getElementById('tokenPrice').textContent = `$${Number(price).toFixed(2)}`;
                     
                     const initialPrice = 0.10;
                     const priceChange = ((currentPrice - initialPrice) / initialPrice) * 100;
-const priceChangeEl = document.getElementById('priceChange');
-priceChangeEl.textContent = `${priceChange > 0 ? '+' : ''}${priceChange.toFixed(1)}% (Since Launch)`;
-priceChangeEl.className = `performance ${priceChange >= 0 ? 'positive' : 'negative'}`;
-
+                    const priceChangeEl = document.getElementById('priceChange');
+                    priceChangeEl.textContent = `${priceChange > 0 ? '+' : ''}${priceChange.toFixed(1)}% (Since Launch)`;
+                    priceChangeEl.className = `performance ${priceChange >= 0 ? 'positive' : 'negative'}`;
+    
                     const performanceValue = await getPerformanceData();
                     if (performanceValue !== null) {
                         const performanceEl = document.getElementById('performance');
                         performanceEl.textContent = `${performanceValue >= 0 ? '+' : ''}${performanceValue.toFixed(2)}% vs ETH (1Y)`;
                         performanceEl.className = `performance ${performanceValue >= 0 ? 'positive' : 'negative'}`;
                     }
-
+    
                     const totalSupply = 1000000;
                     const burnedAmount = 434980;
                     const circulatingSupply = totalSupply - burnedAmount;
@@ -406,362 +514,33 @@ priceChangeEl.className = `performance ${priceChange >= 0 ? 'positive' : 'negati
                 console.error('Error:', error);
             }
         }
-
+    
+        async function getPerformanceData() {
+            try {
+                const response = await fetch('performance.json');
+                const data = await response.json();
+                return data.yearlyPerformance.ethComparison.percentageDifference;
+            } catch (error) {
+                console.error('Error fetching performance data:', error);
+                return null;
+            }
+        }
+    
+        // Modal click handler
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal || event.target.classList.contains('modal-img')) {
+                modal.style.display = "none";
+            }
+        };
+    
         // Initialize
         updateData();
         updateRSIGif();
-
+    
         // Set intervals for updates
         setInterval(updateData, 30000);
         setInterval(updateRSIGif, 60000);
-    
-</script>
-    
-
-<!--Start of Tawk.to Script-->
-<script type="text/javascript">
-    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-    (function(){
-    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-    s1.async=true;
-    s1.src='https://embed.tawk.to/677c0230af5bfec1dbe765cb/1igu6h3pr';
-    s1.charset='UTF-8';
-    s1.setAttribute('crossorigin','*');
-    s0.parentNode.insertBefore(s1,s0);
-    })();
-    
-    // Add this part to hide default widget
-    Tawk_API.onLoad = function(){
-        Tawk_API.hideWidget();
-    };
-    function toggleAction(action) {
-        const buttons = document.querySelectorAll('.toggle-button');
-        buttons.forEach(button => {
-            button.classList.remove('active');
-            if(button.textContent.toLowerCase() === action) {
-                button.classList.add('active');
-            }
-        });
-        
-        document.getElementById('actionTitle').textContent = 
-            action.charAt(0).toUpperCase() + action.slice(1);
-    }
-    function claimRewards() {
-    // Functionality for claiming rewards will be added here
-    console.log('Claim rewards clicked');
-}
-
-let scale = 1;
-let posX = 0;
-let posY = 0;
-let isDragging = false;
-let startX, startY;
-
-
-
-function zoomIn() {
-    scale = Math.min(scale * 1.2, 4);
-    updateTransform();
-}
-
-function zoomOut() {
-    scale = Math.max(scale / 1.2, 0.5);
-    updateTransform();
-}
-
-function resetZoom() {
-    scale = 1;
-    posX = 0;
-    posY = 0;
-    updateTransform();
-}
-
-function panUp() { posY += 50; updateTransform(); }
-function panDown() { posY -= 50; updateTransform(); }
-function panLeft() { posX += 50; updateTransform(); }
-function panRight() { posX -= 50; updateTransform(); }
-
-function updateTransform() {
-    const img = document.getElementById('roadmapImage');
-    img.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
-}
-
-function setupDragAndZoom() {
-    const container = document.getElementById('image-container');
-    const img = document.getElementById('roadmapImage');
-
-    container.onmousedown = startDragging;
-    container.onmousemove = drag;
-    container.onmouseup = stopDragging;
-    container.onmouseleave = stopDragging;
-    container.onwheel = handleZoom;
-}
-
-function startDragging(e) {
-    isDragging = true;
-    startX = e.clientX - posX;
-    startY = e.clientY - posY;
-}
-
-function drag(e) {
-    if (!isDragging) return;
-    posX = e.clientX - startX;
-    posY = e.clientY - startY;
-    updateTransform();
-}
-
-function stopDragging() {
-    isDragging = false;
-}
-
-function handleZoom(e) {
-    e.preventDefault();
-    if (e.deltaY < 0) {
-        zoomIn();
-    } else {
-        zoomOut();
-    }
-}
-
-    // Add touch events for mobile
-    container.addEventListener('touchstart', (e) => {
-        e.preventDefault();
-        const touch = e.touches[0];
-        start = { x: touch.clientX - pointX, y: touch.clientY - pointY };
-        panning = true;
-    });
-
-    container.addEventListener('touchmove', (e) => {
-        if (!panning) return;
-        const touch = e.touches[0];
-        pointX = (touch.clientX - start.x);
-        pointY = (touch.clientY - start.y);
-        setTransform(element);
-    });
-
-    container.addEventListener('touchend', () => {
-        panning = false;
-    });
-
-    // Mouse events
-    container.addEventListener('mousedown', (e) => {
-        e.preventDefault();
-        start = { x: e.clientX - pointX, y: e.clientY - pointY };
-        panning = true;
-    });
-
-    container.addEventListener('mousemove', (e) => {
-        if (!panning) return;
-        pointX = (e.clientX - start.x);
-        pointY = (e.clientY - start.y);
-        setTransform(element);
-    });
-
-    container.addEventListener('mouseup', () => {
-        panning = false;
-    });
-
-    container.addEventListener('mouseleave', () => {
-        panning = false;
-    });
-
-    // Add wheel zoom support
-    container.addEventListener('wheel', (e) => {
-        e.preventDefault();
-        if (e.deltaY < 0) {
-            zoomIn();
-        } else {
-            zoomOut();
-        }
-    });
-}
-<script>
-
-
-function updateTransform() {
-    const img = document.getElementById('roadmapImage');
-    if (img) {
-        img.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
-    }
-}
-
-function setupDragAndZoom() {
-    const container = document.getElementById('image-container');
-    if (!container) return;
-
-    // Mouse events
-    container.onmousedown = function(e) {
-        isDragging = true;
-        startX = e.clientX - posX;
-        startY = e.clientY - posY;
-        e.preventDefault();
-    };
-
-    container.onmousemove = function(e) {
-        if (!isDragging) return;
-        posX = e.clientX - startX;
-        posY = e.clientY - startY;
-        updateTransform();
-    };
-
-    container.onmouseup = function() {
-        isDragging = false;
-    };
-
-    container.onmouseleave = function() {
-        isDragging = false;
-    };
-
-    // Touch events for mobile
-    container.ontouchstart = function(e) {
-        const touch = e.touches[0];
-        isDragging = true;
-        startX = touch.clientX - posX;
-        startY = touch.clientY - posY;
-        e.preventDefault();
-    };
-
-    container.ontouchmove = function(e) {
-        if (!isDragging) return;
-        const touch = e.touches[0];
-        posX = touch.clientX - startX;
-        posY = touch.clientY - startY;
-        updateTransform();
-    };
-
-    container.ontouchend = function() {
-        isDragging = false;
-    };
-
-    // Mouse wheel zoom
-    container.onwheel = function(e) {
-        e.preventDefault();
-        if (e.deltaY < 0) {
-            zoomIn();
-        } else {
-            zoomOut();
-        }
-    };
-}
-</script>
-
-
-<script>
-// Zoom and pan variables
-let scale = 1;
-let posX = 0;
-let posY = 0;
-let isDragging = false;
-let startX, startY;
-
-// The main toggle function
-function toggleRoadmap() {
-    const roadmapContent = document.getElementById('roadmapContent');
-    const button = document.querySelector('.roadmap-container button');
-    
-    if (roadmapContent.style.display === 'none' || roadmapContent.style.display === '') {
-        roadmapContent.style.display = 'block';
-        button.textContent = 'Hide roadmap';
-        document.getElementById('roadmapImage').src = './images/roadmap.png';
-        setupDragAndZoom();
-    } else {
-        roadmapContent.style.display = 'none';
-        button.textContent = 'Click to view roadmap';
-    }
-}
-
-// Zoom functions
-function zoomIn() {
-    scale = Math.min(scale * 1.2, 4);
-    updateTransform();
-}
-
-function zoomOut() {
-    scale = Math.max(scale / 1.2, 0.5);
-    updateTransform();
-}
-
-function resetZoom() {
-    scale = 1;
-    posX = 0;
-    posY = 0;
-    updateTransform();
-}
-
-// Pan functions
-function panUp() { posY += 50; updateTransform(); }
-function panDown() { posY -= 50; updateTransform(); }
-function panLeft() { posX += 50; updateTransform(); }
-function panRight() { posX -= 50; updateTransform(); }
-
-function updateTransform() {
-    const img = document.getElementById('roadmapImage');
-    if (img) {
-        img.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
-    }
-}
-
-function setupDragAndZoom() {
-    const container = document.getElementById('image-container');
-    if (!container) return;
-
-    // Mouse events
-    container.onmousedown = function(e) {
-        isDragging = true;
-        startX = e.clientX - posX;
-        startY = e.clientY - posY;
-        e.preventDefault();
-    };
-
-    container.onmousemove = function(e) {
-        if (!isDragging) return;
-        posX = e.clientX - startX;
-        posY = e.clientY - startY;
-        updateTransform();
-    };
-
-    container.onmouseup = function() {
-        isDragging = false;
-    };
-
-    container.onmouseleave = function() {
-        isDragging = false;
-    };
-
-    // Touch events for mobile
-    container.ontouchstart = function(e) {
-        const touch = e.touches[0];
-        isDragging = true;
-        startX = touch.clientX - posX;
-        startY = touch.clientY - posY;
-        e.preventDefault();
-    };
-
-    container.ontouchmove = function(e) {
-        if (!isDragging) return;
-        const touch = e.touches[0];
-        posX = touch.clientX - startX;
-        posY = touch.clientY - startY;
-        updateTransform();
-    };
-
-    container.ontouchend = function() {
-        isDragging = false;
-    };
-
-    // Mouse wheel zoom
-    container.onwheel = function(e) {
-        e.preventDefault();
-        if (e.deltaY < 0) {
-            zoomIn();
-        } else {
-            zoomOut();
-        }
-    };
-}
-</script>
-    
-    
-<!--End of Tawk.to Script-->
+    </script>
 </body>
 </html>
