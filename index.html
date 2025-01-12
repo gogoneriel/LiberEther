@@ -7,14 +7,17 @@
     <title>AKM Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
-    <style>
-</style>
+    <meta http-content-security-policy="default-src 'self' https: 'unsafe-inline' 'unsafe-eval';">
+    
 </head>
 
 <body>
     <h1 style="font-size: 3rem; text-align: center; margin: 2rem 0; color: white; font-weight: bold; text-shadow: 0 0 10px rgba(255,36,0,0.3);">
         AKM EndGame Dapp
     </h1>
+    <button id="connectWallet" class="milie-button">
+        Connect Wallet
+    </button>
     <div class="flex justify-center gap-4 mb-24">
         <div class="balance-box bg-[#1e1e1e] p-4 rounded-lg border border-[#2a2a2a]">
             <div class="balance-label" style="color: white;">AKM Balance</div>
@@ -576,24 +579,70 @@
         setInterval(updateData, 30000);
         setInterval(updateRSIGif, 60000);
     // Add these new functions for the APY slider and Auto Invest toggle
-function updateAPY(value) {
-    document.getElementById('apyValue').textContent = value;
-    const slider = document.getElementById('apySlider');
-    const percentage = (value / slider.max) * 100;
-    slider.style.background = `linear-gradient(to right, #FF2400 0%, #FF2400 ${percentage}%, #2a2a2a ${percentage}%, #2a2a2a 100%)`;
-}
-
-function toggleAutoInvest() {
-    const button = document.getElementById('autoInvestToggle');
-    const isActive = button.classList.contains('active');
-    if (isActive) {
-        button.classList.remove('active');
-        button.textContent = 'Auto Invest Reward OFF';
-    } else {
-        button.classList.add('active');
-        button.textContent = 'Auto Invest Reward ON';
+    function updateAPY(value) {
+        document.getElementById('apyValue').textContent = value;
+        const slider = document.getElementById('apySlider');
+        const percentage = (value / slider.max) * 100;
+        slider.style.background = `linear-gradient(to right, #FF2400 0%, #FF2400 ${percentage}%, #2a2a2a ${percentage}%, #2a2a2a 100%)`;
     }
-}
+
+    function toggleAutoInvest() {
+        const button = document.getElementById('autoInvestToggle');
+        const isActive = button.classList.contains('active');
+        if (isActive) {
+            button.classList.remove('active');
+            button.textContent = 'Auto Invest Reward OFF';
+        } else {
+            button.classList.add('active');
+            button.textContent = 'Auto Invest Reward ON';
+        }
+    }
+    </script>
+
+
+    
+    <!-- Web3 Integration -->
+<!-- Web3 Integration -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+<script src="web3-security.js"></script>
+<script>
+    function initializeWeb3() {
+        try {
+            // Check if ethers is loaded
+            if (typeof ethers === 'undefined') {
+                console.error('Ethers.js not loaded yet, retrying in 1 second...');
+                setTimeout(initializeWeb3, 1000);
+                return;
+            }
+
+            // Initialize Web3 Security
+            const web3Security = new Web3Security();
+
+            // Connect wallet button
+            const connectButton = document.getElementById('connectWallet');
+            if (connectButton) {
+                connectButton.onclick = async () => {
+                    try {
+                        if (typeof window.ethereum === 'undefined') {
+                            throw new Error('MetaMask is not installed. Please install MetaMask to continue.');
+                        }
+                        
+                        const address = await web3Security.connectWallet();
+                        // Update button text to show connected address
+                        connectButton.textContent = `${address.slice(0, 6)}...${address.slice(-4)}`;
+                    } catch (error) {
+                        console.error('Wallet connection error:', error);
+                        alert('Failed to connect wallet: ' + error.message);
+                    }
+                };
+            }
+        } catch (error) {
+            console.error('Initialization error:', error);
+        }
+    }
+
+    // Start initialization when the page loads
+    window.addEventListener('load', initializeWeb3);
 </script>
 </body>
 </html>
