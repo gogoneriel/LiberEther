@@ -32,13 +32,21 @@
                     </div>
                 </div>
                 <!-- Connect Wallet Button -->
-                <button 
-                    id="connectWallet" 
-                    class="bg-[#FF2400] hover:bg-[#ff4d33] text-white font-bold py-1 px-2 md:py-2 md:px-4 rounded-lg transition-colors text-xs md:text-base"
-                >
-                    Connect Wallet
-                </button>
-            </div>
+                <!-- Connect Wallet and Add Token Buttons -->
+<div class="flex gap-2">
+    <button 
+        id="connectWallet" 
+        class="bg-[#FF2400] hover:bg-[#ff4d33] text-white font-bold py-1 px-2 md:py-2 md:px-4 rounded-lg transition-colors text-xs md:text-base"
+    >
+        Connect Wallet
+    </button>
+    <button 
+    id="addToken" 
+    class="bg-[#FF2400] hover:bg-[#ff4d33] text-white font-bold py-1 px-2 md:py-2 md:px-4 rounded-lg transition-colors text-xs md:text-base"
+>
+    Add AKM
+</button>
+</div>
         </nav>
         <h1 class="md:hidden" style="font-size: 2.25rem; text-align: center; margin: 7rem 0 2rem 0; color: white; font-weight: bold; text-shadow: 0 0 10px rgba(255,36,0,0.3);">
             AKM EndGame Dapp
@@ -755,6 +763,29 @@
             closeWhitepaper();
         }
     });
+    document.getElementById('addToken').onclick = async () => {
+    try {
+        if (typeof window.ethereum === 'undefined') {
+            alert('Please install MetaMask first!');
+            return;
+        }
+
+        await window.ethereum.request({
+            method: 'wallet_watchAsset',
+            params: {
+                type: 'ERC20',
+                options: {
+                    address: '0x287c48a78395f6fa4ac7f71a5e92dc65256f570f',
+                    symbol: 'AKM',
+                    decimals: 18,
+                }
+            }
+        });
+    } catch (error) {
+        console.error(error);
+        alert('Error adding token to MetaMask');
+    }
+};
     </script>
 <div id="social-buttons"></div>
 </body>
