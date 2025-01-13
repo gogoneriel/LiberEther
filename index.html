@@ -55,9 +55,11 @@
                 Buy Signal
                 <span class="info-icon" title="1 ETH shining: Consider waiting to buy AKM. 2 ETH shining: Neutral market conditions. 3 ETH shining with red-eyed Milie: Potentially good time to buy AKM">i</span>
             </div>
-            <div style="margin-top: 10px;">
-                <button onclick="Tawk_API.toggle()" class="milie-button" type="button" title="Ask our AI for AKM related questions">Ask Milie</button>
-            </div>
+            <a href="https://swap.defillama.com/?chain=arbitrum&from=0x287c48a78395f6fa4ac7f71a5e92dc65256f570f" 
+            class="milie-button"
+            >
+             Buy/Sell Temporary
+         </a>
         </div>
     <div class="flex justify-center">
         <div class="flex flex-col md:flex-row gap-4 w-full max-w-4xl">
@@ -118,10 +120,7 @@
                 <div class="text-white text-xl font-bold mb-4" style="display: flex; align-items: center; gap: 10px;">
                     Swap (Coming Soon)
                     <span class="info-icon" title="Trade between different assets including USD, AKM, RETH and more">i</span>
-                    <a href="https://swap.defillama.com/?chain=arbitrum&from=0x287c48a78395f6fa4ac7f71a5e92dc65256f570f" 
-                       class="text-xs bg-[#2a2a2a] hover:bg-[#3a3a3a] text-[#4ade80] px-3 py-1 rounded-full transition-colors">
-                        Buy/Sell Temporary [click here]
-                    </a>
+            
                 </div>
                 
                 <!-- From Token Input -->
@@ -256,28 +255,6 @@
             </div>
         </div>
     </div>
-
-
-    <script type="text/javascript">
-        var Tawk_API = Tawk_API || {};
-        var Tawk_LoadStart = new Date();
-        
-        (function(){
-            var s1 = document.createElement("script");
-            var s0 = document.getElementsByTagName("script")[0];
-            s1.async = true;
-            s1.src = 'https://embed.tawk.to/677c0230af5bfec1dbe765cb/1igu6h3pr';
-            s1.charset = 'UTF-8';
-            s1.setAttribute('crossorigin','*');
-            s0.parentNode.insertBefore(s1,s0);
-        })();
-        
-        // Hide default widget
-        Tawk_API.onLoad = function(){
-            Tawk_API.hideWidget();
-        };
-    </script>
-    <!--End of Tawk.to Script-->
     <script>
         // Global variables
         let currentPrice = 0;
