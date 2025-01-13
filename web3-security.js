@@ -35,14 +35,12 @@ class Web3Security {
         const chainId = await window.ethereum.request({ method: 'eth_chainId' });
         if (chainId !== ARBITRUM_CHAIN_ID) {
             try {
-                // Try to switch to Arbitrum One
                 await window.ethereum.request({
                     method: 'wallet_switchEthereumChain',
                     params: [{ chainId: ARBITRUM_CHAIN_ID }],
                 });
             } catch (error) {
                 if (error.code === 4902) {
-                    // Chain not added, try to add Arbitrum One
                     await window.ethereum.request({
                         method: 'wallet_addEthereumChain',
                         params: [{
@@ -67,15 +65,12 @@ class Web3Security {
     // Connect wallet and setup Web3
     async connectWallet() {
         try {
-            // Check if MetaMask is installed
             if (!window.ethereum) {
                 throw new Error("Please install MetaMask first!");
             }
 
-            // Ensure we're on Arbitrum One
             await this.checkNetwork();
 
-            // Request account access
             const accounts = await window.ethereum.request({
                 method: 'eth_requestAccounts'
             });
@@ -86,14 +81,12 @@ class Web3Security {
 
             this.connectedAddress = accounts[0];
             
-            // Setup Web3 provider using ethers v6
+            // Setup Web3 provider using ethers v5
             this.provider = new ethers.providers.Web3Provider(window.ethereum);
 
-            // Add listeners for account and chain changes
             window.ethereum.on('accountsChanged', this.handleAccountChange.bind(this));
             window.ethereum.on('chainChanged', this.handleChainChange.bind(this));
 
-            // Get initial balances
             await this.updateBalances();
 
             return this.connectedAddress;
@@ -108,7 +101,7 @@ class Web3Security {
         if (!this.connectedAddress || !this.provider) return;
 
         try {
-            const signer = await this.provider.getSigner();
+            const signer = this.provider.getSigner();
             const akmContract = new ethers.Contract(AKM_ADDRESS, ERC20_ABI, signer);
             const rethContract = new ethers.Contract(RETH_ADDRESS, ERC20_ABI, signer);
 
@@ -120,9 +113,9 @@ class Web3Security {
             const akmBalance = await akmContract.balanceOf(this.connectedAddress);
             const rethBalance = await rethContract.balanceOf(this.connectedAddress);
 
-            // Format balances with correct decimals
-            const formattedAkm = ethers.formatUnits(akmBalance, akmDecimals);
-            const formattedReth = ethers.formatUnits(rethBalance, rethDecimals);
+            // Format balances using ethers.js Utils
+            const formattedAkm = ethers.utils.formatUnits(akmBalance, akmDecimals);
+            const formattedReth = ethers.utils.formatUnits(rethBalance, rethDecimals);
 
             // Update UI
             document.querySelector('.balance-box:nth-child(1) .balance-value').textContent = 
@@ -139,11 +132,9 @@ class Web3Security {
     // Handle account changes
     handleAccountChange(accounts) {
         if (accounts.length === 0) {
-            // User disconnected their wallet
             this.connectedAddress = null;
             window.location.reload();
         } else if (accounts[0] !== this.connectedAddress) {
-            // User switched accounts
             this.connectedAddress = accounts[0];
             this.updateBalances();
         }
@@ -151,7 +142,6 @@ class Web3Security {
 
     // Handle chain changes
     handleChainChange() {
-        // Reload the page on chain change for security
         window.location.reload();
     }
 }
