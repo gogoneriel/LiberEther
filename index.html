@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AKM Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js" type="application/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
     <link rel="stylesheet" href="styles.css">
     <meta http-content-security-policy="default-src 'self' https: 'unsafe-inline' 'unsafe-eval';">
     
@@ -607,15 +607,26 @@
 
 <script src="web3-security.js"></script>
 <script>
+    let initializationAttempts = 0;
+    const maxAttempts = 10;
+
     function initializeWeb3() {
         try {
+            initializationAttempts++;
+            
             // Check if ethers is loaded
             if (typeof ethers === 'undefined') {
-                console.error('Ethers.js not loaded yet, retrying in 1 second...');
-                setTimeout(initializeWeb3, 1000);
+                if (initializationAttempts < maxAttempts) {
+                    console.log(`Attempt ${initializationAttempts}: Ethers.js not loaded yet, retrying in 1 second...`);
+                    setTimeout(initializeWeb3, 1000);
+                } else {
+                    console.error('Failed to load Ethers.js after multiple attempts. Please refresh the page.');
+                }
                 return;
             }
 
+            console.log('Ethers.js loaded successfully!');
+            
             // Initialize Web3 Security
             const web3Security = new Web3Security();
 
@@ -643,7 +654,9 @@
     }
 
     // Start initialization when the page loads
-    window.addEventListener('load', initializeWeb3);
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeWeb3();
+    });
 </script>
 </body>
 </html>

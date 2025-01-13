@@ -28,6 +28,22 @@ class Web3Security {
         this.provider = null;
     }
 
+    // Format units safely
+    formatUnits(value, decimals) {
+        try {
+            // Try ethers v5 way first
+            if (ethers.utils && ethers.utils.formatUnits) {
+                return ethers.utils.formatUnits(value, decimals);
+            }
+            // Fallback to manual calculation if ethers utils is not available
+            const divisor = BigNumber.from(10).pow(decimals);
+            return value.mul(1000).div(divisor).toNumber() / 1000;
+        } catch (error) {
+            console.error('Error formatting units:', error);
+            return '0.00';
+        }
+    }
+
     // Check if we're on the correct network
     async checkNetwork() {
         if (!window.ethereum) throw new Error("Please install MetaMask!");
@@ -113,9 +129,9 @@ class Web3Security {
             const akmBalance = await akmContract.balanceOf(this.connectedAddress);
             const rethBalance = await rethContract.balanceOf(this.connectedAddress);
 
-            // Format balances using ethers.js Utils
-            const formattedAkm = ethers.utils.formatUnits(akmBalance, akmDecimals);
-            const formattedReth = ethers.utils.formatUnits(rethBalance, rethDecimals);
+            // Format balances using custom formatUnits method
+            const formattedAkm = this.formatUnits(akmBalance, akmDecimals);
+            const formattedReth = this.formatUnits(rethBalance, rethDecimals);
 
             // Update UI
             document.querySelector('.balance-box:nth-child(1) .balance-value').textContent = 
