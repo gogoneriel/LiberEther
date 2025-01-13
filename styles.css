@@ -1,3 +1,41 @@
+/* Nav Balance Boxes */
+.balance-box-nav {
+    background: rgba(30, 30, 30, 0.5);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(42, 42, 42, 0.5);
+    min-width: 100px;
+    text-align: center;
+}
+
+.balance-label-nav {
+    color: #FF2400;
+    font-size: 0.75rem;
+    margin-bottom: 2px;
+    font-weight: bold;
+}
+
+/* Mobile Styles */
+@media (max-width: 768px) {
+    .balance-box-nav {
+        padding: 0.25rem 0.5rem;
+        min-width: 70px;
+        font-size: 0.8rem;
+    }
+
+    .balance-label-nav {
+        font-size: 0.65rem;
+    }
+
+    .balance-value {
+        font-size: 0.75rem;
+    }
+}
+
+/* Add some margin to the main content to account for the fixed nav */
+.header-container {
+    margin-top: 5rem !important;
+}
 /* Add these new styles for the slider and auto-invest button */
 .apy-slider {
     -webkit-appearance: none;

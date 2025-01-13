@@ -21,6 +21,29 @@ const ERC20_ABI = [
     }
 ];
 
+// Price fetching functions
+async function fetchRETHPrice() {
+    try {
+        const response = await fetch('https://api.coingecko.com/api/v3/simple/token_price/arbitrum-one?contract_addresses=0xec70dcb4a1efa46b8f2d97c310c9c4790ba5ffa8&vs_currencies=usd');
+        const data = await response.json();
+        return data['0xec70dcb4a1efa46b8f2d97c310c9c4790ba5ffa8'].usd;
+    } catch (error) {
+        console.error('Error fetching RETH price:', error);
+        return 0;
+    }
+}
+
+async function fetchAKMPrice() {
+    try {
+        const response = await fetch('https://api.dexscreener.com/latest/dex/pairs/arbitrum/0xd9ecf7fb6c8356f1c42ef44b15b61c88625401be');
+        const data = await response.json();
+        return data.pairs?.[0]?.priceUsd ? Number(data.pairs[0].priceUsd) : 0;
+    } catch (error) {
+        console.error('Error fetching AKM price:', error);
+        return 0;
+    }
+}
+
 class Web3Security {
     constructor() {
         this.connectedAddress = null;
@@ -115,30 +138,41 @@ class Web3Security {
     // Update token balances
     async updateBalances() {
         if (!this.connectedAddress || !this.provider) return;
-
+    
         try {
             const signer = this.provider.getSigner();
             const akmContract = new ethers.Contract(AKM_ADDRESS, ERC20_ABI, signer);
             const rethContract = new ethers.Contract(RETH_ADDRESS, ERC20_ABI, signer);
-
+    
             // Get decimals for each token
             const akmDecimals = await akmContract.decimals();
             const rethDecimals = await rethContract.decimals();
-
+    
             // Get balances
             const akmBalance = await akmContract.balanceOf(this.connectedAddress);
             const rethBalance = await rethContract.balanceOf(this.connectedAddress);
-
-            // Format balances using custom formatUnits method
+    
+            // Format balances
             const formattedAkm = this.formatUnits(akmBalance, akmDecimals);
             const formattedReth = this.formatUnits(rethBalance, rethDecimals);
-
-            // Update UI
-            document.querySelector('.balance-box:nth-child(1) .balance-value').textContent = 
-                Number(formattedAkm).toFixed(2);
-            document.querySelector('.balance-box:nth-child(2) .balance-value').textContent = 
-                Number(formattedReth).toFixed(2);
-
+    
+            // Get token prices
+            const akmPrice = await fetchAKMPrice();
+            const rethPrice = await fetchRETHPrice();
+    
+            // Calculate USD values
+            const akmUsdValue = formattedAkm * akmPrice;
+            const rethUsdValue = formattedReth * rethPrice;
+            const totalUsdValue = akmUsdValue + rethUsdValue;
+    
+            // Update UI for nav balance boxes
+            const balanceBoxes = document.querySelectorAll('.balance-box-nav .balance-value');
+            if (balanceBoxes.length >= 3) {
+                balanceBoxes[0].textContent = Number(formattedAkm).toFixed(2);
+                balanceBoxes[1].textContent = Number(formattedReth).toFixed(2);
+                balanceBoxes[2].textContent = `$${totalUsdValue.toFixed(2)}`;
+            }
+    
         } catch (error) {
             console.error("Error updating balances:", error);
             throw error;

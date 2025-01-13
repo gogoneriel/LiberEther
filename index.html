@@ -1,38 +1,47 @@
 <!DOCTYPE html>
 <span style="color: #FF2400">⬨</span>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AKM Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
-    <link rel="stylesheet" href="styles.css">
-    <meta http-content-security-policy="default-src 'self' https: 'unsafe-inline' 'unsafe-eval';">
-    
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>AKM Dashboard</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
+        <link rel="stylesheet" href="styles.css">
+        <meta http-content-security-policy="default-src 'self' https: 'unsafe-inline' 'unsafe-eval';">
+    </head>
 
-<body>
-    <h1 style="font-size: 3rem; text-align: center; margin: 2rem 0; color: white; font-weight: bold; text-shadow: 0 0 10px rgba(255,36,0,0.3);">
-        AKM EndGame Dapp
-    </h1>
-    <button id="connectWallet" class="milie-button">
-        Connect Wallet
-    </button>
-    <div class="flex justify-center gap-4 mb-24">
-        <div class="balance-box bg-[#1e1e1e] p-4 rounded-lg border border-[#2a2a2a]">
-            <div class="balance-label" style="color: white;">AKM Balance</div>
-            <div class="balance-value">0.00</div>
-        </div>
-        <div class="balance-box bg-[#1e1e1e] p-4 rounded-lg border border-[#2a2a2a]">
-            <div class="balance-label" style="color: white;">RETH Balance</div>
-            <div class="balance-value">0.00</div>
-        </div>
-        <div class="balance-box bg-[#1e1e1e] p-4 rounded-lg border border-[#2a2a2a]">
-            <div class="balance-label" style="color: white;">USD Balance</div>
-            <div class="balance-value">$0.00</div>
-        </div>
-    </div>
+    <body>
+        <nav class="fixed top-0 right-0 w-full bg-transparent z-50 p-2 md:p-4" style="background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(10px);">
+            <div class="container mx-auto flex items-center justify-between flex-wrap gap-2">
+                <!-- Balance Boxes -->
+                <div class="flex flex-wrap items-center gap-2 md:gap-4">
+                    <div class="balance-box-nav">
+                        <div class="balance-label-nav">AKM</div>
+                        <div class="balance-value">0.00</div>
+                    </div>
+                    <div class="balance-box-nav">
+                        <div class="balance-label-nav">RETH</div>
+                        <div class="balance-value">0.00</div>
+                    </div>
+                    <div class="balance-box-nav">
+                        <div class="balance-label-nav">USD</div>
+                        <div class="balance-value">$0.00</div>
+                    </div>
+                </div>
+                <!-- Connect Wallet Button -->
+                <button 
+                    id="connectWallet" 
+                    class="bg-[#FF2400] hover:bg-[#ff4d33] text-white font-bold py-1 px-2 md:py-2 md:px-4 rounded-lg transition-colors text-xs md:text-base"
+                >
+                    Connect Wallet
+                </button>
+            </div>
+        </nav>
+        <h1 style="font-size: 3rem; text-align: center; margin: 2rem 0; color: white; font-weight: bold; text-shadow: 0 0 10px rgba(255,36,0,0.3);">
+            AKM EndGame Dapp
+        </h1>
+    
     
     <div class="header-container">
         <div class="header-image">
