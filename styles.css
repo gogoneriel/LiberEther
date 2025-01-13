@@ -835,3 +835,37 @@ body {
 #holdersList.visible .ranking-table.hidden-table thead {
     display: table-header-group;
 }
+/* Add these styles at the end of your styles.css file */
+
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .header-container > div:nth-child(2) {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .rsi-gif {
+        width: 125px;
+        height: 180px;
+        display: block;
+        margin: 0 auto;
+    }
+
+    div[style*="margin-top: 10px; margin-bottom: 10px;"] {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .milie-button {
+        display: block;
+        margin: 10px auto;
+    }
+}
