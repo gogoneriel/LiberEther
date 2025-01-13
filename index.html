@@ -212,8 +212,8 @@
             <span class="info-icon" style="margin-top: 5px;" title="The 13 largest AKM holders, aka Gotei 13 who have special privileges as project co-runners">i</span>
         </h2>
         <button class="milie-button" onclick="toggleHoldersList()">Click to view list</button>
-        <div id="holdersList">
-            <table class="ranking-table">
+        <div id="holdersList" style="display: none;">
+            <table class="ranking-table hidden-table">
                 <thead>
                     <tr>
                         <th>Rank</th>
@@ -305,18 +305,20 @@
         }
     
         function toggleHoldersList() {
-            const holdersList = document.getElementById('holdersList');
-            const button = document.querySelector('.container button');
-            
-            if (holdersList.style.display === 'none' || holdersList.style.display === '') {
-                holdersList.style.display = 'block';
-                button.textContent = 'Hide list';
-                loadHolders();
-            } else {
-                holdersList.style.display = 'none';
-                button.textContent = 'Click to view list';
-            }
-        }
+    const holdersList = document.getElementById('holdersList');
+    const button = document.querySelector('.container button');
+    
+    if (holdersList.style.display === 'none' || holdersList.style.display === '') {
+        holdersList.style.display = 'block';
+        holdersList.classList.add('visible');
+        button.textContent = 'Hide list';
+        loadHolders();
+    } else {
+        holdersList.style.display = 'none';
+        holdersList.classList.remove('visible');
+        button.textContent = 'Click to view list';
+    }
+}
     
         function toggleRoadmap() {
             const roadmapContent = document.getElementById('roadmapContent');

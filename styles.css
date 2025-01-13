@@ -729,3 +729,14 @@ body {
         overflow-x: hidden;
     }
 }
+.ranking-table.hidden-table thead {
+    display: none;
+}
+
+#holdersList.visible {
+    display: block;
+}
+
+#holdersList.visible .ranking-table.hidden-table thead {
+    display: table-header-group;
+}
