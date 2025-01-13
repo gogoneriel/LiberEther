@@ -675,5 +675,110 @@
         initializeWeb3();
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Create social buttons container
+        const socialButtons = document.getElementById('social-buttons');
+        
+        // Create buttons HTML
+        const buttonsHTML = `
+            <a href="https://t.me/+B9PHTaCwSQ03YWU0" target="_blank" rel="noopener noreferrer" class="social-button">
+                <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/brand-telegram.svg" alt="Telegram" />
+            </a>
+            <a href="https://x.com/akm_project_" target="_blank" rel="noopener noreferrer" class="social-button">
+                <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/brand-x.svg" alt="X (Twitter)" />
+            </a>
+            <a href="https://github.com/gogoneriel/AKM" target="_blank" rel="noopener noreferrer" class="social-button">
+                <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/brand-github.svg" alt="GitHub" />
+            </a>
+            <button onclick="openWhitepaper()" class="social-button">
+                <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/file-text.svg" alt="Whitepaper" />
+            </button>
+        `;
+        
+        socialButtons.innerHTML = buttonsHTML;
+    
+        // Create whitepaper modal
+        const modalHTML = `
+    <div id="whitepaper-modal" class="whitepaper-modal">
+        <div class="whitepaper-content">
+            <button onclick="closeWhitepaper()" class="close-button">×</button>
+            <h2 style="font-size: 1.5rem; margin-bottom: 1rem;">AKM Project White Paper</h2>
+            <div style="line-height: 1.6;">
+                <p style="margin: 0.5rem 0">The AKM Project is a pioneering initiative rooted in Ethereum maximalism, libertarianism, and entrepreneurship. It aims to create a self-sustaining, decentralized ecosystem where community members can thrive economically and ideologically through the use of smart contracts, DeFi, and AI.</p>
+
+                <h3 style="font-size: 1.2rem; margin-top: 1rem;">Introduction</h3>
+                <p style="margin: 0.5rem 0">The AKM Project seeks to revolutionize how individuals interact with finance and governance, leveraging Ethereum's blockchain for security and immutability. By promoting libertarian ethics, the project encourages a community where innovation, personal freedom, and mutual prosperity are paramount.</p>
+
+                <h3 style="font-size: 1.2rem; margin-top: 1rem;">Project Overview</h3>
+                
+                <h4 style="font-size: 1.1rem; margin-top: 0.8rem;">Core Philosophy</h4>
+                <ul style="margin-left: 1.5rem; list-style-type: disc;">
+                    <li>Ethereum Maximalism: Utilizing Ethereum for its proven security, decentralization, and smart contract capabilities.</li>
+                    <li>Libertarianism: Advocating for minimal governance and maximum individual freedom within the project's community.</li>
+                    <li>Entrepreneurship: Fostering an environment where new business ideas can be incubated using blockchain technology and AI.</li>
+                </ul>
+
+                <h4 style="font-size: 1.1rem; margin-top: 0.8rem;">Token Details</h4>
+                <ul style="margin-left: 1.5rem; list-style-type: none;">
+                    <li>Token Name: AKM</li>
+                    <li>Token Address: 0x287c48a78395f6fa4ac7f71a5e92dc65256f570f</li>
+                    <li>Circulating Supply: 565,020 AKM</li>
+                    <li>Total Supply: 1,000,000 AKM</li>
+                    <li>Burned: 434,980 AKM</li>
+                </ul>
+
+                <h3 style="font-size: 1.2rem; margin-top: 1rem;">Financial Structure</h3>
+                <p style="margin: 0.5rem 0">Decentralized Ecosystem: The AKM Project exclusively uses the most decentralized and Ethereum-aligned projects:</p>
+                <ul style="margin-left: 1.5rem; list-style-type: disc;">
+                    <li>Uniswap V3: For all token exchanges, ensuring liquidity in the decentralized way.</li>
+                    <li>RETH: For pairing with AKM in liquidity pools, supporting Ethereum's staking ecosystem.</li>
+                    <li>Nerite RETH Stability Pool: To provide USD yield and rewards.</li>
+                    <li>WarChest: An allocation of cryptocurrencies for managing project expenses and funding future AKM investments.</li>
+                </ul>
+
+                <h3 style="font-size: 1.2rem; margin-top: 1rem;">Tokenomics and Distribution</h3>
+                <p style="margin: 0.5rem 0">Initial distribution included 10% allocated to the team and 10% to seed investors at $0.10 per AKM. The top 5 holders control 65% of circulating supply, with a 10-year vesting schedule implementation planned (2 years lock-up + 8 years linear vesting).</p>
+
+                <h3 style="font-size: 1.2rem; margin-top: 1rem;">AI Integration - Milie Series</h3>
+                <ul style="margin-left: 1.5rem; list-style-type: disc;">
+                    <li>Milie: AI chatbot with market indicators</li>
+                    <li>Vitalic: AI for advocacy and fundraising</li>
+                    <li>Vitalic V2: AI bot for DeFi arbitrage</li>
+                </ul>
+
+                <h3 style="font-size: 1.2rem; margin-top: 1rem;">Business Incubation</h3>
+                <p style="margin: 0.5rem 0">10% of profits from incubated businesses are used to buy back and burn AKM tokens as indicated by Milie.</p>
+
+                <h3 style="font-size: 1.2rem; margin-top: 1rem;">Additional Notes</h3>
+                <p style="margin: 0.5rem 0">Future fund utilization: 20% to WarChest and 80% to add liquidity on Uniswap.</p>
+
+                <h3 style="font-size: 1.2rem; margin-top: 1rem;">Core Values</h3>
+                <p style="margin: 0.5rem 0">Ethics: Emphasizing libertarian principles, promoting self-governance, and financial freedom through technology.</p>
+            </div>
+        </div>
+    </div>
+`;
+        
+        document.body.insertAdjacentHTML('beforeend', modalHTML);
+    });
+    
+    function openWhitepaper() {
+        document.getElementById('whitepaper-modal').style.display = 'block';
+    }
+    
+    function closeWhitepaper() {
+        document.getElementById('whitepaper-modal').style.display = 'none';
+    }
+    
+    // Close modal when clicking outside
+    document.addEventListener('click', function(event) {
+        const modal = document.getElementById('whitepaper-modal');
+        if (event.target === modal) {
+            closeWhitepaper();
+        }
+    });
+    </script>
+<div id="social-buttons"></div>
 </body>
 </html>
