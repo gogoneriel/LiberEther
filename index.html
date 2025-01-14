@@ -555,16 +555,42 @@
             }
         }
     
+        
         async function getPerformanceData() {
-            try {
-                const response = await fetch('performance.json');
-                const data = await response.json();
-                return data.yearlyPerformance.ethComparison.percentageDifference;
-            } catch (error) {
-                console.error('Error fetching performance data:', error);
-                return null;
-            }
+    try {
+        // Get current AKM price from DEXScreener
+        const akmResponse = await fetch('https://api.dexscreener.com/latest/dex/pairs/arbitrum/0xd9ecf7fb6c8356f1c42ef44b15b61c88625401be');
+        const akmData = await akmResponse.json();
+        const currentAkmPrice = Number(akmData.pairs?.[0]?.priceUsd) || 0;
+
+        // Get ETH historical price from CryptoCompare (free API)
+        const today = Math.floor(Date.now() / 1000);
+        const oneYearAgo = today - (365 * 24 * 60 * 60);
+        const ethResponse = await fetch(`https://min-api.cryptocompare.com/data/v2/histoday?fsym=ETH&tsym=USD&limit=1&toTs=${oneYearAgo}`);
+        const ethData = await ethResponse.json();
+        
+        // Get current ETH price
+        const currentEthResponse = await fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD');
+        const currentEthData = await currentEthResponse.json();
+
+        if (!ethData.Data?.Data?.[0]?.close || !currentEthData?.USD) {
+            throw new Error('Invalid ETH price data');
         }
+
+        const oldEthPrice = ethData.Data.Data[0].close;
+        const currentEthPrice = currentEthData.USD;
+
+        // Calculate performance comparison
+        const ethReturn = ((currentEthPrice - oldEthPrice) / oldEthPrice) * 100;
+        const akmReturn = ((currentAkmPrice - 0.10) / 0.10) * 100; // Using initial AKM price of $0.10
+        const performanceDiff = akmReturn - ethReturn;
+
+        return performanceDiff;
+    } catch (error) {
+        console.error('Error calculating performance:', error);
+        return null;
+    }
+}
     
         // Modal click handler
         window.onclick = function(event) {
