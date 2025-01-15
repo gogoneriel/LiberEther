@@ -42,7 +42,12 @@
     {
         "name": "Cypher",
         "image": "images/holder9.jpg",
-        "amount": 7224
+        "amount": 7640
+    },
+    {
+        "name": "Madara",
+        "image": "images/holder11.jpg",
+        "amount": 7052
     },
     {
         "name": "Mi",
@@ -50,18 +55,15 @@
         "amount": 5565
     },
     {
-        "name": "Madara",
-        "image": "images/holder11.jpg",
-        "amount": 5525
+        "name": "Lala",
+        "image": "images/holder13.jpg",
+        "amount": 4706
     },
     {
         "name": "Tyler",
         "image": "images/holder12.jpg",
         "amount": 4494
-    },
-    {
-        "name": "Lala",
-        "image": "images/holder13.jpg",
-        "amount": 3230
     }
+    
+    
 ]
