@@ -1,3 +1,30 @@
+.dextswap-container {
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.dextswap-container iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Remove the old floating widget styles */
+.dextswap-widget-container {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .dextswap-container {
+        height: 500px; /* Slightly shorter on mobile */
+    }
+    
+    .flex-col.md\:flex-row {
+        gap: 1rem !important;
+    }
+}
 #social-buttons {
     margin-bottom: 2rem;
     position: fixed;

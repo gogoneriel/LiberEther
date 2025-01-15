@@ -53,138 +53,99 @@
         </h1>
     
     
-    <div class="header-container">
-        <div class="header-image">
-            <img src="./images/level2.gif" alt="AKM Ethereum Ninja Scene" class="top-image">
-        </div>
-        <div style="text-align: center;">
-            <img id="rsiGif" class="rsi-gif" alt="Loading Milie Indicator...">
-            <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px;">
-                Buy Signal
-                <span class="info-icon" title="1 ETH shining: Consider waiting to buy AKM. 2 ETH shining: Neutral market conditions. 3 ETH shining with red-eyed Milie: Potentially good time to buy AKM">i</span>
+        <div class="header-container">
+            <div class="header-image">
+                <img src="./images/level2.gif" alt="AKM Ethereum Ninja Scene" class="top-image">
             </div>
-            <a href="https://swap.defillama.com/?chain=arbitrum&from=0x287c48a78395f6fa4ac7f71a5e92dc65256f570f" 
-            class="milie-button"
-            >
-             Buy AKM [Temporary]
-         </a>
+            <div style="text-align: center;">
+                <img id="rsiGif" class="rsi-gif" alt="Loading Milie Indicator...">
+                <div style="margin-top: 10px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    Buy Signal
+                    <span class="info-icon" title="1 ETH shining: Consider waiting to buy AKM. 2 ETH shining: Neutral market conditions. 3 ETH shining with red-eyed Milie: Potentially good time to buy AKM">i</span>
+                </div>
+                <a href="https://swap.defillama.com/?chain=arbitrum&from=0x287c48a78395f6fa4ac7f71a5e92dc65256f570f" 
+                class="milie-button"
+                >
+                 Buy AKM [Temporary]
+             </a>
+            </div>
         </div>
-    <div class="flex justify-center">
-        <div class="flex flex-col md:flex-row gap-4 w-full max-w-4xl">
-            <!-- Deposit Box -->
-            <!-- Deposit Box -->
-<div class="flex-1 bg-[#1e1e1e] p-5 rounded-lg border border-[#2a2a2a]">
-    <div class="text-white text-xl font-bold mb-4" style="display: flex; align-items: center; gap: 10px;">
-        USD Yield+Rewards (Coming Soon)
-        <span class="info-icon" title="Deposit USD to earn yield and RETH token rewards from liquidations. No lockup period required">i</span>
-    </div>
-    
-    <!-- Auto Invest Toggle -->
-    <div style="text-align: right; margin-bottom: 10px;">
-        <button id="autoInvestToggle" class="auto-invest-toggle" onclick="toggleAutoInvest()">
-            Auto Invest Reward OFF
-        </button>
-    </div>
-
-    <div class="deposit-header">
-        <div class="toggle-buttons">
-            <button class="toggle-button active" onclick="toggleAction('deposit')">Deposit</button>
-            <button class="toggle-button" onclick="toggleAction('withdraw')">Withdraw</button>
-            <button class="toggle-button" onclick="claimRewards()">Claim Rewards</button>
-        </div>
-    </div>
-
-    <input type="number" class="amount-input" value="0.00" min="0" step="0.01">
-    
-    <!-- Auto invest Slider -->
-    
-    <div class="apy-display">
-        <span>Amount: <span id="apyValue">0</span>%</span>
-        <span>Max: 100%</span>
-    </div>
-    <input 
-    type="range" 
-    id="apySlider" 
-    class="apy-slider" 
-    min="0" 
-    max="100" 
-    value="0"
-    oninput="updateAPY(this.value)"
->
-
-    <button class="w-full bg-[#FF2400] hover:bg-[#ff4d33] text-white font-bold py-3 rounded-lg mt-4 transition-colors">
-        Deposit
-    </button>
-
-    <div class="pool-share">
-        Pool share: 0% 
-        <span class="info-icon" title="Percentage of your USD deposit compared to the total deposited in this pool.">i</span>
-    </div>
-</div>
-    
-            <!-- Swap Box -->
-            <!-- Swap Box -->
-            <div class="flex-1 bg-[#1e1e1e] p-5 rounded-lg border border-[#2a2a2a]">
-                <div class="text-white text-xl font-bold mb-4" style="display: flex; align-items: center; gap: 10px;">
-                    Swap (Coming Soon)
-                    <span class="info-icon" title="Trade between different assets including USD, AKM, RETH and more">i</span>
-            
+        <div class="flex justify-center">
+            <div class="flex flex-col md:flex-row gap-4 w-full max-w-4xl">
+                <!-- Deposit Box -->
+                <div class="flex-1 bg-[#1e1e1e] p-5 rounded-lg border border-[#2a2a2a]">
+                    <div class="text-white text-xl font-bold mb-4" style="display: flex; align-items: center; gap: 10px;">
+                        USD Yield+Rewards (Coming Soon)
+                        <span class="info-icon" title="Deposit USD to earn yield and RETH token rewards from liquidations. No lockup period required">i</span>
+                    </div>
+                    
+                    <!-- Auto Invest Toggle -->
+                    <div style="text-align: right; margin-bottom: 10px;">
+                        <button id="autoInvestToggle" class="auto-invest-toggle" onclick="toggleAutoInvest()">
+                            Auto Invest Reward OFF
+                        </button>
+                    </div>
+        
+                    <div class="deposit-header">
+                        <div class="toggle-buttons">
+                            <button class="toggle-button active" onclick="toggleAction('deposit')">Deposit</button>
+                            <button class="toggle-button" onclick="toggleAction('withdraw')">Withdraw</button>
+                            <button class="toggle-button" onclick="claimRewards()">Claim Rewards</button>
+                        </div>
+                    </div>
+        
+                    <input type="number" class="amount-input" value="0.00" min="0" step="0.01">
+                    
+                    <div class="apy-display">
+                        <span>Amount: <span id="apyValue">0</span>%</span>
+                        <span>Max: 100%</span>
+                    </div>
+                    
+                    <input 
+                        type="range" 
+                        id="apySlider" 
+                        class="apy-slider" 
+                        min="0" 
+                        max="100" 
+                        value="0"
+                        oninput="updateAPY(this.value)"
+                    >
+        
+                    <button class="w-full bg-[#FF2400] hover:bg-[#ff4d33] text-white font-bold py-3 rounded-lg mt-4 transition-colors">
+                        Deposit
+                    </button>
+        
+                    <div class="pool-share">
+                        Pool share: 0% 
+                        <span class="info-icon" title="Percentage of your USD deposit compared to the total deposited in this pool.">i</span>
+                    </div>
                 </div>
                 
-                <!-- From Token Input -->
-                <div class="bg-[#2a2a2a] rounded-lg p-4 mb-2">
-                    <div class="flex justify-between mb-2">
-                        <span class="text-gray-400 text-sm">From</span>
-                        <span class="text-gray-400 text-sm">Balance: 0</span>
+                <!-- DEXTswap Widget -->
+                <div class="flex-1 bg-[#1e1e1e] p-5 rounded-lg border border-[#2a2a2a]">
+                    <div class="text-white text-xl font-bold mb-4" style="display: flex; align-items: center; gap: 10px;">
+                        Swap
+                        <span class="info-icon" title="Trade between different assets including USD, AKM, RETH and more">i</span>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <input 
-                            type="text" 
-                            placeholder="0.0"
-                            class="bg-transparent text-white text-xl w-full outline-none"
-                        >
-                        <button class="bg-[#3a3a3a] text-white px-3 py-1 rounded-full text-sm">
-                            USD
-                        </button>
-                    </div>
-                </div>
-    
-                <!-- Swap Direction Arrow -->
-                <div class="flex justify-center -my-2 relative z-10">
-                    <button class="bg-[#2a2a2a] p-2 rounded-lg hover:bg-[#3a3a3a] transition-colors">
-                        ↓
-                    </button>
-                </div>
-    
-                <!-- To Token Input -->
-                <div class="bg-[#2a2a2a] rounded-lg p-4 mt-2">
-                    <div class="flex justify-between mb-2">
-                        <span class="text-gray-400 text-sm">To</span>
-                        <span class="text-gray-400 text-sm">Balance: 0</span>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <input 
-                            type="text" 
-                            placeholder="0.0"
-                            class="bg-transparent text-white text-xl w-full outline-none"
-                        >
-                        <button class="bg-[#3a3a3a] text-white px-3 py-1 rounded-full text-sm">
-                            AKM
-                        </button>
+                    
+                    <div class="dextswap-container">
+                        <iframe 
+                            id="dextswap-aggregator-widget"
+                            title="DEXTswap Aggregator"
+                            width="100%"
+                            height="600"
+                            src="https://www.dextools.io/widget-aggregator/en/swap/arbitrum/0x287c48a78395f6fa4ac7f71a5e92dc65256f570f"
+                            frameborder="0"
+                            allow="clipboard-write"
+                            style="border-radius: 10px;"
+                        ></iframe>
                     </div>
                 </div>
-
-                <!-- Add extra space to align with Deposit button -->
-                <div class="flex-grow" style="min-height: 62px;"></div>
-    
-                <!-- Swap Button -->
-                <button class="w-full bg-[#FF2400] hover:bg-[#ff4d33] text-white font-bold py-3 rounded-lg transition-colors">
-                    Swap
-                </button>
             </div>
         </div>
-    </div>
-    <!-- UNTIL HERE -->
+    
+   
+    
 
     <div class="container">
         <h1 style="display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.25rem; color: white;">
