@@ -1,89 +1,70 @@
 /* DEXTools Widget Container Styles */
 .dextswap-container {
-    width: 123%;
-    height: 600px;
+    width: calc(100% + 3px); /* Increased by 1px for extra millimeter */
+    height: 540px; /* Default height for desktop */
     position: relative;
-    margin: 0 -11.5%;
     overflow: hidden;
     border-radius: 8px;
+    background: #1e1e1e;
+    margin-left: -1.5px; /* Adjusted to center the wider container */
+    min-height: 500px; /* Ensure minimum height */
 }
 
 .dextswap-container iframe {
     width: 100%;
     height: 100%;
     border: none;
-    position: relative;
-    pointer-events: auto;
+    border-radius: 8px;
+    min-height: 500px; /* Ensure minimum height */
 }
+
 /* Swap box container styles */
 .flex-1.bg-[#1e1e1e] {
-    padding: 0;
+    padding: 1.25rem;
     border-radius: 0.5rem;
     border: 1px solid #2a2a2a;
-    height: 600px;
+    min-height: 500px;
 }
 
-/* Title inside swap box */
-.flex-1.bg-[#1e1e1e] .text-white.text-xl.font-bold.mb-4 {
-    padding: 0.75rem 1.25rem;  /* Reduced top padding */
-    margin-bottom: 0;
-}
 
-/* Single mobile media query */
+/* Mobile styles for the widget */
 @media (max-width: 768px) {
     .dextswap-container {
-        width: 130%;
-        height: 500px;
-        margin: 0 -15%;
+        height: 90vh; /* Use viewport height for mobile */
+        max-height: 600px;
+        min-height: 460px; /* Minimum height for mobile */
+        width: calc(100% + 5px);
+        margin-left: -2.5px;
+        transform: translateX(1px);
+    }
+    
+    .dextswap-container iframe {
+        height: 100%;
+        min-height: 460px; /* Match container min-height */
+    }
+    
+    .flex-1.bg-[#1e1e1e] .text-white.text-xl.font-bold.mb-4 {
+        font-size: 1rem;
+        padding: 0.5rem;
+    }
+}
+
+/* Additional fixes for Brave mobile */
+@media screen and (max-width: 768px) and (-webkit-min-device-pixel-ratio: 0) {
+    .dextswap-container {
+        height: 80vh; /* Slightly smaller for Brave */
+        min-height: 500px;
+        width: 100vw;
+        max-width: 100%;
+        margin: 0 -1rem;
+        transform: none;
     }
     
     .dextswap-container iframe {
         width: 100%;
         height: 100%;
-        border-radius: 8px;
+        min-height: 500px;
     }
-    
-    .flex-1.bg-[#1e1e1e] {
-        padding: 4px !important;
-        height: 500px;
-        overflow: hidden;
-    }
-    
-    /* Make the swap box title more compact */
-    .flex-1.bg-[#1e1e1e] .text-white.text-xl.font-bold.mb-4 {
-        padding: 4px 8px;
-        margin-bottom: 4px;
-        font-size: 0.9rem;
-    }
-}
-    
-    /* Adjust title spacing for mobile */
-    .flex-1.bg-[#1e1e1e] .text-white.text-xl.font-bold.mb-4 {
-        padding: 0.5rem 1rem;
-        font-size: 1rem;
-    }
-}
-
-/* Responsive styles for the widget */
-@media (max-width: 768px) {
-    .dextswap-container {
-        height: 400px;  /* Maintain height on mobile */
-        max-width: 100%;  /* Allow full width on mobile */
-        margin: 0 auto 20px auto;
-    }
-    
-    .dextswap-container iframe {
-        width: calc(100% + 50px);
-        margin-left: -25px;
-    }
-}
-
-/* Swap box container styles */
-.flex-1.bg-[#1e1e1e] {
-    padding: 1.25rem;  /* 20px in rem units */
-    border-radius: 0.5rem;
-    border: 1px solid #2a2a2a;
-    min-height: 500px;  /* Minimum height for the swap box */
 }
 #social-buttons {
     margin-bottom: 2rem;
