@@ -176,7 +176,9 @@
             Top 13 AKM Holders
             <span class="info-icon" style="margin-top: 5px;" title="The 13 largest AKM holders, aka Gotei 13 who have special privileges as project co-runners">i</span>
         </h2>
-        <button class="milie-button" onclick="toggleHoldersList()">Click to view list</button>
+        <div class="holders-buttons">
+            <button class="milie-button" onclick="toggleHoldersList()">Click to view list</button>
+        </div>
         <div id="holdersList" style="display: none;">
             <table class="ranking-table hidden-table">
                 <thead>
@@ -250,17 +252,19 @@
     
         function toggleHoldersList() {
     const holdersList = document.getElementById('holdersList');
-    const button = document.querySelector('.container button');
+    const toggleButton = document.querySelector('.container .milie-button');
+    
+    if (!holdersList || !toggleButton) return;
     
     if (holdersList.style.display === 'none' || holdersList.style.display === '') {
         holdersList.style.display = 'block';
         holdersList.classList.add('visible');
-        button.textContent = 'Hide list';
+        toggleButton.textContent = 'Hide list';
         loadHolders();
     } else {
         holdersList.style.display = 'none';
         holdersList.classList.remove('visible');
-        button.textContent = 'Click to view list';
+        toggleButton.textContent = 'Click to view list';
     }
 }
     
@@ -470,36 +474,49 @@ async function updateRSIGif() {
         }
     
         async function loadHolders() {
-            try {
-                currentPrice = await fetchAKMPrice();
-                const response = await fetch('holders.json');
-                const holders = await response.json();
-                const tableBody = document.getElementById('rankingTableBody');
-                tableBody.innerHTML = '';
-    
-                holders.forEach((holder, index) => {
-                    const row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td class="rank-number">${index + 1}${getOrdinal(index + 1)}</td>
-                        <td class="holder-cell">
-                            <div class="holder-container">
-                                <img src="${holder.image}" alt="${holder.name}" class="holder-image" onclick="openModal(this.src)">
-                                <div class="holder-info">
-                                    <div class="holder-name">${holder.name}</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td class="amount-cell">
-                            <div class="holder-amount">${holder.amount.toLocaleString()} AKM</div>
-                            <div class="holder-amount">($${calculateUSDValue(holder.amount)})</div>
-                        </td>
-                    `;
-                    tableBody.appendChild(row);
-                });
-            } catch (error) {
-                console.error('Error loading holders:', error);
-            }
+    try {
+        currentPrice = await fetchAKMPrice();
+        const timestamp = new Date().getTime();
+        const response = await fetch(`holders.json?t=${timestamp}`);
+        
+        if (!response.ok) {
+            throw new Error('Failed to fetch holders data');
         }
+        
+        const holders = await response.json();
+        const tableBody = document.getElementById('rankingTableBody');
+        
+        if (!tableBody) return;
+        
+        tableBody.innerHTML = '';
+
+        holders.forEach((holder, index) => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td class="rank-number">${index + 1}${getOrdinal(index + 1)}</td>
+                <td class="holder-cell">
+                    <div class="holder-container">
+                        <img src="${holder.image}?t=${timestamp}" alt="${holder.name}" class="holder-image" onclick="openModal(this.src)">
+                        <div class="holder-info">
+                            <div class="holder-name">${holder.name}</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="amount-cell">
+                    <div class="holder-amount">${holder.amount.toLocaleString()} AKM</div>
+                    <div class="holder-amount">($${calculateUSDValue(holder.amount)})</div>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    } catch (error) {
+        console.error('Error loading holders:', error);
+        const tableBody = document.getElementById('rankingTableBody');
+        if (tableBody) {
+            tableBody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: red;">Error loading holders data. Please try again.</td></tr>';
+        }
+    }
+}
     
         function openModal(src) {
             const modal = document.getElementById('imageModal');
@@ -616,6 +633,14 @@ async function updateRSIGif() {
             button.textContent = 'Auto Invest Reward ON';
         }
     }
+    function startHoldersAutoRefresh() {
+    setInterval(() => {
+        const holdersList = document.getElementById('holdersList');
+        if (holdersList && holdersList.style.display !== 'none') {
+            loadHolders();
+        }
+    }, 30000);
+}
     </script>
 
 
@@ -670,7 +695,20 @@ async function updateRSIGif() {
             console.error('Initialization error:', error);
         }
     }
+    function startHoldersAutoRefresh() {
+    setInterval(() => {
+        const holdersList = document.getElementById('holdersList');
+        if (holdersList && holdersList.style.display !== 'none') {
+            loadHolders();
+        }
+    }, 30000);
+}
 
+// Add this line to your DOMContentLoaded event
+document.addEventListener('DOMContentLoaded', function() {
+    initializeWeb3();
+    startHoldersAutoRefresh(); // Add this line
+});
     // Start initialization when the page loads
     document.addEventListener('DOMContentLoaded', function() {
         initializeWeb3();

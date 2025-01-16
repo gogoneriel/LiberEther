@@ -937,3 +937,10 @@ body {
         margin: 10px auto;
     }
 }
+.holders-buttons {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0;
+    z-index: 1;
+    position: relative;
+}
