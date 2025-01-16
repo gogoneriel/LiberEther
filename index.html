@@ -428,14 +428,14 @@ async function updateRSIGif() {
         console.log('Updating GIF for RSI:', rsi);
         
         let selectedGif = RSI_GIF_LOW;
-        let message = 'RSI is low (<45) - Consider waiting';
+        let message = 'RSI is low (<35) - Consider waiting';
         
         if (rsi >= 60) {
             selectedGif = RSI_GIF_VERY_HIGH;
             message = 'RSI is very high (≥60) - Potentially good time to sell';
-        } else if (rsi >= 45) {
+        } else if (rsi >= 35) {
             selectedGif = RSI_GIF_HIGH;
-            message = 'RSI is moderate (45-60) - Normal market conditions';
+            message = 'RSI is moderate (35-60) - Normal market conditions';
         }
 
         gifElement.src = selectedGif;
