@@ -225,6 +225,21 @@
     </div>
     <script>
         const RSI_UPDATE_INTERVAL = 60000; // Update every 1 minute
+// Cache variables
+let rsiCache = {
+    value: null,
+    timestamp: 0
+};
+let ethPriceCache = {
+    value: null,
+    timestamp: 0
+};
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
+
+// Cache helper function
+function isCacheValid(cache) {
+    return cache.timestamp && (Date.now() - cache.timestamp < CACHE_DURATION);
+}
         // Global variables
         let currentPrice = 0;
         let scale = 1;
@@ -372,17 +387,34 @@
         // API and Data Functions
         async function getRSI() {
     try {
-        const PERIODS = 14; // Standard RSI uses 14 periods
-        const response = await fetch('https://min-api.cryptocompare.com/data/v2/histohour?fsym=ETH&tsym=USDT&limit=100'); // Get more data for accuracy
-        const data = await response.json();
-
-        if (!data.Data?.Data) {
-            throw new Error('Invalid data received from API');
+        // Check cache first
+        if (isCacheValid(rsiCache)) {
+            console.log('Using cached RSI value');
+            return rsiCache.value;
         }
 
-        // Get closing prices
-        const prices = data.Data.Data.map(candle => candle.close);
+        console.log('Fetching fresh RSI data from Binance...');
+        const PERIODS = 14;
         
+        // Get 4h candlesticks from Binance
+        const response = await fetch('https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=4h&limit=100');
+        
+        if (!response.ok) {
+            throw new Error(`Binance API HTTP error! status: ${response.status}`);
+        }
+        
+        const klineData = await response.json();
+
+        // Validate data
+        if (!Array.isArray(klineData) || klineData.length < PERIODS + 1) {
+            throw new Error('Insufficient data points for RSI calculation');
+        }
+
+        // Extract closing prices (index 4 in Binance kline data)
+        const prices = klineData
+            .map(candle => parseFloat(candle[4]))
+            .filter(price => !isNaN(price));
+
         // Calculate price changes
         const changes = [];
         for (let i = 1; i < prices.length; i++) {
@@ -404,10 +436,14 @@
         }
 
         // Calculate RSI
-        const rs = avgGain / avgLoss;
+        const rs = avgLoss === 0 ? 100 : avgGain / avgLoss;
         const rsiValue = 100 - (100 / (1 + rs));
-        
-        console.log('Current RSI:', rsiValue); // Debug log
+
+        // Update cache
+        rsiCache.value = rsiValue;
+        rsiCache.timestamp = Date.now();
+
+        console.log('Calculated RSI:', rsiValue);
         return rsiValue;
     } catch (error) {
         console.error('Error calculating RSI:', error);
@@ -430,22 +466,22 @@ async function updateRSIGif() {
 
         console.log('Updating GIF for RSI:', rsi);
         
-        let selectedGif = RSI_GIF_LOW;
-        let message = 'RSI is low (<35) - Consider waiting';
-        
         if (rsi >= 60) {
-            selectedGif = RSI_GIF_VERY_HIGH;
-            message = 'RSI is very high (≥60) - Potentially good time to sell';
+            gifElement.src = RSI_GIF_VERY_HIGH;
+            console.log('RSI is very high (≥60) - Potentially good time to sell');
         } else if (rsi >= 35) {
-            selectedGif = RSI_GIF_HIGH;
-            message = 'RSI is moderate (35-60) - Normal market conditions';
+            gifElement.src = RSI_GIF_HIGH;
+            console.log('RSI is moderate (35-60) - Normal market conditions');
+        } else {
+            gifElement.src = RSI_GIF_LOW;
+            console.log('RSI is low (<35) - Consider waiting');
         }
-
-        gifElement.src = selectedGif;
-        console.log('Selected GIF:', selectedGif);
-        console.log('Market condition:', message);
     } catch (error) {
         console.error('Error updating RSI GIF:', error);
+        const gifElement = document.getElementById('rsiGif');
+        if (gifElement) {
+            gifElement.src = RSI_GIF_LOW;
+        }
     }
 }
     
@@ -565,32 +601,46 @@ async function updateRSIGif() {
         
         async function getPerformanceData() {
     try {
-        // Get current AKM price from DEXScreener
+        console.log('Calculating performance data...');
+        
+        // Get current AKM price (keeping existing code)
         const akmResponse = await fetch('https://api.dexscreener.com/latest/dex/pairs/arbitrum/0xd9ecf7fb6c8356f1c42ef44b15b61c88625401be');
         const akmData = await akmResponse.json();
         const currentAkmPrice = Number(akmData.pairs?.[0]?.priceUsd) || 0;
-
-        // Get ETH historical price from CryptoCompare (free API)
-        const today = Math.floor(Date.now() / 1000);
-        const oneYearAgo = today - (365 * 24 * 60 * 60);
-        const ethResponse = await fetch(`https://min-api.cryptocompare.com/data/v2/histoday?fsym=ETH&tsym=USD&limit=1&toTs=${oneYearAgo}`);
-        const ethData = await ethResponse.json();
+        
+        // Get historical ETH price (1 year ago)
+        const oneYearAgo = Date.now() - (365 * 24 * 60 * 60 * 1000);
+        const historicalResponse = await fetch(
+            `https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=1d&startTime=${oneYearAgo}&limit=1`
+        );
+        
+        if (!historicalResponse.ok) {
+            throw new Error('Failed to fetch historical ETH price');
+        }
+        
+        const historicalData = await historicalResponse.json();
         
         // Get current ETH price
-        const currentEthResponse = await fetch('https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD');
-        const currentEthData = await currentEthResponse.json();
-
-        if (!ethData.Data?.Data?.[0]?.close || !currentEthData?.USD) {
-            throw new Error('Invalid ETH price data');
+        const currentResponse = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT');
+        const currentData = await currentResponse.json();
+        
+        if (!currentData?.price || !Array.isArray(historicalData) || !historicalData[0]) {
+            throw new Error('Invalid price data');
         }
 
-        const oldEthPrice = ethData.Data.Data[0].close;
-        const currentEthPrice = currentEthData.USD;
+        const oldEthPrice = parseFloat(historicalData[0][4]); // Close price
+        const currentEthPrice = parseFloat(currentData.price);
 
-        // Calculate performance comparison
+        // Calculate returns
         const ethReturn = ((currentEthPrice - oldEthPrice) / oldEthPrice) * 100;
         const akmReturn = ((currentAkmPrice - 0.10) / 0.10) * 100; // Using initial AKM price of $0.10
+
         const performanceDiff = akmReturn - ethReturn;
+        console.log('Performance calculation:', {
+            ethReturn,
+            akmReturn,
+            performanceDiff
+        });
 
         return performanceDiff;
     } catch (error) {

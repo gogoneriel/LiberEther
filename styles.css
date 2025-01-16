@@ -1,12 +1,12 @@
 /* DEXTools Widget Container Styles */
 .dextswap-container {
-    width: calc(100% + 3px); /* Increased by 1px for extra millimeter */
+    width: calc(100% + 10px); /* Increased for desktop view */
     height: 540px; /* Default height for desktop */
     position: relative;
     overflow: hidden;
     border-radius: 8px;
     background: #1e1e1e;
-    margin-left: -1.5px; /* Adjusted to center the wider container */
+    margin-left: -5px; /* Adjusted to center the wider container */
     min-height: 500px; /* Ensure minimum height */
 }
 
