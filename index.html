@@ -8,7 +8,7 @@
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
         <link rel="stylesheet" href="styles.css">
-        <meta http-content-security-policy="default-src 'self' https: 'unsafe-inline' 'unsafe-eval';">
+        <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; frame-src *; child-src *; worker-src *;">
     </head>
 
     <body>
@@ -468,7 +468,7 @@ async function updateRSIGif() {
         
         if (rsi >= 60) {
             gifElement.src = RSI_GIF_VERY_HIGH;
-            console.log('RSI is very high (≥60) - Potentially good time to sell');
+            console.log('RSI is very high (≥60) - Potentially good time to hodl');
         } else if (rsi >= 35) {
             gifElement.src = RSI_GIF_HIGH;
             console.log('RSI is moderate (35-60) - Normal market conditions');
@@ -892,5 +892,7 @@ document.addEventListener('DOMContentLoaded', function() {
 };
     </script>
 <div id="social-buttons"></div>
+<script async type='module' src='https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js'></script>
+<zapier-interfaces-chatbot-embed is-popup='true' chatbot-id='cm5v649pl000j5pc83jltmwfs'></zapier-interfaces-chatbot-embed>
 </body>
 </html>

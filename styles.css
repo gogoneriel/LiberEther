@@ -944,3 +944,13 @@ body {
     z-index: 1;
     position: relative;
 }
+
+/* Add padding to bottom of page to prevent navigation overlap */
+body {
+    padding-bottom: 120px !important; /* Increased bottom padding */
+}
+
+/* Adjust bottom margin for the last container */
+.roadmap-container:last-child {
+    margin-bottom: 80px;
+}
