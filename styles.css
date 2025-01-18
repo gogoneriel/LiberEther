@@ -276,62 +276,30 @@
     }
 }
 
-/* Zoom controls */
-.zoom-container {
-    position: relative;
-    margin: 20px auto;
+/* Add this new code */
+.pdf-container {
+    width: 100%;
     max-width: 800px;
-}
-
-.zoom-controls {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    z-index: 100;
-    display: flex;
-    gap: 5px;
-}
-
-.zoom-button, .arrow-button {
-    background: #FF2400;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.zoom-button:hover, .arrow-button:hover {
-    background: #ff4d33;
-}
-
-#image-container {
-    overflow: hidden;
+    margin: 20px auto;
     border: 2px solid #2a2a2a;
     border-radius: 8px;
     background: #1e1e1e;
-    height: 500px;
-    position: relative;
+    overflow: hidden;
 }
 
-.roadmap-image {
+.roadmap-pdf {
     width: 100%;
-    height: auto;
-    transform-origin: center;
-    transition: transform 0.1s ease-out;
+    height: 600px;
+    border: none;
 }
 
-.arrow-controls {
-    margin-top: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 5px;
-}
-
-.arrow-middle {
-    display: flex;
-    gap: 5px;
+@media (max-width: 768px) {
+    .pdf-container {
+        height: 70vh;
+    }
+    .roadmap-pdf {
+        height: 100%;
+    }
 }
 .holder-image, .ranking-table img {
     width: 180px !important;
@@ -419,75 +387,7 @@
 ```
 ```
 
-.zoom-container {
-    position: relative;
-    width: 100%;
-    margin: 20px auto;
-    background: rgba(30, 30, 30, 0.8);
-    border-radius: 8px;
-    padding: 20px;
-}
 
-/* Add responsive styles for mobile */
-@media screen and (max-width: 768px) {
-    .zoom-container {
-        height: 70vh;
-        max-height: 600px;
-        display: flex;
-        flex-direction: column;
-    }
-
-.zoom-controls {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    display: flex;
-    gap: 5px;
-    z-index: 1000;
-}
-
-.zoom-button {
-    background: #FF2400;
-    color: white;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.zoom-button:hover {
-    background: #ff4d33;
-}
-
-#image-container {
-    overflow: hidden;
-    border: 2px solid #2a2a2a;
-    border-radius: 8px;
-    background: #1e1e1e;
-    height: 500px;
-    position: relative;
-    cursor: grab;
-    touch-action: none;
-}
-
-.roadmap-image {
-    transform-origin: center;
-    transition: transform 0.1s ease-out;
-    max-width: none;
-    width: 100%;
-    height: auto;
-    position: relative;
-    user-select: none;
-    -webkit-user-drag: none;
-}
-
-.zoom-instructions {
-    text-align: center;
-    color: #666;
-    margin-top: 10px;
-    font-size: 0.9em;
-}
 
 .balance-box {
     background: #1e1e1e;

@@ -203,23 +203,8 @@
         </h2>
         <button class="milie-button" onclick="toggleRoadmap()">Click to view roadmap</button>
         <div id="roadmapContent" style="display: none;">
-            <div class="zoom-container">
-                <div class="zoom-controls">
-                    <button onclick="zoomIn()" class="zoom-button">+</button>
-                    <button onclick="zoomOut()" class="zoom-button">-</button>
-                    <button onclick="resetZoom()" class="zoom-button">Reset</button>
-                </div>
-                <div id="image-container">
-                    <img id="roadmapImage" src="./images/roadmap.png" class="roadmap-image" alt="AKM Roadmap" draggable="false">
-                </div>
-                <div class="arrow-controls">
-                    <button onclick="panUp()" class="arrow-button">↑</button>
-                    <div class="arrow-middle">
-                        <button onclick="panLeft()" class="arrow-button">←</button>
-                        <button onclick="panRight()" class="arrow-button">→</button>
-                    </div>
-                    <button onclick="panDown()" class="arrow-button">↓</button>
-                </div>
+            <div class="pdf-container">
+                <embed id="roadmapImage" src="./images/roadmap.pdf" class="roadmap-pdf" type="application/pdf">
             </div>
         </div>
     </div>
@@ -240,13 +225,7 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes cache
 function isCacheValid(cache) {
     return cache.timestamp && (Date.now() - cache.timestamp < CACHE_DURATION);
 }
-        // Global variables
-        let currentPrice = 0;
-        let scale = 1;
-        let posX = 0;
-        let posY = 0;
-        let isDragging = false;
-        let startX, startY;
+    
         
         const RSI_GIF_HIGH = "https://s7.gifyu.com/images/SXr0D.gif";
         const RSI_GIF_VERY_HIGH = "https://s13.gifyu.com/images/SXnzh.gif";
@@ -283,106 +262,24 @@ function isCacheValid(cache) {
     }
 }
     
-        function toggleRoadmap() {
-            const roadmapContent = document.getElementById('roadmapContent');
-            const button = document.querySelector('.roadmap-container button');
-            
-            if (roadmapContent.style.display === 'none' || roadmapContent.style.display === '') {
-                roadmapContent.style.display = 'block';
-                button.textContent = 'Hide roadmap';
-                document.getElementById('roadmapImage').src = './images/roadmap.png';
-                setupDragAndZoom();
-            } else {
-                roadmapContent.style.display = 'none';
-                button.textContent = 'Click to view roadmap';
-            }
-        }
+function toggleRoadmap() {
+    const roadmapContent = document.getElementById('roadmapContent');
+    const button = document.querySelector('.roadmap-container button');
+    
+    if (roadmapContent.style.display === 'none' || roadmapContent.style.display === '') {
+        roadmapContent.style.display = 'block';
+        button.textContent = 'Hide roadmap';
+    } else {
+        roadmapContent.style.display = 'none';
+        button.textContent = 'Click to view roadmap';
+    }
+}
     
         function claimRewards() {
             console.log('Claim rewards clicked');
         }
     
-        // Roadmap Controls
-        function updateTransform() {
-            const img = document.getElementById('roadmapImage');
-            if (img) {
-                img.style.transform = `translate(${posX}px, ${posY}px) scale(${scale})`;
-            }
-        }
-    
-        function zoomIn() {
-            scale = Math.min(scale * 1.2, 4);
-            updateTransform();
-        }
-    
-        function zoomOut() {
-            scale = Math.max(scale / 1.2, 0.5);
-            updateTransform();
-        }
-    
-        function resetZoom() {
-            scale = 1;
-            posX = 0;
-            posY = 0;
-            updateTransform();
-        }
-    
-        function panUp() { posY += 50; updateTransform(); }
-        function panDown() { posY -= 50; updateTransform(); }
-        function panLeft() { posX += 50; updateTransform(); }
-        function panRight() { posX -= 50; updateTransform(); }
-    
-        function setupDragAndZoom() {
-            const container = document.getElementById('image-container');
-            if (!container) return;
-    
-            // Mouse events
-            container.onmousedown = function(e) {
-                isDragging = true;
-                startX = e.clientX - posX;
-                startY = e.clientY - posY;
-                e.preventDefault();
-            };
-    
-            container.onmousemove = function(e) {
-                if (!isDragging) return;
-                posX = e.clientX - startX;
-                posY = e.clientY - startY;
-                updateTransform();
-            };
-    
-            container.onmouseup = container.onmouseleave = function() {
-                isDragging = false;
-            };
-    
-            // Touch events
-            container.ontouchstart = function(e) {
-                const touch = e.touches[0];
-                isDragging = true;
-                startX = touch.clientX - posX;
-                startY = touch.clientY - posY;
-                e.preventDefault();
-            };
-    
-            container.ontouchmove = function(e) {
-                if (!isDragging) return;
-                const touch = e.touches[0];
-                posX = touch.clientX - startX;
-                posY = touch.clientY - startY;
-                updateTransform();
-            };
-    
-            container.ontouchend = function() {
-                isDragging = false;
-            };
-    
-            // Wheel zoom
-            container.onwheel = function(e) {
-                e.preventDefault();
-                if (e.deltaY < 0) zoomIn();
-                else zoomOut();
-            };
-        }
+        
     
         // API and Data Functions
         async function getRSI() {
