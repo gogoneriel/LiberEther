@@ -2,27 +2,32 @@
     {
         "name": "Neriel",
         "image": "images/holder1.jpg",
-        "amount": 111266
+        "amount": 111266,
+        "description": "2 years locked + 8 years linear vesting distribution (starting 1/1/2025)"
     },
     {
         "name": "The German",
         "image": "images/holder2.jpg",
-        "amount": 94410
+        "amount": 94410,
+        "description": "2 years locked + 8 years linear vesting distribution (starting 1/1/2025)"
     },
     {
         "name": "Midget",
         "image": "images/holder3.jpg",
-        "amount": 81836
+        "amount": 81836,
+        "description": "2 years locked + 8 years linear vesting distribution (starting 1/1/2025)"
     },
     {
         "name": "Queen",
         "image": "images/holder4.jpg",
-        "amount": 39559
+        "amount": 39559,
+        "description": "2 years locked + 8 years linear vesting distribution (starting 1/1/2025)"
     },
     {
         "name": "King",
         "image": "images/holder5.jpg",
-        "amount": 25720
+        "amount": 25720,
+        "description": "2 years locked + 8 years linear vesting distribution (starting 1/1/2025)"
     },
     {
         "name": "Satan",
@@ -64,6 +69,4 @@
         "image": "images/holder12.jpg",
         "amount": 4494
     }
-    
-    
 ]

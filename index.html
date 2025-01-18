@@ -218,7 +218,13 @@
         <button class="milie-button" onclick="toggleRoadmap()">Click to view roadmap</button>
         <div id="roadmapContent" style="display: none;">
             <div class="pdf-container">
-                <embed id="roadmapImage" src="./images/roadmap.pdf" class="roadmap-pdf" type="application/pdf">
+                <iframe id="roadmapImage" 
+                        src="https://drive.google.com/file/d/1A-KMOKp-GV75r9eBE5ygJXPGG4I70fQv/preview"
+                        class="roadmap-pdf" 
+                        frameborder="0"
+                        scrolling="auto"
+                        allowfullscreen>
+                </iframe>
             </div>
         </div>
     </div>
@@ -446,6 +452,7 @@ async function updateRSIGif() {
                         <img src="${holder.image}?t=${timestamp}" alt="${holder.name}" class="holder-image" onclick="openModal(this.src)">
                         <div class="holder-info">
                             <div class="holder-name">${holder.name}</div>
+                            ${holder.description ? `<div class="holder-description">${holder.description}</div>` : ''}
                         </div>
                     </div>
                 </td>
