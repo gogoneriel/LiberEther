@@ -30,6 +30,10 @@
                         <div class="balance-label-nav">USD</div>
                         <div class="balance-value">$0.00</div>
                     </div>
+                    <div class="balance-box-nav">
+                        <div class="balance-label-nav">Market Cap</div>
+                        <div style="color: #4ade80; font-size: 0.8rem;" id="marketCap" class="balance-value">$0</div>
+                    </div>
                 </div>
                 <!-- Connect Wallet Button -->
                 <!-- Connect Wallet and Add Token Buttons -->
@@ -470,6 +474,7 @@ async function updateRSIGif() {
     
         async function updateData() {
     try {
+        const CIRCULATING_SUPPLY = 212229; // Amount of AKM in open market (excluding locked tokens)
         const priceResponse = await fetch('https://api.dexscreener.com/latest/dex/pairs/arbitrum/0xd9ecf7fb6c8356f1c42ef44b15b61c88625401be');
         const priceData = await priceResponse.json();
         
@@ -486,6 +491,13 @@ async function updateRSIGif() {
             const burnedAmountEl = document.getElementById('burnedAmount');
             
             if (tokenPriceEl) tokenPriceEl.textContent = `$${Number(price).toFixed(2)}`;
+            
+            // Calculate and update market cap
+            const marketCap = currentPrice * CIRCULATING_SUPPLY;
+            const marketCapEl = document.getElementById('marketCap');
+            if (marketCapEl) {
+                marketCapEl.textContent = `$${marketCap.toLocaleString(undefined, {maximumFractionDigits: 0})}`;
+            }
             
             const initialPrice = 0.10;
             const priceChange = ((currentPrice - initialPrice) / initialPrice) * 100;
