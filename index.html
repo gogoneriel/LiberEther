@@ -387,10 +387,10 @@ async function updateRSIGif() {
         if (!gifElement) return;
 
         if (rsi === null) {
-            console.error('RSI calculation failed');
-            gifElement.src = RSI_GIF_LOW; // Default to LOW in case of error
-            return;
-        }
+    console.error('RSI calculation failed');
+    gifElement.src = RSI_GIF_HIGH; // New code - shows 2 ETHs when error
+    return;
+}
 
         console.log('Updating GIF for RSI:', rsi);
         
@@ -405,12 +405,12 @@ async function updateRSIGif() {
             console.log('RSI is low (<35) - Consider waiting');
         }
     } catch (error) {
-        console.error('Error updating RSI GIF:', error);
-        const gifElement = document.getElementById('rsiGif');
-        if (gifElement) {
-            gifElement.src = RSI_GIF_LOW;
-        }
+    console.error('Error updating RSI GIF:', error);
+    const gifElement = document.getElementById('rsiGif');
+    if (gifElement) {
+        gifElement.src = RSI_GIF_HIGH; // New code
     }
+}
 }
     
         async function fetchAKMPrice() {
