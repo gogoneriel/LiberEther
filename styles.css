@@ -890,6 +890,7 @@ body {
 #athPrice {
     color: #4ade80 !important; /* Always green */
     font-weight: bold;
+    content: '(price loading)';
 }
 
 #athDate {
