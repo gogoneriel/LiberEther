@@ -864,7 +864,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 4px;  /* Changed from 8px to 4px to bring elements closer together */
 }
 
 .fire-icon {
