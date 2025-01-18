@@ -870,3 +870,29 @@ body {
 .fire-icon {
     color: #FF2400;
 }
+/* Updated price display styles with 30% smaller sizes */
+.price-container {
+    font-size: 1em;  /* Reduced from 1.2em */
+}
+
+#tokenPrice {
+    color: #4ade80 !important; /* Always green */
+    font-size: 1.8em !important; /* Reduced from 2.5em */
+    font-weight: bold;
+}
+
+.ath-display {
+    font-size: 1em !important; /* Reduced from 1.4em */
+    color: white !important;
+    margin: 10px 0; /* Reduced from 15px */
+}
+
+#athPrice {
+    color: #4ade80 !important; /* Always green */
+    font-weight: bold;
+}
+
+#athDate {
+    color: white !important;
+    font-size: 0.8em !important; /* Reduced from 0.9em */
+}
