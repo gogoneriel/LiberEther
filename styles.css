@@ -645,6 +645,11 @@ body {
     border-radius: 5px;
 }
 
+/* Specific style for price change under AKM Price Today */
+#priceChange.performance {
+    font-size: 1.05em; /* 30% smaller than the default 1.5em */
+}
+
 .positive { 
     color: #4ade80; 
     background: #1e1e1e; 
@@ -853,4 +858,15 @@ body {
 /* Adjust bottom margin for the last container */
 .roadmap-container:last-child {
     margin-bottom: 80px;
+}
+/* Add these styles for the burned amount display */
+.burned-amount-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.fire-icon {
+    color: #FF2400;
 }
