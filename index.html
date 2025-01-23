@@ -492,7 +492,7 @@ async function updateRSIGif() {
     
         async function updateData() {
     try {
-        const CIRCULATING_SUPPLY = 212229; // Amount of AKM in open market (excluding locked tokens)
+        const CIRCULATING_SUPPLY = 204229; // Amount of AKM in open market (excluding locked tokens)
         const priceResponse = await fetch('https://api.dexscreener.com/latest/dex/pairs/arbitrum/0xd9ecf7fb6c8356f1c42ef44b15b61c88625401be');
         const priceData = await priceResponse.json();
         
