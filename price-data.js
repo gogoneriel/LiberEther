@@ -22,7 +22,7 @@ const priceData = {
             // Update market cap
             const marketCapEl = document.getElementById('marketCap');
             if (marketCapEl) {
-                const CIRCULATING_SUPPLY = 565020; // Your circulating supply
+                const CIRCULATING_SUPPLY = 207209; // Your circulating supply
                 const marketCap = data.price * CIRCULATING_SUPPLY;
                 marketCapEl.textContent = `$${marketCap.toLocaleString(undefined, {maximumFractionDigits: 0})}`;
             }
