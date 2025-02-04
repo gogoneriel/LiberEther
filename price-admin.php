@@ -1,5 +1,8 @@
 <?php
-$adminPassword = "Gogoneriel"; // Change this password
+$adminPassword = "Gogoneriel2023."; // Change this password
+header('Cache-Control: no-cache, no-store, must-revalidate');
+header('Pragma: no-cache');
+header('Expires: 0');
 $priceFile = "current_price.txt";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
