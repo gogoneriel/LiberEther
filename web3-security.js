@@ -1,5 +1,5 @@
 // Token addresses on Arbitrum One
-const AKM_ADDRESS = '0x287c48a78395f6fa4ac7f71a5e92dc65256f570f';
+const LETH_ADDRESS = '0xf7acec1b4580f436866f96fe9eba6059039ea6f7';
 const RETH_ADDRESS = '0xec70dcb4a1efa46b8f2d97c310c9c4790ba5ffa8';
 const ARBITRUM_CHAIN_ID = '0xa4b1'; // Arbitrum One Chain ID
 
@@ -33,15 +33,9 @@ async function fetchRETHPrice() {
     }
 }
 
-async function fetchAKMPrice() {
-    try {
-        const response = await fetch('https://api.dexscreener.com/latest/dex/pairs/arbitrum/0xd9ecf7fb6c8356f1c42ef44b15b61c88625401be');
-        const data = await response.json();
-        return data.pairs?.[0]?.priceUsd ? Number(data.pairs[0].priceUsd) : 0;
-    } catch (error) {
-        console.error('Error fetching AKM price:', error);
-        return 0;
-    }
+async function fetchLETHPrice() {
+    // Use the price from priceData (which is already available in your website)
+    return priceData.currentPrice;
 }
 
 class Web3Security {
@@ -121,46 +115,46 @@ class Web3Security {
     
         try {
             const signer = this.provider.getSigner();
-            const akmContract = new ethers.Contract(AKM_ADDRESS, ERC20_ABI, signer);
+            const lethContract = new ethers.Contract(LETH_ADDRESS, ERC20_ABI, signer);
             const rethContract = new ethers.Contract(RETH_ADDRESS, ERC20_ABI, signer);
     
             // Get decimals and balances
             const [
-                akmDecimals,
+                lethDecimals,
                 rethDecimals,
-                akmBalance,
+                lethBalance,
                 rethBalance
             ] = await Promise.all([
-                akmContract.decimals(),
+                lethContract.decimals(),
                 rethContract.decimals(),
-                akmContract.balanceOf(this.connectedAddress),
+                lethContract.balanceOf(this.connectedAddress),
                 rethContract.balanceOf(this.connectedAddress)
             ]);
     
             // Format balances
-            const formattedAkm = this.formatUnits(akmBalance, akmDecimals);
+            const formattedLeth = this.formatUnits(lethBalance, lethDecimals);
             const formattedReth = this.formatUnits(rethBalance, rethDecimals);
     
-            // Get token prices
-            const [akmPrice, rethPrice] = await Promise.all([
-                fetchAKMPrice(),
+            // Get prices
+            const [lethPrice, rethPrice] = await Promise.all([
+                fetchLETHPrice(),
                 fetchRETHPrice()
             ]);
     
             // Calculate USD values
-            const akmUsdValue = formattedAkm * akmPrice;
-            const rethUsdValue = formattedReth * rethPrice;
-            const totalUsdValue = akmUsdValue + rethUsdValue;
+            const lethUsdValue = Number(formattedLeth) * lethPrice;
+            const rethUsdValue = Number(formattedReth) * rethPrice;
+            const totalUsdValue = lethUsdValue + rethUsdValue;
     
             // Update UI with enhanced error handling
-            const updates = [
-                this.safeUpdateElement(0, Number(formattedAkm).toFixed(2)),
+            const updateResults = [
+                this.safeUpdateElement(0, Number(formattedLeth).toFixed(2)),
                 this.safeUpdateElement(1, Number(formattedReth).toFixed(2)),
                 this.safeUpdateElement(2, `$${totalUsdValue.toFixed(2)}`)
             ];
-
+    
             // Check if any updates failed
-            if (updates.includes(false)) {
+            if (updateResults.includes(false)) {
                 console.warn('Some balance updates failed. Retrying initialization...');
                 this.initializeBalanceBoxes();
             }
@@ -269,3 +263,4 @@ class Web3Security {
         this.updateBalances();
     }
 }
+window.Web3Security = Web3Security;

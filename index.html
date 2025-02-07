@@ -20,7 +20,7 @@
                 <!-- Balance Boxes -->
                 <div class="flex flex-wrap items-center gap-2 md:gap-4">
                     <div class="balance-box-nav">
-                        <div class="balance-label-nav">AKM</div>
+                        <div class="balance-label-nav">LETH</div>
                         <div class="balance-value">0.00</div>
                     </div>
                     <div class="balance-box-nav">
@@ -883,16 +883,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         await window.ethereum.request({
-            method: 'wallet_watchAsset',
-            params: {
-                type: 'ERC20',
-                options: {
-                    address: '0x287c48a78395f6fa4ac7f71a5e92dc65256f570f',
-                    symbol: 'AKM',
-                    decimals: 18,
-                }
-            }
-        });
+    method: 'wallet_watchAsset',
+    params: {
+        type: 'ERC20',
+        options: {
+            address: '0xf7acec1b4580f436866f96fe9eba6059039ea6f7',
+            symbol: 'LETH',
+            decimals: 18,
+        }
+    }
+});
     } catch (error) {
         console.error(error);
         alert('Error adding token to MetaMask');
