@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>AKM Dashboard</title>
+        <title>LETH Dashboard</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
         <script src="price-data.js"></script>
@@ -414,12 +414,12 @@ async function updateRSIGif() {
 }
 }
     
-async function fetchAKMPrice() {
+async function fetchLETHPrice() {
     return priceData.currentPrice;
 }
     
-        function calculateUSDValue(akmAmount) {
-            return (akmAmount * currentPrice).toLocaleString(undefined, {
+        function calculateUSDValue(LETHAmount) {
+            return (LETHAmount * currentPrice).toLocaleString(undefined, {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2
             });
@@ -433,7 +433,7 @@ async function fetchAKMPrice() {
     
         async function loadHolders() {
     try {
-        currentPrice = await fetchAKMPrice();
+        currentPrice = await fetchLETHPrice();
         const timestamp = new Date().getTime();
         const response = await fetch(`holders.json?t=${timestamp}`);
         
@@ -462,7 +462,7 @@ async function fetchAKMPrice() {
                     </div>
                 </td>
                 <td class="amount-cell">
-                    <div class="holder-amount">${holder.amount.toLocaleString()} AKM</div>
+                    <div class="holder-amount">${holder.amount.toLocaleString()} LETH</div>
                     <div class="holder-amount">($${calculateUSDValue(holder.amount)})</div>
                 </td>
             `;
@@ -488,8 +488,8 @@ async function fetchAKMPrice() {
     try {
         // Define our supply numbers
         const TOTAL_SUPPLY = 600000;
-        const LOCKED_TOKENS = 392791;
-        const CIRCULATING_SUPPLY = 207209; // Used only for market cap
+        const LOCKED_TOKENS = 362791;        
+        const CIRCULATING_SUPPLY = 237209; // Used only for market cap
         const BURNED_TOKENS = 0;
         
         // Get current price
@@ -516,10 +516,10 @@ async function fetchAKMPrice() {
         const burnedAmountEl = document.getElementById('burnedAmount');
         
         if (tokenSupplyEl) {
-            tokenSupplyEl.textContent = `${TOTAL_SUPPLY.toLocaleString()} AKM`;
+            tokenSupplyEl.textContent = `${TOTAL_SUPPLY.toLocaleString()} LETH`;
         }
         if (supplyInfoEl) {
-            supplyInfoEl.textContent = `Total Supply Created Originally: ${TOTAL_SUPPLY.toLocaleString()} AKM`;
+            supplyInfoEl.textContent = `Total Supply Created Originally: ${TOTAL_SUPPLY.toLocaleString()} LETH`;
         }
         if (burnedAmountEl) {
             burnedAmountEl.innerHTML = `
@@ -527,7 +527,7 @@ async function fetchAKMPrice() {
                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FF2400" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: -1px;">
                         <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
                     </svg>
-                    Burned: ${BURNED_TOKENS.toLocaleString()} AKM
+                    Burned: ${BURNED_TOKENS.toLocaleString()} LETH
                 </div>
             `;
         }
@@ -559,8 +559,8 @@ async function getPerformanceData() {
         console.log('Calculating performance data...');
         
         // Use manual price instead of fetching
-        const currentAkmPrice = priceData.currentPrice;
-        const initialAkmPrice = 0.10; // Initial AKM price
+        const currentLETHPrice = priceData.currentPrice;
+        const initialLETHPrice = 0.10; // Initial LETH price
         
         // Get historical ETH price (1 year ago)
         const oneYearAgo = Date.now() - (365 * 24 * 60 * 60 * 1000);
@@ -587,18 +587,18 @@ async function getPerformanceData() {
 
         // Calculate returns
         const ethReturn = ((currentEthPrice - oldEthPrice) / oldEthPrice) * 100;
-        const akmReturn = ((currentAkmPrice - initialAkmPrice) / initialAkmPrice) * 100;
+        const LETHReturn = ((currentLETHPrice - initialLETHPrice) / initialLETHPrice) * 100;
 
         // Calculate relative performance
-        const performanceDiff = akmReturn - ethReturn;
+        const performanceDiff = LETHReturn - ethReturn;
         
         console.log('Performance calculation:', {
-            currentAkmPrice,
-            initialAkmPrice,
+            currentLETHPrice,
+            initialLETHPrice,
             currentEthPrice,
             oldEthPrice,
             ethReturn,
-            akmReturn,
+            LETHReturn,
             performanceDiff
         });
 
@@ -903,7 +903,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <script>
     // Function to clear all ATH data from localStorage
 function clearATHCache() {
-    localStorage.removeItem('akm_ath');
+    localStorage.removeItem('LETH_ath');
     localStorage.removeItem('ath_version');
 }
 
@@ -919,7 +919,7 @@ let ath = {
 };
 
 // Save initial values to localStorage
-localStorage.setItem('akm_ath', JSON.stringify(ath));
+localStorage.setItem('LETH_ath', JSON.stringify(ath));
 
 // Function to manually update ATH
 function updateATHManually(newPrice, dateString = null) {
@@ -945,7 +945,7 @@ function updateATHManually(newPrice, dateString = null) {
         };
         
         // Save new values
-        localStorage.setItem('akm_ath', JSON.stringify(ath));
+        localStorage.setItem('LETH_ath', JSON.stringify(ath));
         
         // Force update display
         updateATHDisplay();
@@ -1030,7 +1030,7 @@ document.addEventListener('DOMContentLoaded', function() {
             ath.date = new Date();
             
             // Save to localStorage
-            localStorage.setItem('akm_ath', JSON.stringify(ath));
+            localStorage.setItem('LETH_ath', JSON.stringify(ath));
         }
         
         // Update ATH display
@@ -1057,7 +1057,7 @@ document.addEventListener('DOMContentLoaded', function() {
 }
     
     // Load saved ATH from localStorage
-    const savedATH = localStorage.getItem('akm_ath');
+    const savedATH = localStorage.getItem('LETH_ath');
     if (savedATH) {
         ath = JSON.parse(savedATH);
     }
@@ -1082,7 +1082,7 @@ document.addEventListener('DOMContentLoaded', function() {
         <div class="flex justify-center">
             <img 
                 src="https://s13.gifyu.com/images/b2RJZ.gif" 
-                alt="AKM Tutorial"
+                alt="LETH Tutorial"
                 class="rounded-lg max-w-full h-auto"
             />
         </div>
