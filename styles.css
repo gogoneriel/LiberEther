@@ -919,3 +919,119 @@ body {
     max-width: 100% !important;
     overflow-wrap: break-word !important;
 }
+/* Google Translate Dark Theme - Updated */
+#google_translate_element {
+    z-index: 1001;
+    height: 32px;
+    border-radius: 8px;
+    background: #1e1e1e;
+    padding: 4px 12px 4px 4px;
+    border: 1px solid #FF2400;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+}
+
+#google_translate_element::after {
+    content: 'Translation';
+    color: white;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+/* Dropdown button */
+.goog-te-combo {
+    background: #1e1e1e !important;
+    color: white !important;
+    border: 1px solid #FF2400 !important;
+    padding: 4px 12px !important;
+    border-radius: 4px !important;
+    outline: none !important;
+    font-size: 14px !important;
+    margin: 0 !important;
+    cursor: pointer !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    min-width: 120px !important;
+}
+
+/* Hide Google branding */
+.goog-logo-link, 
+.goog-te-gadget span,
+.goog-te-banner-frame,
+.goog-te-balloon-frame,
+.goog-te-menu-frame {
+    display: none !important;
+}
+
+.goog-te-gadget {
+    color: transparent !important;
+    font-size: 0 !important;
+    margin: 0 !important;
+    background: transparent !important;
+    border: none !important;
+}
+
+/* Dark theme for the dropdown options */
+.goog-te-combo option {
+    background: #1e1e1e !important;
+    color: white !important;
+    padding: 8px !important;
+}
+
+/* Hover state for options */
+.goog-te-combo option:hover {
+    background: #2a2a2a !important;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    #google_translate_element {
+        padding: 2px 8px 2px 2px;
+        height: 28px;
+        transform: scale(0.9);
+        margin-left: -8px;
+    }
+    
+    #google_translate_element::after {
+        font-size: 12px;
+    }
+    
+    .goog-te-combo {
+        font-size: 12px !important;
+        padding: 2px 4px !important;
+        min-width: 80px !important;
+    }
+
+    /* Fix for the Google Translate top bar on mobile */
+    .skiptranslate {
+        display: none !important;
+    }
+    
+    .goog-te-banner-frame {
+        display: none !important;
+    }
+    
+    body {
+        top: 0 !important;
+    }
+    
+    /* Ensure proper spacing when translate is active */
+    .translated-ltr {
+        margin-top: 0 !important;
+    }
+    
+    .translated-rtl {
+        margin-top: 0 !important;
+    }
+}
+
+/* Fix for the translation top bar */
+.goog-te-banner-frame.skiptranslate {
+    display: none !important;
+}
+
+body {
+    top: 0 !important;
+}
