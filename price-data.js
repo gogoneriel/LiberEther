@@ -8,8 +8,10 @@ const priceData = {
     },
     async fetchPrice() {
         try {
-            // Add timestamp to prevent caching
-            const response = await fetch(`price-fetch.php?t=${Date.now()}`);
+            const response = await fetch(`https://liberether.com/price-fetch.php?t=${Date.now()}`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
             const data = await response.json();
             this.currentPrice = data.price;
             
@@ -22,7 +24,7 @@ const priceData = {
             // Update market cap
             const marketCapEl = document.getElementById('marketCap');
             if (marketCapEl) {
-                const CIRCULATING_SUPPLY = 237209; // Your circulating supply
+                const CIRCULATING_SUPPLY = 237209;
                 const marketCap = data.price * CIRCULATING_SUPPLY;
                 marketCapEl.textContent = `$${marketCap.toLocaleString(undefined, {maximumFractionDigits: 0})}`;
             }
