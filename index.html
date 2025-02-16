@@ -474,7 +474,41 @@ async function fetchLETHPrice() {
             modal.style.display = "block";
             modalImg.src = src;
         }
+        let lastMarketCap = 0;
+let isUpdating = false;
+
+async function updateMarketCap() {
+    // Prevent multiple simultaneous updates
+    if (isUpdating) return;
     
+    try {
+        isUpdating = true;
+        
+        // Define our constants
+        const CIRCULATING_SUPPLY = 237209; // Your circulating supply
+        
+        // Get current price from priceData
+        const currentPrice = Number(priceData.currentPrice);
+        
+        // Calculate market cap
+        const marketCap = currentPrice * CIRCULATING_SUPPLY;
+        
+        // Only update if the value has changed
+        if (marketCap !== lastMarketCap) {
+            lastMarketCap = marketCap;
+            
+            // Update market cap display
+            const marketCapEl = document.getElementById('marketCap');
+            if (marketCapEl) {
+                marketCapEl.textContent = `$${marketCap.toLocaleString(undefined, {maximumFractionDigits: 0})}`;
+            }
+        }
+    } catch (error) {
+        console.error('Error updating market cap:', error);
+    } finally {
+        isUpdating = false;
+    }
+}
         async function updateData() {
     try {
         // Define our supply numbers
@@ -486,14 +520,7 @@ async function fetchLETHPrice() {
         // Get current price
         currentPrice = Number(priceData.currentPrice);
         
-        // Calculate market cap using circulating supply
-        const marketCap = currentPrice * CIRCULATING_SUPPLY;
-        
-        // Update market cap display
-        const marketCapEl = document.getElementById('marketCap');
-        if (marketCapEl) {
-            marketCapEl.textContent = `$${marketCap.toLocaleString(undefined, {maximumFractionDigits: 0})}`;
-        }
+        // Market cap is now handled by updateMarketCap function
 
         // Update token price display
         const tokenPriceEl = document.getElementById('tokenPrice');
@@ -613,8 +640,10 @@ async function getPerformanceData() {
         updateRSIGif();
     
         // Set intervals for updates
-        setInterval(updateData, 30000);
-        setInterval(updateRSIGif, RSI_UPDATE_INTERVAL);
+        // Set intervals for updates
+setInterval(updateData, 30000);
+setInterval(updateRSIGif, RSI_UPDATE_INTERVAL);
+setInterval(updateMarketCap, 30000); // Add this line
     // Add these new functions for the APY slider and Auto Invest toggle
     function updateAPY(value) {
         document.getElementById('apyValue').textContent = value;
@@ -706,9 +735,19 @@ async function getPerformanceData() {
 }
 
 // Add this line to your DOMContentLoaded event
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    // Initialize market cap
+    await updateMarketCap();
+    
+    // Initialize web3
     initializeWeb3();
-    startHoldersAutoRefresh(); // Add this line
+    
+    // Start holders refresh
+    startHoldersAutoRefresh();
+    
+    // Other initializations
+    updateData();
+    updateRSIGif();
 });
     // Start initialization when the page loads
     document.addEventListener('DOMContentLoaded', function() {
