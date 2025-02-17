@@ -1,6 +1,66 @@
-# Ignore PHP files
-*.php
+# Sensitive data files
+holders.json
+price-data.js
+performance-data.js
 
-# Ignore holders.json file
-holders.json
-holders.json
+# Image assets and media
+/images/
+*.jpg
+*.png
+*.gif
+*.svg
+*.mp4
+*.webm
+
+# Configuration and environment files
+.env
+.env.*
+config.js
+**/config/*.json
+secrets.json
+keys.json
+
+# Security and authentication
+**/auth/*
+**/credentials/*
+private*.key
+*.pem
+web3-security.js
+
+# Cache and temporary files
+.cache/
+.temp/
+*.log
+*.tmp
+
+# Build and distribution
+/dist/
+/build/
+/out/
+
+# Dependencies
+/node_modules/
+package-lock.json
+yarn.lock
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Contract artifacts and deployments
+/artifacts/
+/deployments/
+/contracts/build/
+
+# Testing and coverage
+/coverage/
+.nyc_output/
+price-fetch.php
