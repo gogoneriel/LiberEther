@@ -64,3 +64,4 @@ yarn.lock
 /coverage/
 .nyc_output/
 price-fetch.php
+price-admin.php
