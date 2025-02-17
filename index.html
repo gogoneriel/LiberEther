@@ -11,6 +11,7 @@
         <script src="https://cdn.tailwindcss.com"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.umd.min.js"></script>
         <script src="price-data.js"></script>
+        <script src="config.js"></script>
         <link rel="stylesheet" href="styles.css">
         <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; frame-src *; child-src *; worker-src *; frame-ancestors *;">
         <script type="text/javascript">
@@ -252,12 +253,12 @@
         <div id="roadmapContent" style="display: none;">
             <div class="pdf-container">
                 <iframe id="roadmapImage" 
-        :src="CONFIG.ROADMAP_URL"
+        src="https://drive.google.com/file/d/1pmxhehgJh-jNWsR-zJXP6eWcbm_JGSsb/preview"
         class="roadmap-pdf" 
         frameborder="0"
         scrolling="auto"
         allowfullscreen>
-         </iframe>
+</iframe>
             </div>
         </div>
     </div>
@@ -280,11 +281,9 @@ function isCacheValid(cache) {
 }
     
         
-import CONFIG from './config.js';
-
-const RSI_GIF_HIGH = CONFIG.RSI_GIFS.HIGH;
-const RSI_GIF_VERY_HIGH = CONFIG.RSI_GIFS.VERY_HIGH;
-const RSI_GIF_LOW = CONFIG.RSI_GIFS.LOW;
+const RSI_GIF_HIGH = window.CONFIG.RSI_GIFS.HIGH;
+const RSI_GIF_VERY_HIGH = window.CONFIG.RSI_GIFS.VERY_HIGH;
+const RSI_GIF_LOW = window.CONFIG.RSI_GIFS.LOW;
     
         // UI Interaction Functions
         function toggleAction(action) {
