@@ -65,3 +65,5 @@ yarn.lock
 .nyc_output/
 price-fetch.php
 price-admin.php
+performance.json
+config.js

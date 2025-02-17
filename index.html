@@ -252,12 +252,12 @@
         <div id="roadmapContent" style="display: none;">
             <div class="pdf-container">
                 <iframe id="roadmapImage" 
-                        src="https://drive.google.com/file/d/1pmxhehgJh-jNWsR-zJXP6eWcbm_JGSsb/preview"
-                        class="roadmap-pdf" 
-                        frameborder="0"
-                        scrolling="auto"
-                        allowfullscreen>
-                </iframe>
+        :src="CONFIG.ROADMAP_URL"
+        class="roadmap-pdf" 
+        frameborder="0"
+        scrolling="auto"
+        allowfullscreen>
+         </iframe>
             </div>
         </div>
     </div>
@@ -280,9 +280,11 @@ function isCacheValid(cache) {
 }
     
         
-        const RSI_GIF_HIGH = "https://s7.gifyu.com/images/SXr0D.gif";
-        const RSI_GIF_VERY_HIGH = "https://s13.gifyu.com/images/SXnzh.gif";
-        const RSI_GIF_LOW = "https://s7.gifyu.com/images/SXr0o.gif";
+import CONFIG from './config.js';
+
+const RSI_GIF_HIGH = CONFIG.RSI_GIFS.HIGH;
+const RSI_GIF_VERY_HIGH = CONFIG.RSI_GIFS.VERY_HIGH;
+const RSI_GIF_LOW = CONFIG.RSI_GIFS.LOW;
     
         // UI Interaction Functions
         function toggleAction(action) {
@@ -1146,8 +1148,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Update every 30 seconds
     setInterval(updatePriceAndATH, 30000);
     </script>
-<script async type='module' src='https://interfaces.zapier.com/assets/web-components/zapier-interfaces/zapier-interfaces.esm.js'></script>
-<zapier-interfaces-chatbot-embed is-popup='true' chatbot-id='cm5v649pl000j5pc83jltmwfs'></zapier-interfaces-chatbot-embed>
 <!-- Replace the existing script with this -->
 <div id="tutorialModal" class="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50 p-4" style="display: none;">
     <div class="relative bg-[#1e1e1e] rounded-lg p-4 max-w-2xl w-full">
