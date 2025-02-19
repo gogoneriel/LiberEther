@@ -471,23 +471,45 @@ async function fetchLETHPrice() {
         tableBody.innerHTML = '';
 
         holders.forEach((holder, index) => {
-    const row = document.createElement('tr');
-    row.innerHTML = `
-        <td class="rank-number">${index + 1}${getOrdinal(index + 1)}</td>
-        <td class="holder-cell">
-            <div class="holder-container">
-                <img src="${holder.image}?t=${timestamp}" alt="${holder.name}" class="holder-image" onclick="openModal(this.src)">
-                <div class="holder-info">
-                    <div class="holder-name notranslate">${holder.name}</div>
-                    ${holder.description ? `<div class="holder-description">${holder.description}</div>` : ''}
-                </div>
-            </div>
-        </td>
-        <td class="amount-cell">
-            <div class="holder-amount notranslate">${holder.amount.toLocaleString()} LETH</div>
-            <div class="holder-amount">($${calculateUSDValue(holder.amount)})</div>
-        </td>
-    `;
+            const row = document.createElement('tr');
+            
+            // Special handling for Sennin to show "Honour Member" instead of 14th
+            if (holder.name === "Sennin") {
+                row.innerHTML = `
+                    <td class="rank-number">Honour Member</td>
+                    <td class="holder-cell">
+                        <div class="holder-container">
+                            <img src="${holder.image}?t=${timestamp}" alt="${holder.name}" class="holder-image" onclick="openModal(this.src)">
+                            <div class="holder-info">
+                                <div class="holder-name notranslate">${holder.name}</div>
+                                ${holder.description ? `<div class="holder-description">${holder.description}</div>` : ''}
+                            </div>
+                        </div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="holder-amount notranslate">${holder.amount.toLocaleString()} LETH</div>
+                        <div class="holder-amount">($${calculateUSDValue(holder.amount)})</div>
+                    </td>
+                `;
+            } else {
+                row.innerHTML = `
+                    <td class="rank-number">${index + 1}${getOrdinal(index + 1)}</td>
+                    <td class="holder-cell">
+                        <div class="holder-container">
+                            <img src="${holder.image}?t=${timestamp}" alt="${holder.name}" class="holder-image" onclick="openModal(this.src)">
+                            <div class="holder-info">
+                                <div class="holder-name notranslate">${holder.name}</div>
+                                ${holder.description ? `<div class="holder-description">${holder.description}</div>` : ''}
+                            </div>
+                        </div>
+                    </td>
+                    <td class="amount-cell">
+                        <div class="holder-amount notranslate">${holder.amount.toLocaleString()} LETH</div>
+                        <div class="holder-amount">($${calculateUSDValue(holder.amount)})</div>
+                    </td>
+                `;
+            }
+            
             tableBody.appendChild(row);
         });
     } catch (error) {
