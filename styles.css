@@ -919,7 +919,7 @@ body {
     max-width: 100% !important;
     overflow-wrap: break-word !important;
 }
-/* Google Translate Dark Theme - Fixed for Mobile */
+/* Google Translate Dark Theme - Properly Clickable Version */
 #google_translate_element {
     z-index: 1001;
     height: 32px;
@@ -931,9 +931,9 @@ body {
     align-items: center;
     gap: 8px;
     position: relative;
-}
-
-#google_translate_element::before {
+  }
+  
+  #google_translate_element::before {
     content: '';
     display: block;
     width: 16px;
@@ -942,17 +942,17 @@ body {
     background-size: contain;
     background-repeat: no-repeat;
     margin-left: 4px;
-}
-
-#google_translate_element::after {
+  }
+  
+  #google_translate_element::after {
     content: 'Translation';
     color: white;
     font-size: 14px;
     white-space: nowrap;
-}
-
-/* Dropdown button */
-.goog-te-combo {
+  }
+  
+  /* Make sure the dropdown is clickable */
+  .goog-te-combo {
     background: #1e1e1e !important;
     color: white !important;
     border: 1px solid #FF2400 !important;
@@ -965,91 +965,90 @@ body {
     appearance: none !important;
     -webkit-appearance: none !important;
     min-width: 120px !important;
-}
-
-/* Hide Google branding */
-.goog-logo-link, 
-.goog-te-gadget span,
-.goog-te-banner-frame,
-.goog-te-balloon-frame,
-.goog-te-menu-frame {
+    position: relative !important;
+    z-index: 1002 !important; /* Ensure it's above other elements */
+    pointer-events: auto !important;
+  }
+  
+  /* Hide Google branding but keep functionality */
+  .goog-logo-link {
     display: none !important;
-}
-
-.goog-te-gadget {
+  }
+  
+  .goog-te-gadget {
     color: transparent !important;
     font-size: 0 !important;
     margin: 0 !important;
+    padding: 0 !important;
     background: transparent !important;
     border: none !important;
-}
-
-/* Dark theme for the dropdown options */
-.goog-te-combo option {
+  }
+  
+  .goog-te-gadget span {
+    display: none !important;
+  }
+  
+  /* Dark theme for the dropdown options */
+  .goog-te-combo option {
     background: #1e1e1e !important;
     color: white !important;
     padding: 8px !important;
-}
-
-/* Hover state for options */
-.goog-te-combo option:hover {
+  }
+  
+  /* Hover state for options */
+  .goog-te-combo option:hover {
     background: #2a2a2a !important;
-}
-
-/* Force hide the top banner */
-.goog-te-banner-frame {
+  }
+  
+  /* Hide banner frame but maintain functionality */
+  .goog-te-banner-frame {
     display: none !important;
     visibility: hidden !important;
-}
-
-body {
+  }
+  
+  /* Fix body positioning */
+  body {
     top: 0 !important;
-}
-
-/* Respect notranslate class */
-.notranslate {
+  }
+  
+  /* Protect notranslate class */
+  .notranslate {
     -webkit-user-select: none;
     user-select: none;
-}
-
-/* Mobile adjustments */
-@media (max-width: 768px) {
+  }
+  
+  /* Mobile adjustments */
+  @media (max-width: 768px) {
     #google_translate_element {
-        padding: 2px 8px 2px 2px;
-        height: 28px;
-        transform: scale(0.9);
-        margin-left: -4px;
+      padding: 2px 8px 2px 2px;
+      height: 28px;
+      transform: scale(0.9);
+      margin-left: -4px;
     }
     
     #google_translate_element::before {
-        width: 14px;
-        height: 14px;
-        margin-left: 2px;
+      width: 14px;
+      height: 14px;
+      margin-left: 2px;
     }
     
     #google_translate_element::after {
-        font-size: 12px;
+      font-size: 12px;
     }
     
     .goog-te-combo {
-        font-size: 12px !important;
-        padding: 2px 4px !important;
-        min-width: 90px !important;
+      font-size: 12px !important;
+      padding: 2px 4px !important;
+      min-width: 90px !important;
     }
-
-    /* Extra fixes for mobile */
-    #goog-gt-tt, .goog-te-balloon-frame {
-        display: none !important;
+  
+    /* Hide but don't break functionality */
+    #goog-gt-tt {
+      display: none !important;
     }
     
     .goog-text-highlight {
-        background: none !important;
-        box-shadow: none !important;
+      background: none !important;
+      box-shadow: none !important;
     }
-    
-    /* Fix for iframe */
-    iframe.goog-te-banner-frame {
-        display: none !important;
-        visibility: hidden !important;
-    }
-}
+  }

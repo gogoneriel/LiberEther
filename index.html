@@ -1228,5 +1228,43 @@ document.addEventListener('DOMContentLoaded', function() {
             updateCountdown();
         });
         </script>
+        <script>
+            // Ultimate notranslate protection script
+            document.addEventListener('DOMContentLoaded', function() {
+                <script>
+// Fix Google Translate functionality while hiding top bar
+document.addEventListener('DOMContentLoaded', function() {
+  // Function to fix Google Translate
+  const fixGoogleTranslate = function() {
+    // Hide the top bar but keep functionality
+    const bannerFrame = document.querySelector('.goog-te-banner-frame');
+    if (bannerFrame) {
+      bannerFrame.style.display = 'none';
+      bannerFrame.style.visibility = 'hidden';
+      bannerFrame.style.height = '0';
+    }
+    
+    // Fix body positioning
+    if (document.body.style.top) {
+      document.body.style.top = '0';
+    }
+    
+    // Make sure the dropdown is clickable
+    const combo = document.querySelector('.goog-te-combo');
+    if (combo) {
+      combo.style.pointerEvents = 'auto';
+      combo.style.zIndex = '1002';
+    }
+  };
+  
+  // Run the fix multiple times to ensure it works
+  fixGoogleTranslate();
+  setTimeout(fixGoogleTranslate, 1000);
+  setTimeout(fixGoogleTranslate, 2000);
+  
+  // Also run when window loads
+  window.addEventListener('load', fixGoogleTranslate);
+});
+</script>
 </body>
 </html>
