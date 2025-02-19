@@ -1183,10 +1183,19 @@ document.addEventListener('DOMContentLoaded', function() {
     </script>
     <script>
         // Add this countdown code
-        function updateCountdown() {
-    // Create target date (6 months from today)
-    const targetDate = new Date();
-    targetDate.setMonth(targetDate.getMonth() + 6);
+        // Add this countdown code
+function updateCountdown() {
+    // Create target date (September 1st of the current year or next year if we're past Sept 1)
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    let targetYear = currentYear;
+    
+    // If we're already past September 1st of this year, target next year
+    if (now.getMonth() > 7 || (now.getMonth() === 7 && now.getDate() >= 1)) {
+        targetYear = currentYear + 1;
+    }
+    
+    const targetDate = new Date(targetYear, 8, 1); // Month is 0-based, so 8 = September
     
     function updateTimer() {
         const now = new Date().getTime();
