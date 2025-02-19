@@ -919,7 +919,7 @@ body {
     max-width: 100% !important;
     overflow-wrap: break-word !important;
 }
-/* Google Translate Dark Theme - Updated */
+/* Google Translate Dark Theme - Fixed for Mobile */
 #google_translate_element {
     z-index: 1001;
     height: 32px;
@@ -931,6 +931,17 @@ body {
     align-items: center;
     gap: 8px;
     position: relative;
+}
+
+#google_translate_element::before {
+    content: '';
+    display: block;
+    width: 16px;
+    height: 16px;
+    background-image: url('https://www.gstatic.com/images/branding/product/2x/translate_24dp.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-left: 4px;
 }
 
 #google_translate_element::after {
@@ -985,13 +996,35 @@ body {
     background: #2a2a2a !important;
 }
 
+/* Force hide the top banner */
+.goog-te-banner-frame {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+body {
+    top: 0 !important;
+}
+
+/* Respect notranslate class */
+.notranslate {
+    -webkit-user-select: none;
+    user-select: none;
+}
+
 /* Mobile adjustments */
 @media (max-width: 768px) {
     #google_translate_element {
         padding: 2px 8px 2px 2px;
         height: 28px;
         transform: scale(0.9);
-        margin-left: -8px;
+        margin-left: -4px;
+    }
+    
+    #google_translate_element::before {
+        width: 14px;
+        height: 14px;
+        margin-left: 2px;
     }
     
     #google_translate_element::after {
@@ -1001,37 +1034,22 @@ body {
     .goog-te-combo {
         font-size: 12px !important;
         padding: 2px 4px !important;
-        min-width: 80px !important;
+        min-width: 90px !important;
     }
 
-    /* Fix for the Google Translate top bar on mobile */
-    .skiptranslate {
+    /* Extra fixes for mobile */
+    #goog-gt-tt, .goog-te-balloon-frame {
         display: none !important;
     }
     
-    .goog-te-banner-frame {
+    .goog-text-highlight {
+        background: none !important;
+        box-shadow: none !important;
+    }
+    
+    /* Fix for iframe */
+    iframe.goog-te-banner-frame {
         display: none !important;
+        visibility: hidden !important;
     }
-    
-    body {
-        top: 0 !important;
-    }
-    
-    /* Ensure proper spacing when translate is active */
-    .translated-ltr {
-        margin-top: 0 !important;
-    }
-    
-    .translated-rtl {
-        margin-top: 0 !important;
-    }
-}
-
-/* Fix for the translation top bar */
-.goog-te-banner-frame.skiptranslate {
-    display: none !important;
-}
-
-body {
-    top: 0 !important;
 }
