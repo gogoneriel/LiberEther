@@ -170,22 +170,25 @@
                 
                 
                 <!-- Uniswap Widget -->
-<div class="flex-1 bg-[#1e1e1e] p-5 rounded-lg border border-[#2a2a2a]">
-    <div class="text-white text-xl font-bold mb-4 flex items-center gap-2">
-        Swap Tokens
-        <span class="info-icon" title="Trade tokens using the Uniswap Protocol">?</span>
-    </div>
-    
-    <div class="min-h-[460px] flex items-center justify-center">
-        <iframe
-            src="https://app.uniswap.org/#/swap?exactField=input&exactAmount=0.1&inputCurrency=ETH&outputCurrency=0xf7acec1b4580f436866f96fe9eba6059039ea6f7"
-            height="660"
-            width="100%"
-            style="border: 0; border-radius: 10px; background-color: #1e1e1e; overflow: hidden;"
-            class="uniswap-iframe"
-        ></iframe>
-    </div>
-</div>
+                <div class="flex-1 bg-[#1e1e1e] p-5 rounded-lg border border-[#2a2a2a]">
+                    <div class="text-white text-xl font-bold mb-4 flex items-center gap-2">
+                        Swap Tokens
+                        <span class="info-icon" title="Trade tokens using the Uniswap Protocol">?</span>
+                    </div>
+                    
+                    <div class="uniswap-container min-h-[460px] flex items-center justify-center">
+                        <iframe
+                            id="uniswapIframe"
+                            class="uniswap-iframe"
+                            src="https://app.uniswap.org/#/swap?exactField=input&exactAmount=0.1&inputCurrency=ETH&outputCurrency=0xf7acec1b4580f436866f96fe9eba6059039ea6f7"
+                            height="660"
+                            width="100%"
+                            style="border: 0; border-radius: 10px; background-color: transparent;"
+                            allow="clipboard-write; web3-provider-request; ethereum-provider"
+                            sandbox="allow-same-origin allow-scripts allow-forms allow-popups allow-popups-to-escape-sandbox"
+                        ></iframe>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="container">
@@ -1304,5 +1307,97 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 <script src="milei-chat.js"></script>
+<script>
+// Function to set up Uniswap iframe with proper communication
+function setupUniswapIntegration() {
+    // Find elements
+    const connectWalletButton = document.getElementById('connectWallet');
+    const uniswapIframe = document.querySelector('.uniswap-iframe');
+    
+    if (!uniswapIframe || !connectWalletButton) {
+        console.warn('Uniswap iframe or connect button not found');
+        return;
+    }
+    
+    // Add load event listener to iframe
+    uniswapIframe.addEventListener('load', function() {
+        console.log('Uniswap iframe loaded');
+        
+        // If we already have a connected wallet, send the connection info
+        if (window.web3Security && window.web3Security.connectedAddress) {
+            setTimeout(() => {
+                window.web3Security.postMessageToUniswap();
+            }, 1000); // Small delay to ensure iframe is fully loaded
+        }
+    });
+    
+    // Listen for messages from the iframe
+    window.addEventListener('message', function(event) {
+        // Verify message origin (you may want to restrict this to Uniswap's domain)
+        // if (event.origin !== 'https://app.uniswap.org') return;
+        
+        // Handle wallet connection request from iframe
+        if (event.data && event.data.type === 'CONNECT_WALLET_REQUEST') {
+            console.log('Received wallet connection request from Uniswap');
+            connectWalletButton.click(); // Trigger your existing wallet connect flow
+        }
+    });
+    
+    // Modify the Web3Security class to include iframe communication
+    if (window.Web3Security) {
+        // Update the connectWallet method to include iframe notification
+        const originalConnectWallet = Web3Security.prototype.connectWallet;
+        Web3Security.prototype.connectWallet = async function() {
+            try {
+                const result = await originalConnectWallet.apply(this, arguments);
+                // Add post message step
+                setTimeout(() => {
+                    this.postMessageToUniswap();
+                }, 500); // Small delay to ensure everything is ready
+                return result;
+            } catch (error) {
+                console.error('Error in enhanced connectWallet:', error);
+                throw error;
+            }
+        };
+    } else {
+        console.warn('Web3Security class not found, cannot enhance wallet connection');
+    }
+}
+
+// Initialize when the page has fully loaded
+document.addEventListener('DOMContentLoaded', setupUniswapIntegration);
+
+// Also try to initialize when window is fully loaded (additional safety)
+window.addEventListener('load', setupUniswapIntegration);
+</script>
+<script>
+// Mobile-specific handling for Uniswap iframe connection
+document.addEventListener('DOMContentLoaded', function() {
+    // Get the connect wallet button and Uniswap iframe
+    const connectButton = document.getElementById('connectWallet');
+    const uniswapIframe = document.querySelector('.uniswap-iframe');
+    
+    if (!connectButton || !uniswapIframe) return;
+    
+    // When the connect button is clicked
+    connectButton.addEventListener('click', function() {
+        // Wait a bit for wallet to connect then send multiple connection messages to iframe
+        setTimeout(function() {
+            if (window.ethereum && window.ethereum.selectedAddress) {
+                // Send wallet connection to Uniswap iframe
+                uniswapIframe.contentWindow.postMessage({
+                    type: 'CONNECT_WALLET',
+                    address: window.ethereum.selectedAddress,
+                    chainId: window.ethereum.chainId ? parseInt(window.ethereum.chainId) : 42161,
+                    isConnected: true
+                }, '*');
+                
+                console.log('Mobile wallet connection message sent to Uniswap');
+            }
+        }, 2000);
+    });
+});
+</script>
 </body>
 </html>
