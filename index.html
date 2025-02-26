@@ -169,15 +169,21 @@
                 </div>
                 
                 
-                <!-- Empty DEX Frame -->
+                <!-- Uniswap Widget -->
 <div class="flex-1 bg-[#1e1e1e] p-5 rounded-lg border border-[#2a2a2a]">
     <div class="text-white text-xl font-bold mb-4 flex items-center gap-2">
-        DEX Coming Soon
-        <span class="info-icon" title="Trading functionality will be available soon">?</span>
+        Swap Tokens
+        <span class="info-icon" title="Trade tokens using the Uniswap Protocol">?</span>
     </div>
     
-    <div class="dex-container min-h-[400px] flex items-center justify-center text-gray-400">
-        Trading interface under development
+    <div class="min-h-[460px] flex items-center justify-center">
+        <iframe
+            src="https://app.uniswap.org/#/swap?exactField=input&exactAmount=0.1&inputCurrency=ETH&outputCurrency=0xf7acec1b4580f436866f96fe9eba6059039ea6f7"
+            height="660"
+            width="100%"
+            style="border: 0; border-radius: 10px; background-color: #1e1e1e; overflow: hidden;"
+            class="uniswap-iframe"
+        ></iframe>
     </div>
 </div>
             </div>
