@@ -822,20 +822,23 @@ document.addEventListener('DOMContentLoaded', async function() {
         const socialButtons = document.getElementById('social-buttons');
         
         // Create buttons HTML
-        const buttonsHTML = `
-            <a href="https://t.me/+B9PHTaCwSQ03YWU0" target="_blank" rel="noopener noreferrer" class="social-button">
-                <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/brand-telegram.svg" alt="Telegram" />
-            </a>
-            <a href="https://x.com/akm_project_" target="_blank" rel="noopener noreferrer" class="social-button">
-                <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/brand-x.svg" alt="X (Twitter)" />
-            </a>
-            <a href="https://github.com/gogoneriel/AKM" target="_blank" rel="noopener noreferrer" class="social-button">
-                <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/brand-github.svg" alt="GitHub" />
-            </a>
-            <button onclick="openWhitepaper()" class="social-button">
-                <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/file-text.svg" alt="Whitepaper" />
-            </button>
-        `;
+const buttonsHTML = `
+    <a href="https://t.me/+B9PHTaCwSQ03YWU0" target="_blank" rel="noopener noreferrer" class="social-button">
+        <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/brand-telegram.svg" alt="Telegram" />
+    </a>
+    <a href="https://x.com/LiberEther" target="_blank" rel="noopener noreferrer" class="social-button">
+        <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/brand-x.svg" alt="X (Twitter)" />
+    </a>
+    <a href="https://github.com/gogoneriel/AKM" target="_blank" rel="noopener noreferrer" class="social-button">
+        <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/brand-github.svg" alt="GitHub" />
+    </a>
+    <button onclick="openWhitepaper()" class="social-button">
+        <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/file-text.svg" alt="Whitepaper" />
+    </button>
+    <a href="/newpage" class="social-button">
+        <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/school.svg" alt="Academy Page" />
+    </a>
+`;
         
         socialButtons.innerHTML = buttonsHTML;
     
