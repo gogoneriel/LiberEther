@@ -215,24 +215,39 @@ header {
     gap: 30px;
 }
 
-/* Benefit item com nova imagem de fundo e sobreposição mais escura */
+/* Replace the existing benefit-item styles with these */
+
+/* First, reset the general benefit-item styles */
 .benefit-item {
     text-align: center;
     padding: 30px 20px;
-    background-image: url('https://i.pinimg.com/564x/ad/27/93/ad2793c68f5a873258631200c3c287e3.jpg');
-    background-size: cover;
-    background-position: center;
     border-radius: 8px;
     transition: transform 0.3s;
     position: relative;
-    background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro para melhorar a legibilidade */
-    background-blend-mode: multiply; /* Modo de mesclagem para escurecer o background */
     height: 100%;
     display: flex;
     flex-direction: column;
 }
 
-/* Sobreposição mais escura para garantir a legibilidade */
+/* Styles for testimonials section benefit items */
+#testimonials .benefit-item {
+    background-image: url('https://i.pinimg.com/564x/ad/27/93/ad2793c68f5a873258631200c3c287e3.jpg');
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    background-blend-mode: multiply;
+}
+
+/* Styles specifically for benefits section benefit items */
+#benefits .benefit-item {
+    background-image: url('https://s3.gifyu.com/images/bSGyS.png');
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(0, 0, 0, 0.6);
+    background-blend-mode: multiply;
+}
+
+/* Overlay for all benefit items */
 .benefit-item::before {
     content: '';
     position: absolute;
@@ -240,9 +255,27 @@ header {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.85); /* Aumentei a opacidade para 0.85 */
+    background-color: rgba(0, 0, 0, 0.85);
     border-radius: 8px;
     z-index: 1;
+}
+
+/* Make content appear above overlay for all benefit items */
+.benefit-item h3, 
+.benefit-item p, 
+.benefit-item .benefit-icon {
+    position: relative;
+    z-index: 2;
+}
+
+/* Keep hover effect */
+.benefit-item:hover {
+    transform: translateY(-5px);
+}
+
+.benefit-item h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
 }
 
 /* Make content appear above overlay */
