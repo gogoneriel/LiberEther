@@ -765,7 +765,7 @@ setInterval(updateMarketCap, 30000); // Add this line
             }
         ];
         
-       // Function to update token balances
+// Function to update token balances
 // Function to update token balances
 async function updateBalances(address) {
     try {
@@ -779,46 +779,79 @@ async function updateBalances(address) {
         
         if (!address || !window.ethereum) return;
         
-        // Create web3 provider and get token contract
+        // Create web3 provider
         const provider = new ethers.providers.Web3Provider(window.ethereum);
+        
+        // Contract addresses
+        const LETH_ADDRESS = '0xf7acec1b4580f436866f96fe9eba6059039ea6f7';
+        const RETH_ADDRESS = '0xEC70Dcb4A1EFa46b8F2D97C310C9c4790ba5ffA8';
+        
+        // Create contract instances
         const lethContract = new ethers.Contract(LETH_ADDRESS, ERC20_ABI, provider);
+        const rethContract = new ethers.Contract(RETH_ADDRESS, ERC20_ABI, provider);
         
-        // Get token decimals and balance
-        const decimals = await lethContract.decimals();
-        const balance = await lethContract.balanceOf(address);
+        // Get token decimals and balances (in parallel for efficiency)
+        const [lethDecimals, rethDecimals, lethBalance, rethBalance] = await Promise.all([
+            lethContract.decimals(),
+            rethContract.decimals(),
+            lethContract.balanceOf(address),
+            rethContract.balanceOf(address)
+        ]);
         
-        // Format the balance with ethers.js
-        let formattedBalance = ethers.utils.formatUnits(balance, decimals);
-        formattedBalance = parseFloat(formattedBalance).toFixed(2);
+        // Format the balances with ethers.js
+        let formattedLeth = ethers.utils.formatUnits(lethBalance, lethDecimals);
+        formattedLeth = parseFloat(formattedLeth).toFixed(2);
         
-        // Update LETH balance display
-        balanceBoxes[0].textContent = formattedBalance;
+        let formattedReth = ethers.utils.formatUnits(rethBalance, rethDecimals);
+        formattedReth = parseFloat(formattedReth).toFixed(2);
         
-        // IMPORTANT: Get the current displayed price directly from the UI
-        let currentPrice = 0.37; // Fallback value
+        // Update LETH and RETH balance displays
+        balanceBoxes[0].textContent = formattedLeth;
+        balanceBoxes[1].textContent = formattedReth;
+        
+        // Get LETH price from UI display
+        let lethPrice = 0.37; // Default fallback value
         const tokenPriceEl = document.getElementById('tokenPrice');
         
         if (tokenPriceEl && tokenPriceEl.textContent) {
-            // Extract the number from the price element (removing $ symbol)
             const priceText = tokenPriceEl.textContent.replace('$', '').trim();
             const parsedPrice = parseFloat(priceText);
             
             if (!isNaN(parsedPrice) && parsedPrice > 0) {
-                currentPrice = parsedPrice;
-                console.log('Using displayed price:', currentPrice);
+                lethPrice = parsedPrice;
             }
         }
         
-        // Calculate USD value
-        const usdValue = parseFloat(formattedBalance) * currentPrice;
+        // Get RETH price (fetch from coingecko or use ETH price as approximation)
+        let rethPrice = 3500; // Default fallback to approximate ETH price
+        try {
+            // Try to fetch ETH price from Binance API as fallback
+            const ethResponse = await fetch('https://api.binance.com/api/v3/ticker/price?symbol=ETHUSDT');
+            if (ethResponse.ok) {
+                const ethData = await ethResponse.json();
+                rethPrice = parseFloat(ethData.price);
+                console.log('Using ETH price for RETH:', rethPrice);
+            }
+        } catch (error) {
+            console.log('Error fetching ETH price, using default:', error);
+        }
+        
+        // Calculate USD values
+        const lethUsdValue = parseFloat(formattedLeth) * lethPrice;
+        const rethUsdValue = parseFloat(formattedReth) * rethPrice;
+        const totalUsdValue = lethUsdValue + rethUsdValue;
         
         // Update USD value display
-        balanceBoxes[2].textContent = `$${usdValue.toFixed(2)}`;
+        balanceBoxes[2].textContent = `$${totalUsdValue.toFixed(2)}`;
         
-        console.log('Balance update:', {
-            lethBalance: formattedBalance,
-            priceUsed: currentPrice,
-            usdCalculated: usdValue
+        console.log('Balance update complete:', {
+            lethBalance: formattedLeth,
+            rethBalance: formattedReth,
+            lethPrice: lethPrice,
+            rethPrice: rethPrice,
+            lethUsdValue: lethUsdValue,
+            rethUsdValue: rethUsdValue,
+            totalUsdValue: totalUsdValue
         });
     } catch (error) {
         console.error('Error updating balances:', error);

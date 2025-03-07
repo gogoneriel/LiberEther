@@ -1122,4 +1122,12 @@ body {
     flex: 1;
 }
   }
- 
+ /* Highlight the "Click to view" buttons with red squares */
+.holders-buttons .milei-button,
+.roadmap-container .milei-button {
+  border: 3px solid #FF2400 !important;
+  position: relative;
+  box-shadow: 0 0 0 1px rgba(255, 36, 0, 0.5);
+  animation: highlight-pulse 2s infinite;
+}
+
