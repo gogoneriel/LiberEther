@@ -765,7 +765,8 @@ setInterval(updateMarketCap, 30000); // Add this line
             }
         ];
         
-        // Function to update token balances
+       // Function to update token balances
+// Function to update token balances
 async function updateBalances(address) {
     try {
         const balanceBoxes = document.querySelectorAll('.balance-box-nav .balance-value');
@@ -793,9 +794,20 @@ async function updateBalances(address) {
         // Update LETH balance display
         balanceBoxes[0].textContent = formattedBalance;
         
-        // Get the current price directly from priceData global object
-        const currentPrice = window.priceData ? window.priceData.currentPrice : 0.46;
-        console.log('Using LETH price:', currentPrice);
+        // IMPORTANT: Get the current displayed price directly from the UI
+        let currentPrice = 0.37; // Fallback value
+        const tokenPriceEl = document.getElementById('tokenPrice');
+        
+        if (tokenPriceEl && tokenPriceEl.textContent) {
+            // Extract the number from the price element (removing $ symbol)
+            const priceText = tokenPriceEl.textContent.replace('$', '').trim();
+            const parsedPrice = parseFloat(priceText);
+            
+            if (!isNaN(parsedPrice) && parsedPrice > 0) {
+                currentPrice = parsedPrice;
+                console.log('Using displayed price:', currentPrice);
+            }
+        }
         
         // Calculate USD value
         const usdValue = parseFloat(formattedBalance) * currentPrice;
@@ -803,15 +815,22 @@ async function updateBalances(address) {
         // Update USD value display
         balanceBoxes[2].textContent = `$${usdValue.toFixed(2)}`;
         
-        console.log('Updated balances successfully:', {
+        console.log('Balance update:', {
             lethBalance: formattedBalance,
-            lethPrice: currentPrice,
-            usdValue: usdValue
+            priceUsed: currentPrice,
+            usdCalculated: usdValue
         });
     } catch (error) {
         console.error('Error updating balances:', error);
     }
 }
+// Listen for price updates and recalculate balances
+window.addEventListener('priceUpdate', function() {
+    console.log('Price updated, recalculating balances');
+    if (window.ethereum && window.ethereum.selectedAddress) {
+        updateBalances(window.ethereum.selectedAddress);
+    }
+});
         
         if (connectButton) {
             connectButton.onclick = async function() {
