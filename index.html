@@ -740,82 +740,251 @@ setInterval(updateMarketCap, 30000); // Add this line
     <!-- Web3 Integration -->
 <!-- Web3 Integration -->
 
-<script src="web3-security.js"></script>
 <script>
-    let initializationAttempts = 0;
-    const maxAttempts = 10;
-
-    function initializeWeb3() {
-        try {
-            initializationAttempts++;
-            
-            // Check if ethers is loaded
-            if (typeof ethers === 'undefined') {
-                if (initializationAttempts < maxAttempts) {
-                    console.log(`Attempt ${initializationAttempts}: Ethers.js not loaded yet, retrying in 1 second...`);
-                    setTimeout(initializeWeb3, 1000);
-                } else {
-                    console.error('Failed to load Ethers.js after multiple attempts. Please refresh the page.');
-                }
-                return;
-            }
-
-            console.log('Ethers.js loaded successfully!');
-            
-            // Initialize Web3 Security
-            const web3Security = new Web3Security();
-
-            // Connect wallet button
-            const connectButton = document.getElementById('connectWallet');
-            if (connectButton) {
-                connectButton.onclick = async () => {
-                    try {
-                        if (typeof window.ethereum === 'undefined') {
-                            throw new Error('MetaMask is not installed. Please install MetaMask to continue.');
-                        }
-                        
-                        const address = await web3Security.connectWallet();
-                        // Update button text to show connected address
-                        connectButton.textContent = `${address.slice(0, 6)}...${address.slice(-4)}`;
-                    } catch (error) {
-                        console.error('Wallet connection error:', error);
-                        alert('Failed to connect wallet: ' + error.message);
-                    }
-                };
-            }
-        } catch (error) {
-            console.error('Initialization error:', error);
-        }
-    }
-    function startHoldersAutoRefresh() {
-    setInterval(() => {
-        const holdersList = document.getElementById('holdersList');
-        if (holdersList && holdersList.style.display !== 'none') {
-            loadHolders();
-        }
-    }, 30000);
-}
-
-// Add this line to your DOMContentLoaded event
-document.addEventListener('DOMContentLoaded', async function() {
-    // Initialize market cap
-    await updateMarketCap();
-    
-    // Initialize web3
-    initializeWeb3();
-    
-    // Start holders refresh
-    startHoldersAutoRefresh();
-    
-    // Other initializations
-    updateData();
-    updateRSIGif();
-});
-    // Start initialization when the page loads
     document.addEventListener('DOMContentLoaded', function() {
-        initializeWeb3();
+        // Connect wallet button
+        const connectButton = document.getElementById('connectWallet');
+        
+        // LETH token contract address
+        const LETH_ADDRESS = '0xf7acec1b4580f436866f96fe9eba6059039ea6f7';
+        // Minimal ABI for token balance
+        const ERC20_ABI = [
+            {
+                "constant": true,
+                "inputs": [{"name": "_owner", "type": "address"}],
+                "name": "balanceOf",
+                "outputs": [{"name": "balance", "type": "uint256"}],
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "decimals",
+                "outputs": [{"name": "", "type": "uint8"}],
+                "type": "function"
+            }
+        ];
+        
+        // Function to update token balances
+async function updateBalances(address) {
+    try {
+        const balanceBoxes = document.querySelectorAll('.balance-box-nav .balance-value');
+        if (!balanceBoxes || balanceBoxes.length < 3) return;
+        
+        // Reset balances first
+        balanceBoxes[0].textContent = '0.00';
+        balanceBoxes[1].textContent = '0.00';
+        balanceBoxes[2].textContent = '$0.00';
+        
+        if (!address || !window.ethereum) return;
+        
+        // Create web3 provider and get token contract
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const lethContract = new ethers.Contract(LETH_ADDRESS, ERC20_ABI, provider);
+        
+        // Get token decimals and balance
+        const decimals = await lethContract.decimals();
+        const balance = await lethContract.balanceOf(address);
+        
+        // Format the balance with ethers.js
+        let formattedBalance = ethers.utils.formatUnits(balance, decimals);
+        formattedBalance = parseFloat(formattedBalance).toFixed(2);
+        
+        // Update LETH balance display
+        balanceBoxes[0].textContent = formattedBalance;
+        
+        // Get the current price directly from priceData global object
+        const currentPrice = window.priceData ? window.priceData.currentPrice : 0.46;
+        console.log('Using LETH price:', currentPrice);
+        
+        // Calculate USD value
+        const usdValue = parseFloat(formattedBalance) * currentPrice;
+        
+        // Update USD value display
+        balanceBoxes[2].textContent = `$${usdValue.toFixed(2)}`;
+        
+        console.log('Updated balances successfully:', {
+            lethBalance: formattedBalance,
+            lethPrice: currentPrice,
+            usdValue: usdValue
+        });
+    } catch (error) {
+        console.error('Error updating balances:', error);
+    }
+}
+        
+        if (connectButton) {
+            connectButton.onclick = async function() {
+                try {
+                    console.log('Connect wallet button clicked');
+                    
+                    // Check if MetaMask is installed
+                    if (typeof window.ethereum === 'undefined') {
+                        alert('MetaMask is not installed. Please install MetaMask to continue.');
+                        return;
+                    }
+                    
+                    // Request accounts
+                    const accounts = await window.ethereum.request({
+                        method: 'eth_requestAccounts'
+                    });
+                    
+                    if (!accounts || accounts.length === 0) {
+                        alert('No accounts found. Please unlock your MetaMask and try again.');
+                        return;
+                    }
+                    
+                    const address = accounts[0];
+                    
+                    // Update button text
+                    connectButton.textContent = `${address.slice(0, 6)}...${address.slice(-4)}`;
+                    
+                    // Try to switch to Arbitrum One network
+                    try {
+                        await window.ethereum.request({
+                            method: 'wallet_switchEthereumChain',
+                            params: [{ chainId: '0xa4b1' }], // Arbitrum One
+                        });
+                    } catch (switchError) {
+                        // If network doesn't exist, try to add it
+                        if (switchError.code === 4902) {
+                            try {
+                                await window.ethereum.request({
+                                    method: 'wallet_addEthereumChain',
+                                    params: [{
+                                        chainId: '0xa4b1',
+                                        chainName: 'Arbitrum One',
+                                        nativeCurrency: {
+                                            name: 'ETH',
+                                            symbol: 'ETH',
+                                            decimals: 18
+                                        },
+                                        rpcUrls: ['https://arb1.arbitrum.io/rpc'],
+                                        blockExplorerUrls: ['https://arbiscan.io/']
+                                    }],
+                                });
+                            } catch (addError) {
+                                console.error('Error adding network:', addError);
+                            }
+                        }
+                    }
+                    
+                    // Update token balances
+                    await updateBalances(address);
+                    
+                    // Set up account change listener
+                    window.ethereum.removeListener('accountsChanged', handleAccountChange);
+                    window.ethereum.on('accountsChanged', handleAccountChange);
+                    
+                    console.log('Successfully connected to wallet:', address);
+                    
+                    // Send message to Uniswap iframe if needed
+                    try {
+                        const uniswapIframe = document.querySelector('.uniswap-iframe');
+                        if (uniswapIframe && uniswapIframe.contentWindow) {
+                            const message = {
+                                type: 'CONNECT_WALLET',
+                                address: address,
+                                chainId: parseInt('0xa4b1', 16), // Convert hex to decimal
+                                isConnected: true
+                            };
+                            uniswapIframe.contentWindow.postMessage(message, '*');
+                        }
+                    } catch (iframeError) {
+                        console.log('Error sending message to iframe:', iframeError);
+                    }
+                    
+                } catch (error) {
+                    console.error('Wallet connection error:', error);
+                    alert('Failed to connect wallet: ' + error.message);
+                }
+            };
+        }
+        
+        // Handle account changes in MetaMask
+        function handleAccountChange(accounts) {
+            if (accounts.length === 0) {
+                // User disconnected wallet
+                if (connectButton) {
+                    connectButton.textContent = 'Connect Wallet';
+                }
+                
+                // Reset balances
+                const balanceBoxes = document.querySelectorAll('.balance-box-nav .balance-value');
+                if (balanceBoxes && balanceBoxes.length >= 3) {
+                    balanceBoxes[0].textContent = '0.00';
+                    balanceBoxes[1].textContent = '0.00';
+                    balanceBoxes[2].textContent = '$0.00';
+                }
+            } else {
+                // Account changed, update UI
+                const newAddress = accounts[0];
+                if (connectButton) {
+                    connectButton.textContent = `${newAddress.slice(0, 6)}...${newAddress.slice(-4)}`;
+                }
+                
+                // Update balances for new account
+                updateBalances(newAddress);
+            }
+        }
+        
+        // Handle "Add LETH" button
+        const addTokenButton = document.getElementById('addToken');
+        if (addTokenButton) {
+            addTokenButton.onclick = async function() {
+                try {
+                    if (typeof window.ethereum === 'undefined') {
+                        alert('Please install MetaMask first!');
+                        return;
+                    }
+    
+                    await window.ethereum.request({
+                        method: 'wallet_watchAsset',
+                        params: {
+                            type: 'ERC20',
+                            options: {
+                                address: '0xf7acec1b4580f436866f96fe9eba6059039ea6f7',
+                                symbol: 'LETH',
+                                decimals: 18,
+                            }
+                        }
+                    });
+                } catch (error) {
+                    console.error(error);
+                    alert('Error adding token to MetaMask');
+                }
+            };
+        }
+        
+        // Initialize market cap
+        if (typeof updateMarketCap === 'function') {
+            updateMarketCap();
+        }
+        
+        // Initialize display data
+        if (typeof updateData === 'function') {
+            updateData();
+        }
+        
+        if (typeof updateRSIGif === 'function') {
+            updateRSIGif();
+        }
+        
+        // Start holders refresh
+        if (typeof startHoldersAutoRefresh === 'function') {
+            startHoldersAutoRefresh();
+        }
+        
+        // Check if already connected
+        if (window.ethereum && window.ethereum.selectedAddress) {
+            const address = window.ethereum.selectedAddress;
+            if (connectButton) {
+                connectButton.textContent = `${address.slice(0, 6)}...${address.slice(-4)}`;
+            }
+            updateBalances(address);
+        }
     });
-</script>
+    </script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Create social buttons container
