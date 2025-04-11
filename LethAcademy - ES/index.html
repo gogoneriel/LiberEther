@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiberEther Academy - DeFi Education</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo-placeholder">
+                <div class="header-return-container">
+                    <a href="https://liberether.com" class="header-return-link">
+                        <span style="margin-right: 8px;">←</span> DE VOLTA AO DAPP
+                    </a>
+                    <div class="language-flags">
+                        <img src="https://flagcdn.com/w20/us.png" alt="English" class="flag-icon">
+                        <img src="https://flagcdn.com/w20/ar.png" alt="Español" class="flag-icon">
+                    </div>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <!-- Navigation can be added here -->
+            </nav>
+        </div>
+    </header>
+    <!-- Add this HTML right after the header section in index.html -->
+<div class="countdown-container">
+    <a href="#contact" class="countdown-link">
+        <div class="countdown-text">PRÓXIMO CURSO PRESENCIAL, GARANTA SUA VAGA!</div>
+        <div>Em Rio De Janeiro, RJ <span class="pin">🌍</span></div>
+        
+        
+        <div class="countdown-timer" id="countdown">
+            <div class="countdown-item">
+                <span id="countdown-days">00</span>
+                <span class="countdown-label">Dias</span>
+            </div>
+            <div class="countdown-item">
+                <span id="countdown-hours">00</span>
+                <span class="countdown-label">Horas</span>
+            </div>
+            <div class="countdown-item">
+                <span id="countdown-minutes">00</span>
+                <span class="countdown-label">Min</span>
+            </div>
+            <div class="countdown-item">
+                <span id="countdown-seconds">00</span>
+                <span class="countdown-label">Seg</span>
+            </div>
+        </div>
+    </a>
+</div>
+
+<!-- Add this JavaScript at the end of your HTML file, before the closing body tag -->
+<script>
+    // Set the date we're counting down to
+    const countdownDate = new Date("May 25, 2025 00:00:00").getTime();
+
+    // Update the countdown every 1 second
+    const countdownTimer = setInterval(function() {
+        // Get current date and time
+        const now = new Date().getTime();
+        
+        // Find the distance between now and the countdown date
+        const distance = countdownDate - now;
+        
+        // Time calculations for days, hours, minutes and seconds
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        
+        // Display the result
+        document.getElementById("countdown-days").textContent = days.toString().padStart(2, '0');
+        document.getElementById("countdown-hours").textContent = hours.toString().padStart(2, '0');
+        document.getElementById("countdown-minutes").textContent = minutes.toString().padStart(2, '0');
+        document.getElementById("countdown-seconds").textContent = seconds.toString().padStart(2, '0');
+        
+        // If the countdown is over, display a message
+        if (distance < 0) {
+            clearInterval(countdownTimer);
+            document.getElementById("countdown").innerHTML = "CURSO INICIADO!";
+        }
+    }, 1000);
+</script>
+    
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>LIBERETHER <span>ACADEMY</span></h1>
+            <p>Junte-se à nossa comunidade e transforme seu conhecimento em crypto com cursos presenciais e virtuais, faça parte dessa revolução.</p>
+            <a href="#contact" class="cta-button">JUNTE-SE A NÓS &#9992;&#65039;</a>
+        </div>
+    </section>
+    
+    <!-- About Section -->
+<section class="about" id="about">
+    <div class="container">
+        <div class="section-title">
+            <h2>SOBRE A LIBERETHER ACADEMY</h2>
+        </div>
+        <div class="two-column">
+            <div class="column">
+                <img src="https://s3.gifyu.com/images/bSATR.gif" alt="LiberEther Academy" style="width: 100%; height: auto; max-width: 600px; display: block; margin: 0 auto;">
+            </div>
+            <div class="column">
+                <p>A LiberEther Academy, divisão educacional do projeto LiberEther, foca em disseminar conhecimento sobre finanças descentralizadas (DeFi) para todos os níveis.</p>
+                <p>Nossa missão é criar uma comunidade sólida, oferecendo educação de qualidade sobre criptomoedas e DeFi. Com o LiberPass, acesse cursos online e presenciais, chats e conteúdos exclusivos em três línguas (português, inglês e espanhol), além da possibilidade de aulas, acessoria e mentoria com o proprio fundador da LiberEther Neriel o ex-lutador de MMA invicto, com mais de 6 anos no mercado de cripto.</p>
+                <p><span style="color: rgb(55, 255, 0);">Os 13 maiores detentores do token LETH ganham o LiberPass grátis.</span> Todo lucro das aulas e assinaturas do LiberPass é usado para queimar LETH, tornando-o mais deflacionário e valorizando a comunidade.</p>
+                <p>Seja iniciante ou experiente, a LiberEther Academy tem o programa ideal para você.</p>
+            </div>
+        </div>
+    </div>
+</section>
+    
+    <!-- Courses Section -->
+    <section class="courses" id="courses">
+        <div class="container">
+            <div class="section-title" style="border-bottom: none;">
+    <h2>LiberPass ✈️ </h2>
+    <h3 style="margin-top: -30px; text-decoration: none; border-bottom: none;">Preço: <span style="text-decoration: line-through; text-decoration-color: red; color: white;">$25 mensais (R$150)</span> <span style="color: rgb(55, 227, 55);">com 40% de desconto</span> ao pagar com LETH, sai por apenas $15 (R$90)!</h3>
+
+
+</div>
+        <div class="courses-grid">
+                <!-- Course 1 -->
+<div class="course-card" style="position: relative;">
+    <div class="sticker-limited">VAGAS LIMITADAS</div>
+    <img src="https://s3.gifyu.com/images/bSANr.gif" alt="Curso Presencial" style="width: 100%; height: auto;">
+    <div class="course-content">
+        <h3>Cursos e Workshops Presenciais</h3>
+        <br><br>
+        <p>Tenha acesso a cursos e workshops presenciais exclusivos para membros, onde você dominará desde os fundamentos de blockchain até a criação de estratégias avançadas de renda passiva com protocolos descentralizados como Nerite, Synthetix, Uniswap, Aave e outros. Aproveite uma experiência única com o líder da LiberEther e eleve seu conhecimento em finanças descentralizadas com conteúdos práticos e exclusivos.
+        </p>
+        <div class="course-details">
+            
+            <span class="leth-holders-benefit">os 13 maiores detentores de tokens LETH não pagam.</span>
+        </div>
+        <a href="#contact" class="cta-button">Saiba Mais</a>
+    </div>
+</div>
+                
+                <!-- Course 2 -->
+                <div class="course-card">
+                    <img src="https://s3.gifyu.com/images/bSATT.gif" alt="Curso Presencial" style="width: 100%; height: auto;">
+                    <div class="course-content">
+                        <h3>Cursos Em Video, Materiais e Chat Exclusivo </h3>
+                        <br><br>
+                        <p>Aprenda DeFi em casa com nossos cursos exclusivos, explorando dicas de mercado e entrevistas com fundadores de projetos DeFi, libertários e empreendedores. Inclui chats exclusivos para membros com o LiberPass, em inglês, espanhol e português, para interagir com pessoas com os mesmos objetivos. Vídeos nas três línguas ajudam a ampliar seu conhecimento em finanças descentralizadas de forma fácil.</p>
+                        <div class="course-details">
+                           
+                            <span class="leth-holders-benefit">os 13 maiores detentores de tokens LETH não pagam.</span>
+                        </div>
+                        <a href="#contact" class="cta-button">Saiba Mais</a>
+                    </div>
+                </div>
+                
+                <!-- Course 3 -->
+<div class="course-card" style="position: relative;">
+    <div class="sticker-limited">VAGAS LIMITADAS</div>
+    <img src="https://s3.gifyu.com/images/bSAN7.gif" alt="Curso Presencial" style="width: 100%; height: auto;">
+    <div class="course-content">
+                        <h3>Help Desk de DeFi com o Fundador da LiberEther</h3>
+                        <br><br>
+                        <p>Com o LiberPass ativo, obtenha aulas privadas e suporte personalizado com o fundador da LiberEther, um especialista vivendo de DeFi há 5 anos. Por apenas $30 (R$180) em LETH por sessão de 30 minutos, receba assistência especializada em DeFi, com foco no ecossistema Ethereum e nos dApps de DeFi ensinados nos cursos da LiberEther – ideal para quem não fala inglês e busca informações claras. Todo o valor pago será queimado, garantindo a natureza deflacionária do LETH.</p>
+                        <div class="course-details">
+                            <span class="leth-holders-benefit">os 13 maiores detentores de tokens LETH não pagam.</span>
+                        </div>
+                        <a href="#contact" class="cta-button">Saiba Mais</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+   <!-- Protocols Section -->
+   <section class="benefits" id="benefits">
+    <div class="container">
+        <div class="section-title">
+            <h2>DESVENDE O POTENCIAL DE DEFI <span style="color: red;">Ξ</span>
+
+            </h2>
+        </div>
+        <div class="benefits-grid">
+            <!-- Protocol 1 -->
+            <a href="https://www.nerite.org/" class="benefit-item-link">
+                <div class="benefit-item" style="background-image: url('https://s3.gifyu.com/images/bSGyS.png') !important; background-size: cover; background-position: center; background-color: rgba(0, 0, 0, 0.6); background-blend-mode: multiply;">
+                    <div class="benefit-icon">
+                        <img src="images/1.jpg" alt="Nerite Protocol Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                    <h3>Nerite Protocol</h3>
+                    <p>Aprenda a usar o Nerite Protocol para empréstimos inovadores utilizando Ethereum em staking (LSTs) como colateral. E ganhe rendimentos sobre essas stablecoins e recompensas extras provenientes de liquidações de empréstimos com LSTs, tudo de forma segura e eficiente.</p>
+                </div>
+            </a>
+            
+            <!-- Protocol 2 -->
+            <a href="https://www.synthetix.io/" class="benefit-item-link">
+                <div class="benefit-item" style="background-image: url('https://s3.gifyu.com/images/bSGyS.png') !important; background-size: cover; background-position: center; background-color: rgba(0, 0, 0, 0.6); background-blend-mode: multiply;">
+                    <div class="benefit-icon">
+                        <img src="images/2.png" alt="Synthetix Protocol Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                    <h3>Synthetix Protocol</h3>
+                    <p>Synthetix, plataforma de ativos sintéticos que hoje oferece rendimento em stablecoins USD e SNX, além de uma exchange de perpetuals e tokens alavancados simples. Negocie derivativos de criptomoedas, aproveitando oportunidades de renda passiva no ecossistema SNX.</p>
+                </div>
+            </a>
+            
+            <!-- Protocol 3 -->
+            <a href="https://app.truemarkets.org/en/markets" class="benefit-item-link">
+                <div class="benefit-item" style="background-image: url('https://s3.gifyu.com/images/bSGyS.png') !important; background-size: cover; background-position: center; background-color: rgba(0, 0, 0, 0.6); background-blend-mode: multiply;">
+                    <div class="benefit-icon">
+                        <img src="images/3.jpg" alt="TrueMarkets Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                    <h3>TrueMarkets</h3>
+                    <p>Conheça o TrueMarkets, uma plataforma de prediction market descentralizada onde você pode apostar em previsões de eventos variados, como eleições ou esportes, com total transparência on-chain. Negocie futuros e opções, masterize hedge e especulação, e faça staking do token $TRUE</p>
+                </div>
+            </a>
+            
+            <!-- Protocol 4 -->
+            <a href="https://www.overtimemarkets.xyz/" class="benefit-item-link">
+                <div class="benefit-item" style="background-image: url('https://s3.gifyu.com/images/bSGyS.png') !important; background-size: cover; background-position: center; background-color: rgba(0, 0, 0, 0.6); background-blend-mode: multiply;">
+                    <div class="benefit-icon">
+                        <img src="images/4.jpg" alt="OverTime Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                    <h3>OverTime</h3>
+                    <p>Uma plataforma de apostas esportivas descentralizada que permite apostar em diversos esportes, como futebol e basquete, de forma transparente via blockchain. Além de apostar, você pode "ser a casa" ao fornecer liquidez. A Overtime inova ao oferecer controle total e lucros potenciais, redefinindo o mercado de apostas esportivas.</p>
+                </div>
+            </a>
+            
+            <!-- Protocol 5 -->
+            <a href="https://app.uniswap.org/" class="benefit-item-link">
+                <div class="benefit-item" style="background-image: url('https://s3.gifyu.com/images/bSGyS.png') !important; background-size: cover; background-position: center; background-color: rgba(0, 0, 0, 0.6); background-blend-mode: multiply;">
+                    <div class="benefit-icon">
+                        <img src="images/5.jpg" alt="Uniswap Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                    <h3>Uniswap</h3>
+                    <p>Uniswap Explore o poder da maior exchange descentralizada do mundo. Aprenda a fornecer liquidez, criar pares de negociação e gerar rendimentos com fees de trading. Compare oportunidades de lucro e venda ativos com eficiência, compreendendo os mecanismos de market making automatizados da Uniswap em suas diversas versões.</p>
+                </div>
+            </a>
+            
+            <!-- Protocol 6 -->
+            <a href="https://metamask.io/" class="benefit-item-link">
+                <div class="benefit-item" style="background-image: url('https://s3.gifyu.com/images/bSGyS.png') !important; background-size: cover; background-position: center; background-color: rgba(0, 0, 0, 0.6); background-blend-mode: multiply;">
+                    <div class="benefit-icon">
+                        <img src="images/6.png" alt="MetaMask Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                    <h3>MetaMask</h3>
+                    <p>Domine a carteira mais popular do ecossistema Ethereum. Aprenda a configurar seguramente, gerenciar múltiplas contas, conectar-se a diferentes redes e interagir com dApps. Descubra recursos avançados como swap integrado, estimativas de gas, e como proteger seus ativos de golpes e phishing.</p>
+                </div>
+            </a>
+            
+            <!-- Protocol 7 -->
+            <a href="https://www.kerberus.com/" class="benefit-item-link">
+                <div class="benefit-item" style="background-image: url('https://s3.gifyu.com/images/bSGyS.png') !important; background-size: cover; background-position: center; background-color: rgba(0, 0, 0, 0.6); background-blend-mode: multiply;">
+                    <div class="benefit-icon">
+                        <img src="images/7.png" alt="Kerberus Sentinel3 Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                    <h3>Kerberus Sentinel3</h3>
+                    <p>Proteja seus ativos com o Kerberus Sentinel3. Aprenda a configurar esta extensão, ativar a proteção em tempo real e utilizar recursos avançados de segurança. Domine a integração com DeFi mantendo seus fundos seguros online, além de explorar conexões protegidas com dApps via MetaMask.</p>
+                </div>
+            </a>
+            
+            <!-- Protocol 8 -->
+            <a href="https://aave.com/" class="benefit-item-link">
+                <div class="benefit-item" style="background-image: url('https://s3.gifyu.com/images/bSGyS.png') !important; background-size: cover; background-position: center; background-color: rgba(0, 0, 0, 0.6); background-blend-mode: multiply;">
+                    <div class="benefit-icon">
+                        <img src="images/8.png" alt="Aave Logo" style="width: 100%; height: 100%; object-fit: contain;">
+                    </div>
+                    <h3>Aave</h3>
+                    <p>Descubra como utilizar o Aave para empréstimos e depósitos descentralizados, maximizando seus rendimentos. Aprenda a navegar pelos mercados de taxas variáveis e fixas, entenda os riscos de liquidação e explore estratégias avançadas como empréstimos flash e alavancagem segura nos principais blockchains.</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+    
+   <!-- Updated "Sobre Cursos" section -->
+<section class="testimonials" id="testimonials">
+    <div class="container">
+        <div class="section-title">
+            <h2>SOBRE OS CURSOS</h2>
+        </div>
+        <div class="benefits-mobile-container">
+            <!-- First Row -->
+            <div class="benefits-mobile-row">
+                <!-- Item 1 -->
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/shield-lock.svg" alt="Segurança" width="24" height="24" style="filter: invert(1);">
+                    </div>
+                    <h3>Proteção e Lucro de Mãos Dadas</h3>
+                    <p>Entenda como blindar seus investimentos enquanto colhe resultados sólidos.</p>
+                </div>
+                
+                <!-- Item 2 -->
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/chart-line.svg" alt="Rendimentos Consistentes" width="24" height="24" style="filter: invert(1);">
+                    </div>
+                    <h3>Rendimentos Consistentes</h3>
+                    <p>Domine técnicas para obter rendimentos consistentes, mesmo em tempos de volatilidade.</p>
+                </div>
+                
+                <!-- Item 3 -->
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/wallet.svg" alt="Sem Vender" width="24" height="24" style="filter: invert(1);">
+                    </div>
+                    <h3>Lucro Sem Venda</h3>
+                    <p>Descubra como usar suas criptomoedas para gerar renda ou acessar capital em DeFi, mantendo-as como garantia, sem precisar vendê-las.</p>
+                </div>
+            </div>
+
+            <!-- Second Row -->
+            <div class="benefits-mobile-row">
+                <!-- Item 4 -->
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/stairs-up.svg" alt="Básico ao Avançado" width="24" height="24" style="filter: invert(1);">
+                    </div>
+                    <h3>Para Todos os Níveis</h3>
+                    <p>Perfeito para quem está começando, investidores que buscam aumentar seus resultados e até para quem deseja uma nova profissão ensinando DeFi!</p>
+                </div>
+                
+                <!-- Item 5 -->
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/currency-ethereum.svg" alt="Renda 24/7" width="24" height="24" style="filter: invert(1);">
+                    </div>
+                    <h3>Ganhe com Suas Criptos sem descanso</h3>
+                    <p>Transforme seus ativos digitais em uma fonte de renda constante, sem pausas.</p>
+                </div>
+                
+                <!-- Item 6 -->
+                <div class="benefit-item">
+                    <div class="benefit-icon">
+                        <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/refresh.svg" alt="Atualizado" width="24" height="24" style="filter: invert(1);">
+                    </div>
+                    <h3>Aprendizado na Prática</h3>
+                    <p>Táticas Reais e Sempre Atualizadas
+                        Mergulhe em métodos testados e adaptados para vencer em qualquer condição de mercado.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    
+    <!-- Contact Section -->
+<section class="contact" id="contact">
+    <div class="container">
+        <div class="section-title">
+            <h2>ENTRE EM CONTATO</h2>
+        </div>
+        <div class="contact-form">
+            <form id="course-inquiry-form" method="POST" action="https://formspree.io/f/mnnjever">
+                <div class="form-group">
+                    <label for="name">Nome Completo</label>
+                    <input type="text" id="name" name="name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">WhatsApp ou Telegram</label>
+                    <input type="tel" id="phone" name="phone" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="course">Curso de Interesse</label>
+                    <select id="course" name="course" class="form-control" required>
+                        <option value="">Selecione um interesse</option>
+                        <option value="curso-presencial">Cursos e Workshops Presenciais</option>
+                        <option value="curso-online">Cursos Em Video, Materiais e Chat Exclusivo</option>
+                        <option value="colaborador">Mentoria em DeFi com o Fundador da LiberEther</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="message">Mensagem (opcional)</label>
+                    <textarea id="message" name="message" class="form-control"></textarea>
+                </div>
+                <div class="form-submit-container">
+                    <button type="submit" class="submit-button">ENVIAR MENSAGEM</button>
+                    <div class="contact-icons">
+                        <a href="https://www.instagram.com/liberether.academy?igsh=cG9qZzVoY3g3aWIy" target="_blank" rel="noopener noreferrer">
+                            <div class="contact-icon">
+                                <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/brand-instagram.svg" alt="Instagram" width="20" height="20" />
+                            </div>
+                        </a>
+                        <a href="https://t.me/+B9PHTaCwSQ03YWU0" target="_blank" rel="noopener noreferrer" class="telegram-button">
+                            <div class="contact-icon">
+                                <img src="https://cdn.jsdelivr.net/npm/@tabler/icons@2.47.0/icons/brand-telegram.svg" alt="Telegram" width="20" height="20" />
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-logo">
+                <div class="logo-placeholder">
+                    <img src="https://s3.gifyu.com/images/bSLSb.png" alt="LiberEther Logo" class="logo-small">
+                </div>
+            </div>
+            <div class="footer-links">
+                <a href="#about">Sobre</a>
+                <a href="#courses">Cursos</a>
+                <a href="#benefits">Projetos</a>
+                <a href="#testimonials">Descubra</a>
+                <a href="#contact">Contato</a>
+            </div>
+            <p class="footer-text">© 2025 LiberEther Academy. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+    <script>
+        // Form submission handler for Formspree
+        document.getElementById('course-inquiry-form').addEventListener('submit', function(e) {
+            // We'll let the form submit naturally to Formspree
+            // But we'll show a loading message or other feedback
+            
+            // Optional: Show loading state
+            const submitButton = this.querySelector('.submit-button');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = "Enviando...";
+            submitButton.disabled = true;
+            
+            // We'll use the fetch API and async handling to provide better user feedback
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            
+            fetch('https://formspree.io/f/mnnjever', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+                
+                if (response.ok) {
+                    // Success message
+                    alert('Obrigado pelo seu interesse! Entraremos em contato em breve.');
+                    this.reset();
+                } else {
+                    // Error message
+                    alert('Ocorreu um erro ao enviar seu formulário. Por favor, tente novamente mais tarde.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                submitButton.disabled = false;
+                submitButton.textContent = originalText;
+                alert('Ocorreu um erro ao enviar seu formulário. Por favor, tente novamente mais tarde.');
+            });
+        });
+    </script>
+</body>
+</html>
