@@ -498,8 +498,8 @@ textarea.form-control {
 footer {
     background-color: #111;
     padding: 40px 0;
-    position: relative; /* Make footer a positioning context */
-    min-height: 200px; /* Ensure enough space for the repositioned logo */
+    position: relative;
+    min-height: 200px;
 }
 
 .footer-logo {
@@ -891,12 +891,17 @@ select.form-control:focus {
     /* Footer fixes for mobile */
     .footer-logo {
         position: static;
-        margin-top: 30px;
+        margin: 30px auto;
+        text-align: center;
+        width: 100%;
+        display: flex;
+        justify-content: center;
     }
     
     footer {
         min-height: auto;
         text-align: center;
+        padding-bottom: 20px;
     }
     
     .footer-text {
