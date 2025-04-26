@@ -1642,5 +1642,146 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+
+<script>
+// ... existing code ...
+
+// Uniswap V4 StateView contract configuration
+const STATEVIEW_ADDRESS = '0x76fd297e2d437cd7f76d50f01afe6160f86e9990';
+const STATEVIEW_ABI = [
+    'function getSlot0(bytes32 poolId) external view returns (uint160 sqrtPriceX96, int24 tick, uint24 protocolFee, uint24 lpFee)'
+];
+const POOL_ID = '0x3eb5bc6252074d98f765ede767517703b44aefa848991d02bc6954429dd9602f';
+
+// Provider configuration for Arbitrum
+const provider = new ethers.providers.JsonRpcProvider('https://arb1.arbitrum.io/rpc');
+
+async function getRethPrice() {
+    try {
+        // First get ETH price
+        const ethResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd', {
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        
+        if (!ethResponse.ok) {
+            throw new Error('Failed to fetch ETH price');
+        }
+        
+        const ethData = await ethResponse.json();
+        const ethPrice = ethData.ethereum.usd;
+
+        // Then get RETH/ETH ratio
+        const rethResponse = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=rocket-pool-eth&vs_currencies=eth', {
+            mode: 'cors',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+        
+        if (!rethResponse.ok) {
+            throw new Error('Failed to fetch RETH ratio');
+        }
+        
+        const rethData = await rethResponse.json();
+        const rethRatio = rethData['rocket-pool-eth'].eth;
+
+        // Calculate RETH price in USD
+        return ethPrice * rethRatio;
+    } catch (error) {
+        console.error('Error fetching RETH price:', error);
+        // Return a fallback price if the API fails
+        return 2000; // Approximate ETH price as fallback
+    }
+}
+
+function calculatePriceFromSqrtPriceX96(sqrtPriceX96) {
+    // Convert sqrtPriceX96 to actual price
+    // price = (sqrtPriceX96 / 2^96)^2
+    const Q96 = Math.pow(2, 96);
+    const sqrtPrice = Number(sqrtPriceX96) / Q96;
+    const price = sqrtPrice * sqrtPrice;
+    
+    // Since LETH is token1 and RETH is token0, we need to invert the price
+    // to get RETH per LETH instead of LETH per RETH
+    return 1 / price;
+}
+
+async function updatePriceAndATH() {
+    try {
+        const stateViewContract = new ethers.Contract(STATEVIEW_ADDRESS, STATEVIEW_ABI, provider);
+        
+        // Get the current price from StateView
+        const slot0 = await stateViewContract.getSlot0(POOL_ID);
+        const sqrtPriceX96 = slot0.sqrtPriceX96;
+        
+        // Calculate the price properly
+        const price = calculatePriceFromSqrtPriceX96(sqrtPriceX96);
+        
+        // Get RETH price in USD
+        const rethPrice = await getRethPrice();
+        
+        if (rethPrice) {
+            // Calculate LETH price in USD
+            const lethPriceUsd = (price * rethPrice).toFixed(2);
+            
+            // Update current price display
+            const tokenPriceEl = document.getElementById('tokenPrice');
+            if (tokenPriceEl) {
+                tokenPriceEl.textContent = `$${lethPriceUsd}`;
+            }
+            
+            // Check and update ATH
+            if (lethPriceUsd > ath.price) {
+                ath.price = lethPriceUsd;
+                ath.date = new Date();
+                
+                // Save to localStorage
+                localStorage.setItem('LETH_ath', JSON.stringify(ath));
+            }
+            
+            // Update ATH display
+            const athPriceEl = document.getElementById('athPrice');
+            const athDateEl = document.getElementById('athDate');
+            if (athPriceEl) {
+                athPriceEl.textContent = `$${ath.price.toFixed(2)}`;
+            }
+            if (athDateEl && ath.date) {
+                athDateEl.textContent = `(${new Date(ath.date).toLocaleDateString()})`;
+            }
+            
+            // Calculate and update price change
+            const initialPrice = 0.10;
+            const priceChange = ((lethPriceUsd - initialPrice) / initialPrice) * 100;
+            const priceChangeEl = document.getElementById('priceChange');
+            if (priceChangeEl) {
+                priceChangeEl.textContent = `${priceChange > 0 ? '+' : ''}${priceChange.toFixed(1)}% (Since Launch)`;
+                priceChangeEl.className = `performance ${priceChange >= 0 ? 'positive' : 'negative'}`;
+            }
+        } else {
+            document.getElementById('tokenPrice').textContent = 'Error: Could not fetch RETH price';
+        }
+    } catch (error) {
+        console.error('Error fetching price:', error);
+        document.getElementById('tokenPrice').textContent = 'Error loading price';
+    }
+}
+
+// Initialize ATH on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Force update ATH display on load
+    updateATHManually(ath.price, ath.date);
+});
+
+// Initial update
+updatePriceAndATH();
+
+// Update every 30 seconds
+setInterval(updatePriceAndATH, 30000);
+
+// ... existing code ...
+</script>
 </body>
 </html>
