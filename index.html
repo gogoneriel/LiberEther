@@ -338,7 +338,7 @@ const RSI_GIF_LOW = window.CONFIG.RSI_GIFS.LOW;
         holdersList.style.display = 'block';
         holdersList.classList.add('visible');
         toggleButton.textContent = 'Hide list';
-        loadHolders();
+        loadHolders(); // Load holders when showing the list
     } else {
         holdersList.style.display = 'none';
         holdersList.classList.remove('visible');
@@ -485,7 +485,10 @@ async function fetchLETHPrice() {
     
         async function loadHolders() {
     try {
-        currentPrice = await fetchLETHPrice();
+        // Get current price from priceData
+        const currentPrice = priceData.currentPrice;
+        
+        // Add timestamp to prevent caching
         const timestamp = new Date().getTime();
         const response = await fetch(`holders.json?t=${timestamp}`);
         
@@ -503,7 +506,7 @@ async function fetchLETHPrice() {
         holders.forEach((holder, index) => {
             const row = document.createElement('tr');
             
-            // Special handling for Sennin to show "Honour Member" instead of 14th
+            // Special handling for Sennin
             if (holder.name === "Sennin") {
                 row.innerHTML = `
                     <td class="rank-number">Honour Member</td>
@@ -518,7 +521,7 @@ async function fetchLETHPrice() {
                     </td>
                     <td class="amount-cell">
                         <div class="holder-amount notranslate">${holder.amount.toLocaleString()} LETH</div>
-                        <div class="holder-amount">($${calculateUSDValue(holder.amount)})</div>
+                        <div class="holder-amount">($${(holder.amount * currentPrice).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})})</div>
                     </td>
                 `;
             } else {
@@ -535,7 +538,7 @@ async function fetchLETHPrice() {
                     </td>
                     <td class="amount-cell">
                         <div class="holder-amount notranslate">${holder.amount.toLocaleString()} LETH</div>
-                        <div class="holder-amount">($${calculateUSDValue(holder.amount)})</div>
+                        <div class="holder-amount">($${(holder.amount * currentPrice).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})})</div>
                     </td>
                 `;
             }
